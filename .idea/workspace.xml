@@ -23,35 +23,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="46227dd1-e5c0-4a7d-91e6-5eb4cdb53a44" name="Default Changelist" comment="test class">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_8_5.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_codec_commons_codec_1_11.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_5_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_13.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_logging_log4j_log4j_api_2_13_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_logging_log4j_log4j_core_2_13_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apiguardian_apiguardian_api_1_1_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_5_7_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_6_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_7_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_params_5_7_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_6_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_7_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_opentest4j_opentest4j_1_2_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BILIBILI-HELPER.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/misec/API/api.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/misec/API/apiList.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +72,7 @@
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/src/main/java/top/misec" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/top/misec/Task/Bean" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -228,7 +200,7 @@
       <workItem from="1602405074273" duration="18503000" />
       <workItem from="1602429735860" duration="1926000" />
       <workItem from="1602493760183" duration="12054000" />
-      <workItem from="1602506740091" duration="8618000" />
+      <workItem from="1602506740091" duration="9985000" />
     </task>
     <task id="LOCAL-00001" summary="some thing">
       <created>1602430001253</created>
@@ -307,7 +279,21 @@
       <option name="project" value="LOCAL" />
       <updated>1602515922675</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="增加junit4依赖">
+      <created>1602515952036</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1602515952036</updated>
+    </task>
+    <task id="LOCAL-00013" summary="idea相关配置">
+      <created>1602516017137</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1602516017137</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -340,7 +326,9 @@
     <MESSAGE value="每日任务信息实体类" />
     <MESSAGE value="Cookies认证信息" />
     <MESSAGE value="简化POST和GET请求" />
-    <option name="LAST_COMMIT_MESSAGE" value="简化POST和GET请求" />
+    <MESSAGE value="增加junit4依赖" />
+    <MESSAGE value="idea相关配置" />
+    <option name="LAST_COMMIT_MESSAGE" value="idea相关配置" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
@@ -396,18 +384,18 @@
       <screen x="0" y="40" width="1920" height="1160" />
     </state>
     <state x="803" y="421" key="#toString()_Generation_Settings/0.40.1920.1160@0.40.1920.1160" timestamp="1602405010453" />
-    <state x="408" y="184" key="CommitChangelistDialog2" timestamp="1602515921520">
+    <state x="408" y="184" key="CommitChangelistDialog2" timestamp="1602516016208">
       <screen x="0" y="40" width="1920" height="1160" />
     </state>
-    <state x="408" y="184" key="CommitChangelistDialog2/0.40.1920.1160@0.40.1920.1160" timestamp="1602515921520" />
+    <state x="408" y="184" key="CommitChangelistDialog2/0.40.1920.1160@0.40.1920.1160" timestamp="1602516016208" />
     <state x="665" y="540" key="EnvironmentVariablesDialog" timestamp="1602495223727">
       <screen x="0" y="40" width="1920" height="1160" />
     </state>
     <state x="665" y="540" key="EnvironmentVariablesDialog/0.40.1920.1160@0.40.1920.1160" timestamp="1602495223727" />
-    <state x="746" y="396" key="FileChooserDialogImpl" timestamp="1602495080088">
+    <state x="746" y="396" key="FileChooserDialogImpl" timestamp="1602517639924">
       <screen x="0" y="40" width="1920" height="1160" />
     </state>
-    <state x="746" y="396" key="FileChooserDialogImpl/0.40.1920.1160@0.40.1920.1160" timestamp="1602495080088" />
+    <state x="746" y="396" key="FileChooserDialogImpl/0.40.1920.1160@0.40.1920.1160" timestamp="1602517639924" />
     <state width="1879" height="354" key="GridCell.Tab.0.bottom" timestamp="1602515417392">
       <screen x="0" y="40" width="1920" height="1160" />
     </state>
@@ -448,10 +436,10 @@
       <screen x="0" y="40" width="1920" height="1160" />
     </state>
     <state x="522" y="393" key="NewModule_or_Project.wizard/0.40.1920.1160@0.40.1920.1160" timestamp="1602494619230" />
-    <state x="483" y="264" width="1057" height="851" key="SettingsEditor" timestamp="1602496747224">
+    <state x="483" y="264" width="1057" height="851" key="SettingsEditor" timestamp="1602517643789">
       <screen x="0" y="40" width="1920" height="1160" />
     </state>
-    <state x="483" y="264" width="1057" height="851" key="SettingsEditor/0.40.1920.1160@0.40.1920.1160" timestamp="1602496747224" />
+    <state x="483" y="264" width="1057" height="851" key="SettingsEditor/0.40.1920.1160@0.40.1920.1160" timestamp="1602517643789" />
     <state width="532" height="445" key="SwitcherDM" timestamp="1602418121062">
       <screen x="0" y="40" width="1920" height="1160" />
     </state>
