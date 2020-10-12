@@ -5,10 +5,12 @@ package top.misec.API;
  * @create 2020/10/11 3:40
  */
 public class API {
-    public static String _LOGIN = "https://api.bilibili.com/x/web-interface/nav";
-    public static String _Manga = "https://manga.bilibili.com/twirp/activity.v1.Activity/ClockIn";
-    public static String _AvShare = "https://api.bilibili.com/x/web-interface/share/add";
-    public static String _CoinAdd = "https://api.bilibili.com/x/web-interface/coin/add";
-    public static String _isCoin = "https://api.bilibili.com/x/web-interface/archive/coins";
+    public static String LOGIN = "https://api.bilibili.com/x/web-interface/nav";
+    public static String Manga = "https://manga.bilibili.com/twirp/activity.v1.Activity/ClockIn";
+    public static String AvShare = "https://api.bilibili.com/x/web-interface/share/add";
+    public static String CoinAdd = "https://api.bilibili.com/x/web-interface/coin/add";
+    public static String isCoin = "https://api.bilibili.com/x/web-interface/archive/coins";
+    public static String getRegionRanking = "http://api.bilibili.com/x/web-interface/ranking/region";
+    public static String reward = "http://api.bilibili.com/x/member/web/exp/reward";
 
 }
