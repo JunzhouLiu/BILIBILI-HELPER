@@ -1,0 +1,61 @@
+{
+  "code": 0,
+  "message": "0",
+  "ttl": 1,
+  "data": {
+    "isLogin": true,
+    "email_verified": 1,
+    "face": "http://i0.hdslb.com/bfs/face/df876f5ec029e11ca0488ebea6acb9c7a515d047.jpg",
+    "level_info": {
+      "current_level": 5,
+      "current_min": 10800,
+      "current_exp": 13287,
+      "next_exp": 28800
+    },
+    "mid": 14602398,
+    "mobile_verified": 1,
+    "money": 617.9,
+    "moral": 70,
+    "official": {
+      "role": 0,
+      "title": "",
+      "desc": "",
+      "type": -1
+    },
+    "officialVerify": {
+      "type": -1,
+      "desc": ""
+    },
+    "pendant": {
+      "pid": 0,
+      "name": "",
+      "image": "",
+      "expire": 0,
+      "image_enhance": ""
+    },
+    "scores": 0,
+    "uname": "别吃那个土豆呀",
+    "vipDueDate": 1643817600000,
+    "vipStatus": 1,
+    "vipType": 2,
+    "vip_pay_type": 0,
+    "vip_theme_type": 0,
+    "vip_label": {
+      "path": "",
+      "text": "年度大会员",
+      "label_theme": "annual_vip"
+    },
+    "vip_avatar_subscript": 1,
+    "vip_nickname_color": "#FB7299",
+    "wallet": {
+      "mid": 14602398,
+      "bcoin_balance": 5,
+      "coupon_balance": 5,
+      "coupon_due_time": 0
+    },
+    "has_shop": false,
+    "shop_url": "",
+    "allowance_count": 0,
+    "answer_status": 0
+  }
+}
