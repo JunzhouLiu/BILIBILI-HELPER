@@ -17,8 +17,14 @@ public class Verify {
 
     }
 
-
-    public Verify(String userId, String sessData, String biliJct) {
+    /**
+     * Cookies信息 从浏览器获取
+     *
+     * @param userId
+     * @param sessData
+     * @param biliJct
+     */
+    public static void verifyInit(String userId, String sessData, String biliJct) {
         Verify.userId = userId;
         Verify.sessData = sessData;
         Verify.biliJct = biliJct;
@@ -42,6 +48,6 @@ public class Verify {
     }
 
     public String getVerify() {
-        return "{\"cookieDatas\":[{" + "bili_jct=" + getBiliJct() + ";SESSDATA=" + getSessData() + ";DedeUserID=" + getUserId() + "}]}";
+        return "\"bili_jct=" + getBiliJct() + ";SESSDATA=" + getSessData() + ";DedeUserID=" + getUserId();
     }
 }
