@@ -48,23 +48,27 @@ public class DailyTask implements ExpTask {
      * @param aid         av号
      * @param multiply    投币数量
      * @param select_like 是否同时点赞 1是
+     * @return 是否投币成功
      */
-    public void CoinAdd(String aid, int multiply, int select_like) {
+    public boolean CoinAdd(String aid, int multiply, int select_like) {
         String requestBody = "aid=" + aid
                 + "&multiply=" + multiply
                 + "&select_like=" + select_like
                 + "&cross_domain=" + "true"
                 + "&csrf=" + Verify.getInstance().getBiliJct();
 
-        if (!isCoin(aid)) {
+        if (!isCoin(aid)) {//判断曾经是否对此av投币过
             JsonObject jsonObject = HttpUnit.Post(API.CoinAdd, requestBody);
             if (jsonObject.get("code").getAsInt() == 0) {
-                logger.info("投币成功");
+                logger.info("-----投币成功-----");
+                return true;
             } else {
-                logger.info(jsonObject.get("message").getAsString());
+                logger.info("-----投币失败" + jsonObject.get("message").getAsString());
+                return false;
             }
         } else {
             logger.debug(aid + "已经投币过了");
+            return false;
         }
     }
 
@@ -123,6 +127,11 @@ public class DailyTask implements ExpTask {
         return regionRanking(rid, day);
     }
 
+    /**
+     * 获取当前投币获得的经验值
+     *
+     * @return 还需要投几个币  (50-已获得的经验值)/10
+     */
     public int expConfirm() {
         JsonObject resultJson = HttpUnit.Get(API.reward);
         RewardData rewardData = new Gson().fromJson(resultJson.getAsJsonObject("data"), RewardData.class);
@@ -139,6 +148,7 @@ public class DailyTask implements ExpTask {
 
     /**
      * 由于bilibili Api数据更新的问题，可能造成投币多投。
+     * 偶尔会返回0,导致多投。
      */
     @Deprecated
     public void doCoinAdd() {
@@ -146,9 +156,11 @@ public class DailyTask implements ExpTask {
 
         if (coinNum > 0) {
             String aid = regionRanking();
-            CoinAdd(aid, 1, 0);
-            coinNum--;
             logger.debug("正在为av" + aid + "投币");
+            boolean flag = CoinAdd(aid, 1, 0);
+            if (flag) {
+                coinNum--;
+            }
         }
     }
 
