@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="46227dd1-e5c0-4a7d-91e6-5eb4cdb53a44" name="Default Changelist" comment="test class">
+    <list default="true" id="46227dd1-e5c0-4a7d-91e6-5eb4cdb53a44" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -79,7 +79,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.18827416" />
-    <property name="settings.editor.selected.configurable" value="copyright" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
@@ -200,7 +200,7 @@
       <workItem from="1602405074273" duration="18503000" />
       <workItem from="1602429735860" duration="1926000" />
       <workItem from="1602493760183" duration="12054000" />
-      <workItem from="1602506740091" duration="9985000" />
+      <workItem from="1602506740091" duration="11032000" />
     </task>
     <task id="LOCAL-00001" summary="some thing">
       <created>1602430001253</created>
@@ -293,7 +293,21 @@
       <option name="project" value="LOCAL" />
       <updated>1602516017137</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="idea workspace.xml">
+      <created>1602517717058</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1602517717058</updated>
+    </task>
+    <task id="LOCAL-00015" summary="修复投币失败时，投币操作的数量小于5">
+      <created>1602518385298</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1602518385298</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -328,7 +342,11 @@
     <MESSAGE value="简化POST和GET请求" />
     <MESSAGE value="增加junit4依赖" />
     <MESSAGE value="idea相关配置" />
-    <option name="LAST_COMMIT_MESSAGE" value="idea相关配置" />
+    <MESSAGE value="idea workspace.xml" />
+    <MESSAGE value="修复投币失败时，投币操作的数量小于5" />
+    <MESSAGE value="idea 项目配置" />
+    <MESSAGE value="idea config" />
+    <option name="LAST_COMMIT_MESSAGE" value="idea config" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
@@ -384,10 +402,10 @@
       <screen x="0" y="40" width="1920" height="1160" />
     </state>
     <state x="803" y="421" key="#toString()_Generation_Settings/0.40.1920.1160@0.40.1920.1160" timestamp="1602405010453" />
-    <state x="408" y="184" key="CommitChangelistDialog2" timestamp="1602516016208">
+    <state x="408" y="183" width="1048" height="1017" key="CommitChangelistDialog2" timestamp="1602518602167">
       <screen x="0" y="40" width="1920" height="1160" />
     </state>
-    <state x="408" y="184" key="CommitChangelistDialog2/0.40.1920.1160@0.40.1920.1160" timestamp="1602516016208" />
+    <state x="408" y="183" width="1048" height="1017" key="CommitChangelistDialog2/0.40.1920.1160@0.40.1920.1160" timestamp="1602518602167" />
     <state x="665" y="540" key="EnvironmentVariablesDialog" timestamp="1602495223727">
       <screen x="0" y="40" width="1920" height="1160" />
     </state>
@@ -436,10 +454,10 @@
       <screen x="0" y="40" width="1920" height="1160" />
     </state>
     <state x="522" y="393" key="NewModule_or_Project.wizard/0.40.1920.1160@0.40.1920.1160" timestamp="1602494619230" />
-    <state x="483" y="264" width="1057" height="851" key="SettingsEditor" timestamp="1602517643789">
+    <state x="483" y="264" width="1057" height="851" key="SettingsEditor" timestamp="1602518723752">
       <screen x="0" y="40" width="1920" height="1160" />
     </state>
-    <state x="483" y="264" width="1057" height="851" key="SettingsEditor/0.40.1920.1160@0.40.1920.1160" timestamp="1602517643789" />
+    <state x="483" y="264" width="1057" height="851" key="SettingsEditor/0.40.1920.1160@0.40.1920.1160" timestamp="1602518723752" />
     <state width="532" height="445" key="SwitcherDM" timestamp="1602418121062">
       <screen x="0" y="40" width="1920" height="1160" />
     </state>
