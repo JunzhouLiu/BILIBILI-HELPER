@@ -7,15 +7,15 @@ import java.util.HashMap;
  * @create 2020/10/11 20:49
  */
 public class AvBvConvert {
-    private static String table = "fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF";
-    private static HashMap<String, Integer> mp = new HashMap<>();
-    private static HashMap<Integer, String> mp2 = new HashMap<>();
-    static int ss[] = {11, 10, 3, 8, 4, 6, 2, 9, 5, 7};
+    private static final String table = "fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF";
+    private static final HashMap<String, Integer> mp = new HashMap<>();
+    private static final HashMap<Integer, String> mp2 = new HashMap<>();
+    static int[] ss = {11, 10, 3, 8, 4, 6, 2, 9, 5, 7};
     static long xor = 177451812;
-    static long add = 8728348608l;
+    static long add = 8728348608L;
 
     public static void main(String[] args) {
-       
+
     }
 
 
@@ -35,12 +35,12 @@ public class AvBvConvert {
         for (int i = 0; i < 6; i++) {
             r = r + mp.get(s.substring(ss[i], ss[i] + 1)) * power(58, i);
         }
-        return "av" + ((r - add) ^ xor);
+        return ((r - add) ^ xor) + "";
     }
 
     public static String av2bv(String st) {
-        long s = Long.valueOf(st.split("av")[1]);
-        StringBuffer sb = new StringBuffer("BV1  4 1 7  ");
+        long s = Long.parseLong(st.split("av")[1]);
+        StringBuilder sb = new StringBuilder("BV1  4 1 7  ");
         s = (s ^ xor) + add;
         for (int i = 0; i < 58; i++) {
             String s1 = table.substring(i, i + 1);
