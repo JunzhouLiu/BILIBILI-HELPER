@@ -1,4 +1,4 @@
-package top.misec.UserInfo;
+package top.misec.Task.UserInfoBean;
 
 /**
  * Auto-generated: 2020-10-11 3:42:3

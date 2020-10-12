@@ -1,4 +1,4 @@
-package top.misec.UserInfo;
+package top.misec.Task.UserInfoBean;
 
 /**
  * @author Junzhou Liu
