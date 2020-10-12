@@ -1,6 +1,5 @@
 package top.misec.Utils;
 
-import top.misec.Login.Verify;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.http.HttpEntity;
@@ -15,6 +14,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
+import top.misec.Login.Verify;
 
 import java.io.IOException;
 
@@ -40,10 +40,11 @@ public class HttpUnit {
 
     }
 
-    public static String Post(String url, String requestBody) {
+    public static JsonObject Post(String url, String requestBody) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse httpPostResponse = null;
-        String result = "";
+
+        JsonObject resultJson = null;
         // 创建httpPost远程连接实例
         HttpPost httpPost = new HttpPost(url);
         // 配置请求参数实例
@@ -52,7 +53,7 @@ public class HttpUnit {
         httpPost.setConfig(requestConfig);
         // 设置请求头
 
-       // httpPost.addHeader("Content-Type", "application/json");
+        // httpPost.addHeader("Content-Type", "application/json");
         httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded");
         httpPost.setHeader("Referer", "https://www.bilibili.com/");
         httpPost.setHeader("Connection", "keep-alive");
@@ -61,9 +62,8 @@ public class HttpUnit {
 
         // 封装post请求参数
 
-        StringEntity stringEntity = new StringEntity(requestBody,"utf-8");
-        logger.debug(requestBody);
-        //stringEntity.setContentType("application/json");
+        StringEntity stringEntity = new StringEntity(requestBody, "utf-8");
+
         httpPost.setEntity(stringEntity);
 
         try {
@@ -72,12 +72,12 @@ public class HttpUnit {
             if (httpPostResponse != null && httpPostResponse.getStatusLine().getStatusCode() == 200) {
                 // 从响应对象中获取响应内容
                 HttpEntity entity = httpPostResponse.getEntity();
-                result = EntityUtils.toString(entity);
+                String result = EntityUtils.toString(entity);
+                resultJson = new JsonParser().parse(result).getAsJsonObject();
                 logger.info(httpPostResponse.getStatusLine().toString());
             } else if (httpPostResponse != null) {
                 logger.info(httpPostResponse.getStatusLine().toString());
             }
-
 
         } catch (ClientProtocolException e) {
             logger.error(e);
@@ -88,13 +88,12 @@ public class HttpUnit {
             // 关闭资源
             httpResource(httpClient, httpPostResponse);
         }
-        return result;
+        return resultJson;
     }
 
     public static JsonObject Get(String url) {
         CloseableHttpClient httpClient = null;
         CloseableHttpResponse httpGetResponse = null;
-        String result = "";
         JsonObject resultJson = null;
         try {
             // 通过址默认配置创建一个httpClient实例
@@ -109,6 +108,7 @@ public class HttpUnit {
             httpGet.setHeader("Cookie", verify.getVerify());
             // 为httpGet实例设置配置
             httpGet.setConfig(requestConfig);
+
             // 执行get请求得到返回对象
             httpGetResponse = httpClient.execute(httpGet);
             if (httpGetResponse != null && httpGetResponse.getStatusLine().getStatusCode() == 200) {
@@ -116,11 +116,11 @@ public class HttpUnit {
                 // 通过返回对象获取返回数据
                 HttpEntity entity = httpGetResponse.getEntity();
                 // 通过EntityUtils中的toString方法将结果转换为字符串
-                result = EntityUtils.toString(entity);
+                String result = EntityUtils.toString(entity);
                 resultJson = new JsonParser().parse(result).getAsJsonObject();
-                logger.info(httpGetResponse.getStatusLine().toString());
+                logger.debug(httpGetResponse.getStatusLine().toString());
             } else if (httpGetResponse != null) {
-                logger.info(httpGetResponse.getStatusLine().toString());
+                logger.debug(httpGetResponse.getStatusLine().toString());
             }
 
         } catch (IOException e) {
@@ -132,6 +132,7 @@ public class HttpUnit {
         return resultJson;
 
     }
+
 
     private static void httpResource(CloseableHttpClient httpClient, CloseableHttpResponse response) {
         if (null != response) {
