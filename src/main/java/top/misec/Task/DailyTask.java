@@ -166,7 +166,7 @@ public class DailyTask implements ExpTask {
     public void doCoinAdd() {
         int coinNum = expConfirm();
 
-        if (coinNum > 0) {
+        while (coinNum > 0) {
             String aid = regionRanking();
             logger.debug("正在为av" + aid + "投币");
             boolean flag = CoinAdd(aid, 1, 0);
