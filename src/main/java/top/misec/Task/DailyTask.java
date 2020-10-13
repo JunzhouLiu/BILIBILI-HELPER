@@ -9,7 +9,6 @@ import org.apache.logging.log4j.core.Logger;
 import top.misec.API.API;
 import top.misec.CFG.Config;
 import top.misec.Login.Verify;
-import top.misec.Task.RewardBean.RewardData;
 import top.misec.Task.UserInfoBean.Data;
 import top.misec.Utils.HttpUnit;
 
@@ -108,7 +107,10 @@ public class DailyTask implements ExpTask {
     public String regionRanking(int rid, int day) {
 
         String urlParam = "?rid=" + rid + "&day=" + day;
-        JsonObject resultJson = HttpUnit.Get(API.getRegionRanking + urlParam);
+
+        JsonObject resultJson;
+        resultJson = HttpUnit.Get(API.getRegionRanking + urlParam);
+
         JsonArray jsonArray = resultJson.getAsJsonArray("data");
 
         Map<String, Boolean> videoMap = new HashMap<>();
@@ -152,18 +154,17 @@ public class DailyTask implements ExpTask {
      * @return 还需要投几个币  (50-已获得的经验值)/10
      */
     public int expConfirm(int coinExp) {
-        JsonObject resultJson = HttpUnit.Get(API.reward);
-        RewardData rewardData = new Gson().fromJson(resultJson.getAsJsonObject("data"), RewardData.class);
-
-        if (rewardData.getCoins() == coinExp * 10) {
-            logger.debug(resultJson);
+        JsonObject resultJson = HttpUnit.Get(API.needCoin);
+        int getCoinExp = resultJson.get("number").getAsInt();
+        if (getCoinExp == coinExp * 10) {
             logger.info("----本日投币任务已完成，无需投币了 ----");
             return 0;
         } else {
-            logger.info("----开始投币，还需要投" + (50 - rewardData.getCoins()) / 10 + "枚硬币----");
-            return (50 - rewardData.getCoins()) / 10;
+            logger.info("----开始投币，还需要投" + (50 - getCoinExp) / 10 + "枚硬币----");
+            return (50 - getCoinExp) / 10;
         }
     }
+
 
     /**
      * 由于bilibili Api数据更新的问题，可能造成投币多投。
@@ -180,7 +181,7 @@ public class DailyTask implements ExpTask {
           如果设定的投币数小于可获得经验的投币数，投设定的投币数。
          */
         if (coinNum >= needCoinNum) {
-            coinNum = expConfirm(coinNum);
+            coinNum = needCoinNum;
         }
 
         while (coinNum > 0) {
