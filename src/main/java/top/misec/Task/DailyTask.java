@@ -7,11 +7,17 @@ import com.google.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import top.misec.API.API;
+import top.misec.CFG.Config;
 import top.misec.Login.Verify;
 import top.misec.Task.RewardBean.RewardData;
 import top.misec.Task.UserInfoBean.Data;
 import top.misec.Utils.HttpUnit;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -41,7 +47,9 @@ public class DailyTask implements ExpTask {
     public void mangaSign(String platform) {
         String requestBody = "platform=" + platform;
         JsonObject result = HttpUnit.Post(API.Manga, requestBody);
+        logger.debug(result);
         logger.info("----完成漫画签到----");
+
     }
 
     /**
@@ -126,8 +134,7 @@ public class DailyTask implements ExpTask {
      */
     public int randomRegion() {
         int[] arr = {1, 3, 4, 5, 160, 202, 119};
-        int regionId = arr[(int) (Math.random() * arr.length)];
-        return regionId;
+        return arr[(int) (Math.random() * arr.length)];
     }
 
     /**
@@ -144,16 +151,16 @@ public class DailyTask implements ExpTask {
      *
      * @return 还需要投几个币  (50-已获得的经验值)/10
      */
-    public int expConfirm() {
+    public int expConfirm(int coinExp) {
         JsonObject resultJson = HttpUnit.Get(API.reward);
         RewardData rewardData = new Gson().fromJson(resultJson.getAsJsonObject("data"), RewardData.class);
 
-        if (rewardData.getCoins() == 50) {
+        if (rewardData.getCoins() == coinExp * 10) {
             logger.debug(resultJson);
-            logger.info("----本日投币任务已完成，无需投币了 经验+50 ----");
+            logger.info("----本日投币任务已完成，无需投币了 ----");
             return 0;
         } else {
-            logger.info("还需要再投" + (50 - rewardData.getCoins()) / 10 + "枚硬币");
+            logger.info("----开始投币，还需要投" + (50 - rewardData.getCoins()) / 10 + "枚硬币----");
             return (50 - rewardData.getCoins()) / 10;
         }
     }
@@ -164,16 +171,43 @@ public class DailyTask implements ExpTask {
      */
     @Deprecated
     public void doCoinAdd() {
-        int coinNum = expConfirm();
+        int coinNum = Config.CONFIG.getNumberOfCoins();
+        int needCoinNum = expConfirm(coinNum);//今日能够获取经验的硬币数量
+
+        /*
+           从src/main/resources/config.json中读取配置值，默认为投币5，不同时点赞
+          如果设定的投币数大于可获得经验的投币数，只投获能得经验的币数。
+          如果设定的投币数小于可获得经验的投币数，投设定的投币数。
+         */
+        if (coinNum >= needCoinNum) {
+            coinNum = expConfirm(coinNum);
+        }
 
         while (coinNum > 0) {
             String aid = regionRanking();
             logger.debug("正在为av" + aid + "投币");
-            boolean flag = CoinAdd(aid, 1, 0);
+            boolean flag = CoinAdd(aid, 1, Config.CONFIG.getSelect_like());
             if (flag) {
                 coinNum--;
             }
         }
+    }
+
+    /**
+     * 读取配置文件 src/main/resources/config.json
+     */
+    public void InitConfig() {
+        try {
+            FileInputStream in = new FileInputStream("src/main/resources/config.json");
+            Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
+            Config.CONFIG = new Gson().fromJson(reader, Config.class);
+            logger.info("----init config file successful----");
+            logger.debug(Config.getInstance().outputConfig());
+        } catch (FileNotFoundException e) {
+            logger.debug(e);
+            e.printStackTrace();
+        }
+
     }
 
     public void doDailyTask() {
@@ -185,13 +219,11 @@ public class DailyTask implements ExpTask {
         logger.info("----硬币余额----  :" + userInfo.getMoney());
         logger.info("----距离升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "----: " +
                 (userInfo.getLevel_info().getNext_exp() - userInfo.getLevel_info().getCurrent_exp()) / 65 + " day");
-
         avShare(regionRanking());
         mangaSign("ios");
+        InitConfig();//初始化投币配置
         doCoinAdd();
-
     }
-
 
 }
 
