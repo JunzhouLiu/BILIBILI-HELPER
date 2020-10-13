@@ -119,10 +119,22 @@ public class DailyTask implements ExpTask {
     }
 
     /**
+     * 从有限分区中随机返回一个分区rid
+     * 后续会更新请求分区
+     *
+     * @return regionId 分区id
+     */
+    public int randomRegion() {
+        int[] arr = {1, 3, 4, 5, 160, 202, 119};
+        int regionId = arr[(int) (Math.random() * arr.length)];
+        return regionId;
+    }
+
+    /**
      * 默认请求动画区，3日榜单
      */
     public String regionRanking() {
-        int rid = 1;
+        int rid = randomRegion();
         int day = 3;
         return regionRanking(rid, day);
     }
