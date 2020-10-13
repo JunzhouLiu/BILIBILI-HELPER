@@ -28,6 +28,8 @@ import java.util.Random;
 public class DailyTask implements ExpTask {
     static Logger logger = (Logger) LogManager.getLogger(DailyTask.class.getName());
 
+    Data userInfo = null;
+
     public void avShare(String aid) {
         String requestBody = "aid=" + aid + "&csrf=" + Verify.getInstance().getBiliJct();
         JsonObject result = HttpUnit.Post((API.AvShare), requestBody);
@@ -105,16 +107,22 @@ public class DailyTask implements ExpTask {
      * @return 随机返回一个aid
      */
     public String regionRanking(int rid, int day) {
+        Map<String, Boolean> videoMap = new HashMap<>();
 
         String urlParam = "?rid=" + rid + "&day=" + day;
+        JsonObject resultJson = HttpUnit.Get(API.getRegionRanking + urlParam);
 
-        JsonObject resultJson;
-        resultJson = HttpUnit.Get(API.getRegionRanking + urlParam);
+        JsonArray jsonArray = null;
+        try {
+            jsonArray = resultJson.getAsJsonArray("data");
+            //极低的概率会抛异常，无法获取到jsonArray 可能是API返回的数据有问题。
+            //似乎是部分rid官方不再使用了，导致没请求到数据。
+        } catch (Exception e) {
+            logger.debug("如果出现了这个异常，麻烦提个Issues告诉下我: " + e);
+            logger.debug("----提Issues时请附上这条信息-请求参数：" + API.getRegionRanking + urlParam);
+            logger.debug("----提Issues时请附上这条信息-返回结果：" + resultJson);
+        }
 
-        JsonArray jsonArray = resultJson.getAsJsonArray("data");
-        //极低的概率会抛异常，无法获取到jsonArray 可能是API返回的数据有问题。
-
-        Map<String, Boolean> videoMap = new HashMap<>();
 
         for (JsonElement videoInfo : jsonArray) {
             JsonObject TempObject = videoInfo.getAsJsonObject();
@@ -136,7 +144,7 @@ public class DailyTask implements ExpTask {
      * @return regionId 分区id
      */
     public int randomRegion() {
-        int[] arr = {1, 3, 4, 5, 160, 202, 119};
+        int[] arr = {1, 3, 4, 5, 160, 22, 119};
         return arr[(int) (Math.random() * arr.length)];
     }
 
@@ -172,17 +180,30 @@ public class DailyTask implements ExpTask {
      */
     @Deprecated
     public void doCoinAdd() {
+        //从src/main/resources/config.json中读取配置值，默认为投币5，不同时点赞
+        //如果设定的投币数小于可获得经验的投币数，按设定的投币数执行。
         int coinNum = Config.CONFIG.getNumberOfCoins();
         int needCoinNum = expConfirm(coinNum);//今日能够获取经验的硬币数量
 
+        int coinBalance = (int) Math.floor(userInfo.getMoney());
+
+        logger.debug("当前余额为 ： " + coinBalance);
+
         /*
-           从src/main/resources/config.json中读取配置值，默认为投币5，不同时点赞
           如果设定的投币数大于可获得经验的投币数，只投获能得经验的币数。
-          如果设定的投币数小于可获得经验的投币数，投设定的投币数。
          */
         if (coinNum >= needCoinNum) {
             coinNum = needCoinNum;
         }
+
+        /*
+           这里惨痛的教训，写反了判断符号，硬币损失惨重(损失了41个硬币)
+           如果用户硬币余额小于以上判断后的投币数，则按用户的硬币余额数量投币。
+         */
+        if (coinBalance < coinNum) {
+            coinNum = coinBalance;
+        }
+
 
         while (coinNum > 0) {
             String aid = regionRanking();
@@ -212,8 +233,12 @@ public class DailyTask implements ExpTask {
     }
 
     public void doDailyTask() {
-        Data userInfo = new Gson().fromJson(HttpUnit.Get(API.LOGIN)
+        userInfo = new Gson().fromJson(HttpUnit.Get(API.LOGIN)
                 .getAsJsonObject("data"), Data.class);
+
+        if (userInfo == null) {
+            logger.info("-----Cookies可能失效了-----");
+        }
 
         logger.info("----用户名称---- :" + userInfo.getUname());
         logger.info("----登录成功 经验+5----");
