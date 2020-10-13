@@ -90,13 +90,13 @@ public class DailyTask implements ExpTask {
     public boolean isCoin(String aid) {
         String urlParam = "?aid=" + aid;
         JsonObject result = HttpUnit.Get(API.isCoin + urlParam);
-        logger.debug("投币操作" + result);
+
         int multiply = result.getAsJsonObject("data").get("multiply").getAsInt();
         if (multiply > 0) {
-            logger.info("-----已经为AV" + aid + "投过" + multiply + "枚硬币啦-----");
+            logger.info("-----已经为Av" + aid + "投过" + multiply + "枚硬币啦-----");
             return true;
         } else {
-            logger.debug("isCoin response: " + result);
+            logger.info("-----还没有为Av" + aid + " 投过硬币，开始投币-----");
             return false;
         }
     }
