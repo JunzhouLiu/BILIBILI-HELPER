@@ -112,6 +112,7 @@ public class DailyTask implements ExpTask {
         resultJson = HttpUnit.Get(API.getRegionRanking + urlParam);
 
         JsonArray jsonArray = resultJson.getAsJsonArray("data");
+        //极低的概率会抛异常，无法获取到jsonArray 可能是API返回的数据有问题。
 
         Map<String, Boolean> videoMap = new HashMap<>();
 
@@ -160,15 +161,14 @@ public class DailyTask implements ExpTask {
             logger.info("----本日投币任务已完成，无需投币了 ----");
             return 0;
         } else {
-            logger.info("----开始投币，还需要投" + (50 - getCoinExp) / 10 + "枚硬币----");
+            logger.info("----如果需要获得本日全部经验，还需要投" + (50 - getCoinExp) / 10 + "枚硬币----");
             return (50 - getCoinExp) / 10;
         }
     }
 
-
     /**
      * 由于bilibili Api数据更新的问题，可能造成投币多投。
-     * 偶尔会返回0,导致多投。
+     * 更换API后 已修复
      */
     @Deprecated
     public void doCoinAdd() {
