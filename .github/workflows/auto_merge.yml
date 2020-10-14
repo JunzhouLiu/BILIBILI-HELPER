@@ -36,5 +36,5 @@ jobs:
         fi
     - name: Push Commits
       env:
-        DOWNSTREAM_BRANCH: master
+        DOWNSTREAM_BRANCH: main
       run: git push origin $DOWNSTREAM_BRANCH
