@@ -13,9 +13,7 @@ import top.misec.Login.Verify;
 import top.misec.Task.UserInfoBean.Data;
 import top.misec.Utils.HttpUnit;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author Junzhou Liu
@@ -259,6 +257,67 @@ public class DailyTask implements ExpTask {
 
     }
 
+    public boolean query_isVip() {
+        return userInfo.getVipStatus() == 1;
+    }
+
+
+    /*
+     * 月底自动给自己充电。//仅充会到期的B币券，低于2的时候不会充
+     */
+    public void charge() {
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
+        int day = cal.get(Calendar.DATE);
+
+        int coupon_balance = userInfo.getWallet().getCoupon_balance();
+        String userId = Verify.getInstance().getUserId();//被充电用户的userID
+        /*
+               月底，要是VIP，并且b币券余额大于2，配置项允许自动充电
+         */
+        if (day == 28 && coupon_balance >= 2 &&
+                Config.getInstance().getMonth_end_auto_charge() == 1 &&
+                query_isVip()) {
+            String requestBody = "elec_num=" + coupon_balance * 10
+                    + "&up_mid=" + userId
+                    + "&otype=up"
+                    + "&oid=" + userId
+                    + "&csrf=" + Verify.getInstance().getBiliJct();
+
+            JsonObject jsonObject = HttpUnit.Post(API.autoCharge, requestBody);
+
+            int resultCode = jsonObject.get("code").getAsInt();
+            if (resultCode == 0) {
+                JsonObject dataJson = jsonObject.get("data").getAsJsonObject();
+                logger.debug(dataJson);
+                int statusCode = dataJson.get("status").getAsInt();
+                if (statusCode == 4) {
+                    logger.info("-----月底了，给自己充电成功啦，送的B币券没有浪费哦-----");
+                    logger.info("本次给自己充值了： " + coupon_balance * 10 + "个电池哦");
+                    String order_no = dataJson.get("order_no").getAsString();//充电留言token
+                    chargeComments(order_no);
+                } else {
+                    logger.debug("------充电失败了啊 原因：-----" + jsonObject);
+                }
+
+            } else {
+                logger.debug("------充电失败了啊 原因：-----" + jsonObject);
+            }
+        } else {
+            logger.debug("今天是本月的第：" + day + "天，还没到给自己充电日子呢");
+        }
+    }
+
+    public void chargeComments(String token) {
+
+        String requestBody = "order_id=" + token
+                + "&&message=" + "加油哦,来自JunzhouLiu"
+                + "&csrf=" + Verify.getInstance().getBiliJct();
+        JsonObject jsonObject = HttpUnit.Post(API.chargeComment, requestBody);
+        logger.debug(jsonObject);
+
+    }
+
+
     public void doDailyTask() {
         userInfo = new Gson().fromJson(HttpUnit.Get(API.LOGIN)
                 .getAsJsonObject("data"), Data.class);
@@ -273,11 +332,13 @@ public class DailyTask implements ExpTask {
         logger.info("----距离升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "----: " +
                 (userInfo.getLevel_info().getNext_exp() - userInfo.getLevel_info().getCurrent_exp()) / 65 + " day");
         Config.getInstance().ConfigInit();
+
         videoWatch();//观看视频 默认会调用分享
         mangaSign("ios");
         //InitConfig();//初始化投币配置
         silver2coin();//银瓜子换硬币
         doCoinAdd();//投币任务
+        charge();
     }
 
 }
