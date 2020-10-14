@@ -14,4 +14,8 @@ public class API {
     public static String reward = "http://api.bilibili.com/x/member/web/exp/reward";
     //还需要投几个币
     public static String needCoin = "https://www.bilibili.com/plus/account/exp.php";
+    //硬币换银瓜子
+    public static String silver2coin = "https://api.live.bilibili.com/pay/v1/Exchange/silver2coin";
+    //状态
+    public static String getSilver2coinStatus = "https://api.live.bilibili.com/pay/v1/Exchange/getStatus";
 }
