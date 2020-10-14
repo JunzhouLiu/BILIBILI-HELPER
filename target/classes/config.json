@@ -1,5 +1,6 @@
 {
   "numberOfCoins": 5,
   "select_like": 0,
-  "watch_share": 1
+  "watch_share": 1,
+  "month_end_auto_charge": 1
 }

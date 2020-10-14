@@ -25,6 +25,15 @@ public class Config {
     private int numberOfCoins;
     private int select_like;
     private int watch_share;
+    private int month_end_auto_charge;
+
+    public int getMonth_end_auto_charge() {
+        return month_end_auto_charge;
+    }
+
+    public void setMonth_end_auto_charge(int month_end_auto_charge) {
+        this.month_end_auto_charge = month_end_auto_charge;
+    }
 
     private static Config CONFIG = new Config();
 
