@@ -35,8 +35,9 @@ public class DailyTask implements ExpTask {
         JsonObject result = HttpUnit.Post((API.AvShare), requestBody);
 
         if (result.get("code").getAsInt() == 0) {
-            logger.info("----视频分享成功 经验+5----");
+            logger.info("----视频: av" + aid + "分享成功----");
         } else {
+            logger.debug(result);
             logger.debug("----视频分享失败----");
         }
 
