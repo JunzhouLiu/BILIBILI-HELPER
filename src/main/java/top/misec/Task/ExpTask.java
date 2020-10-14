@@ -6,6 +6,5 @@ package top.misec.Task;
  */
 public interface ExpTask {
     void avShare(String aid);
-
     void mangaSign(String platform);
 }
