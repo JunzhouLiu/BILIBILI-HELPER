@@ -268,8 +268,12 @@ public class DailyTask implements ExpTask {
     public void charge() {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
         int day = cal.get(Calendar.DATE);
-
         int coupon_balance = userInfo.getWallet().getCoupon_balance();
+
+        if (day == 1 && query_isVip()) {
+            oftenAPI.vipPrivilege(1);
+            oftenAPI.vipPrivilege(2);
+        }
         String userId = Verify.getInstance().getUserId();//被充电用户的userID
         /*
                月底，要是VIP，并且b币券余额大于2，配置项允许自动充电
