@@ -22,7 +22,9 @@ jobs:
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
     - name: Load upstream commits
-      run: git pull https://github.com/JunzhouLiu/BILIBILI-HELPER.git --log --no-commit
+      run: |
+        git update-index --assume-unchanged ./src/main/resources/config.json
+        git pull https://github.com/JunzhouLiu/BILIBILI-HELPER.git --log --no-commit
 
     - name: Apply commit changes
       run: |
