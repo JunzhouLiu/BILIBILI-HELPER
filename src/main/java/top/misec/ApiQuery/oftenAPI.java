@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import top.misec.API.API;
+import top.misec.Login.Verify;
 import top.misec.Utils.HttpUnit;
 
 /**
@@ -21,13 +22,28 @@ public class oftenAPI {
     public static Double getCoinBalance() {
         JsonObject jsonObject = HttpUnit.Get(API.getCoinBalance);
         int responseCode = jsonObject.get("code").getAsInt();
-
         if (responseCode == 0) {
             double coin_balance = jsonObject.get("data").getAsJsonObject().get("money").getAsDouble();
             return coin_balance;
         } else {
             logger.debug(jsonObject);
             return 0.0;
+        }
+    }
+
+    /*
+      type  1大会员B币券
+      2 大会员福利
+     */
+    public static void vipPrivilege(int type) {
+        String requestBody = "type=" + type
+                + "&csrf=" + Verify.getInstance().getBiliJct();
+        JsonObject jsonObject = HttpUnit.Post(API.vipPrivilegeReceive, requestBody);
+        int responseCode = jsonObject.get("code").getAsInt();
+        if (responseCode == 0) {
+            logger.info("type= " + type + " 领取成功  1大会员B币券  2大会员福利");
+        } else {
+            logger.debug("type= " + type + jsonObject.get("message").getAsString());
         }
     }
 }
