@@ -28,7 +28,8 @@ BILIBILI-HELPER
   - [自定义功能](#自定义功能)
 - [快速更新](#快速更新)
   - [关于项目更新频率](#关于项目更新频率)
-  - [快速拉取最新代码](#快速拉取最新代码)
+  - [使用Github Actions 自动同步源仓库代码](#使用github-actions-自动同步源仓库代码)
+  - [手动拉取最新代码](#手动拉取最新代码)
 - [API参考列表](#api参考列表)
 
 
@@ -104,9 +105,63 @@ Github Actions默认处于禁止状态，请手动开启Actions. 之后每天10�
 # 快速更新
 
 ## 关于项目更新频率
-目前处于快速迭代阶段，建议通过以下方式从本仓库拉取最新代码。
+目前处于快速迭代阶段，建议通过以下两种方式从本仓库拉取最新代码。
 
-## 快速拉取最新代码
+
+## 使用Github Actions 自动同步源仓库代码
+
+ 该方案来自 `@happy888888` `#PR6` ，由于本操作会覆盖用户自己的`config.json`配置文件，所以暂时没有合并到`main`分支，所以请使用自定义功能的朋友请慎用。
+
+
+在`./github/workflows`目录下创建`auto_merge.yml`文件，内容如下
+
+
+```yml
+name: auto_merge
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 16 * * fri
+    # cron表达式,每周五16点执行一次，可按照需求自定义。  
+
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        ref: main
+        fetch-depth: 0
+        lfs: true
+
+    - name: Set git identity
+      run : |
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+    - name: Load upstream commits
+      run: |
+        git update-index --assume-unchanged ./src/main/resources/config.json
+        git pull https://github.com/JunzhouLiu/BILIBILI-HELPER.git --log --no-commit
+    - name: Apply commit changes
+      run: |
+        if [ -f ./.git/MERGE_MSG ]; then
+        mkdir ./tmp && cp ./.git/MERGE_MSG ./tmp/message
+        sed -i "1c [bot] AutoMerging: merge all upstream's changes:" ./tmp/message
+        sed -i '/^\#.*/d' ./tmp/message
+        git commit --file="./tmp/message"
+        else
+        echo "There is no merge commits."
+        fi
+    - name: Push Commits
+      env:
+        DOWNSTREAM_BRANCH: main
+      run: git push origin $DOWNSTREAM_BRANCH
+```
+
+## 手动拉取最新代码
 
 0. 通过`git remote -v`查看是否有源头仓库的别名和地址。
 
