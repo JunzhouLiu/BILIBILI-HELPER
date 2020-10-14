@@ -1,8 +1,10 @@
 name: auto_merge
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: 0 16 * * fri
+
 
 jobs:
   merge:
