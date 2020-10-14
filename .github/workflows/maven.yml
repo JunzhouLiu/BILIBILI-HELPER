@@ -5,9 +5,9 @@ name: AUTO TASK FOR BILILI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ dev ]
   pull_request:
-    branches: [ main ]
+    branches: [ dev ]
   schedule: 
        - cron: '30 2 * * *'
  
