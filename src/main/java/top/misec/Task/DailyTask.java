@@ -204,6 +204,12 @@ public class DailyTask implements ExpTask {
             coinNum = coinBalance;
         }
 
+        /*
+         * 设定的硬币数等于已获得经验的投币数时，不再投币
+         */
+        if (coinNum == 5 - needCoinNum) {
+            coinNum = 0;
+        }
 
         while (coinNum > 0) {
             String aid = regionRanking();
