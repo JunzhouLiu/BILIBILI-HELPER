@@ -1,5 +1,15 @@
 package top.misec.CFG;
 
+import com.google.gson.Gson;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+
 /**
  * Auto-generated: 2020-10-13 17:10:40
  *
@@ -10,15 +20,28 @@ package top.misec.CFG;
 
 public class Config {
 
+    static Logger logger = (Logger) LogManager.getLogger(Config.class.getName());
+
     private int numberOfCoins;
     private int select_like;
+    private int watch_share;
 
-    public static Config CONFIG = new Config();
+    private static Config CONFIG = new Config();
 
     public static Config getInstance() {
         return CONFIG;
     }
 
+    public Config() {
+    }
+
+    public int isWatch_share() {
+        return watch_share;
+    }
+
+    public void setWatch_share(int watch_share) {
+        this.watch_share = watch_share;
+    }
 
     public void setNumberOfCoins(int numberOfCoins) {
         this.numberOfCoins = numberOfCoins;
@@ -41,6 +64,7 @@ public class Config {
         return "Config{" +
                 "numberOfCoins=" + numberOfCoins +
                 ", select_like=" + select_like +
+                ", watch_share=" + watch_share +
                 '}';
     }
 
@@ -49,10 +73,35 @@ public class Config {
         outputConfig += numberOfCoins;
 
         if (select_like == 0) {
-            outputConfig += " 投币时是否点赞 : 否----";
+            outputConfig += " 投币时是否点赞 : 否  ";
         } else {
-            outputConfig += " 投币时是否点赞 : 是----";
+            outputConfig += " 投币时是否点赞 : 是  ";
         }
+
+        if (watch_share == 1) {
+            outputConfig += " 观看时分享 : 是----";
+        } else {
+            outputConfig += " 观看时分享 : 否----";
+        }
+
         return outputConfig;
     }
+
+    /**
+     * 读取配置文件 src/main/resources/config.json
+     */
+
+    public void ConfigInit() {
+        try {
+            FileInputStream in = new FileInputStream("src/main/resources/config.json");
+            Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
+            Config.CONFIG = new Gson().fromJson(reader, Config.class);
+            logger.info("----init config file successful----");
+            logger.debug(Config.getInstance().outputConfig());
+        } catch (FileNotFoundException e) {
+            logger.debug(e);
+            e.printStackTrace();
+        }
+    }
+
 }
