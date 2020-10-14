@@ -7,16 +7,12 @@ import com.google.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import top.misec.API.API;
+import top.misec.ApiQuery.oftenAPI;
 import top.misec.CFG.Config;
 import top.misec.Login.Verify;
 import top.misec.Task.UserInfoBean.Data;
 import top.misec.Utils.HttpUnit;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -37,8 +33,7 @@ public class DailyTask implements ExpTask {
         if (result.get("code").getAsInt() == 0) {
             logger.info("----视频: av" + aid + "分享成功----");
         } else {
-            logger.debug(result);
-            logger.debug("----视频分享失败----");
+            logger.debug("----视频分享失败，原因： " + result);
         }
 
     }
@@ -181,20 +176,20 @@ public class DailyTask implements ExpTask {
      */
     @Deprecated
     public void doCoinAdd() {
-        //从src/main/resources/config.json中读取配置值，默认为投币5，不同时点赞
+        //从src/main/resources/config.json中读取配置值，默认为投币5，不点赞
         //如果设定的投币数小于可获得经验的投币数，按设定的投币数执行。
-        int coinNum = Config.CONFIG.getNumberOfCoins();
-        int needCoinNum = expConfirm(coinNum);//今日能够获取经验的硬币数量
+        int coinNum = Config.getInstance().getNumberOfCoins();
+        int exp_coin = expConfirm(coinNum);//今日能够获取经验的硬币数量
 
-        int coinBalance = (int) Math.floor(userInfo.getMoney());
+        int coinBalance = (int) Math.floor(oftenAPI.getCoinBalance());
 
-        logger.debug("当前余额为 ： " + coinBalance);
+        logger.debug("投币前余额为 ： " + coinBalance);
 
         /*
           如果设定的投币数大于可获得经验的投币数，只投获能得经验的币数。
          */
-        if (coinNum >= needCoinNum) {
-            coinNum = needCoinNum;
+        if (coinNum >= exp_coin) {
+            coinNum = exp_coin;
         }
 
         /*
@@ -206,37 +201,21 @@ public class DailyTask implements ExpTask {
         }
 
         /*
-         * 设定的硬币数等于已获得经验的投币数时，不再投币
+         * 设定的硬币数小等于已获得经验的投币数时，不再投币
          */
-        if (coinNum == 5 - needCoinNum) {
+        if (coinNum <= 5 - exp_coin) {
             coinNum = 0;
         }
 
         while (coinNum > 0) {
             String aid = regionRanking();
             logger.debug("正在为av" + aid + "投币");
-            boolean flag = CoinAdd(aid, 1, Config.CONFIG.getSelect_like());
+            boolean flag = CoinAdd(aid, 1, Config.getInstance().getSelect_like());
             if (flag) {
                 coinNum--;
             }
         }
-    }
-
-    /**
-     * 读取配置文件 src/main/resources/config.json
-     */
-    public void InitConfig() {
-        try {
-            FileInputStream in = new FileInputStream("src/main/resources/config.json");
-            Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
-            Config.CONFIG = new Gson().fromJson(reader, Config.class);
-            logger.info("----init config file successful----");
-            logger.debug(Config.getInstance().outputConfig());
-        } catch (FileNotFoundException e) {
-            logger.debug(e);
-            e.printStackTrace();
-        }
-
+        logger.debug("投币任务完成后余额为 ： " + oftenAPI.getCoinBalance());
     }
 
     public void silver2coin() {
@@ -249,7 +228,7 @@ public class DailyTask implements ExpTask {
         }
 
         JsonObject queryStatus = HttpUnit.Get(API.getSilver2coinStatus).get("data").getAsJsonObject();
-        double silver2coinMoney = queryStatus.get("coin").getAsDouble();
+        double silver2coinMoney = oftenAPI.getCoinBalance();
         logger.info("当前银瓜子余额 ：" + queryStatus.get("silver").getAsInt());
         logger.info("兑换银瓜子后硬币余额 ：" + silver2coinMoney);
 
@@ -257,6 +236,26 @@ public class DailyTask implements ExpTask {
         兑换银瓜子后，更新userInfo中的硬币值
          */
         userInfo.setMoney(silver2coinMoney);
+
+    }
+
+
+    public void videoWatch() {
+        String aid = regionRanking();
+        int played_time = (int) (Math.random() * 60) + 1;
+        String postBody = "aid=" + aid
+                + "&played_time" + played_time;
+        JsonObject resultJson = HttpUnit.Post(API.videoHeartbeat, postBody);
+        int responseCode = resultJson.get("code").getAsInt();
+
+        if (responseCode == 0) {
+            logger.info("视频 av" + aid + "播放成功,已观看到" + played_time + "秒");
+            if (Config.getInstance().isWatch_share() == 1) {
+                avShare(aid);//观看完开始分享视频
+            }
+        } else {
+            logger.debug("视频 av" + aid + "播放失败,原因" + resultJson.get("message").getAsString());
+        }
 
     }
 
@@ -273,11 +272,12 @@ public class DailyTask implements ExpTask {
         logger.info("----硬币余额----  :" + userInfo.getMoney());
         logger.info("----距离升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "----: " +
                 (userInfo.getLevel_info().getNext_exp() - userInfo.getLevel_info().getCurrent_exp()) / 65 + " day");
-        avShare(regionRanking());
+        Config.getInstance().ConfigInit();
+        videoWatch();//观看视频 默认会调用分享
         mangaSign("ios");
-        InitConfig();//初始化投币配置
-        silver2coin();
-        doCoinAdd();
+        //InitConfig();//初始化投币配置
+        silver2coin();//银瓜子换硬币
+        doCoinAdd();//投币任务
     }
 
 }
