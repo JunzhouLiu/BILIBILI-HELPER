@@ -69,14 +69,14 @@ public class HttpUnit {
         try {
             // httpClient对象执行post请求,并返回响应参数对象
             httpPostResponse = httpClient.execute(httpPost);
+
             if (httpPostResponse != null && httpPostResponse.getStatusLine().getStatusCode() == 200) {
                 // 从响应对象中获取响应内容
                 HttpEntity entity = httpPostResponse.getEntity();
                 String result = EntityUtils.toString(entity);
                 resultJson = new JsonParser().parse(result).getAsJsonObject();
-                logger.info(httpPostResponse.getStatusLine().toString());
             } else if (httpPostResponse != null) {
-                logger.info(httpPostResponse.getStatusLine().toString());
+                logger.debug(httpPostResponse.getStatusLine().toString());
             }
 
         } catch (ClientProtocolException e) {
@@ -118,7 +118,6 @@ public class HttpUnit {
                 // 通过EntityUtils中的toString方法将结果转换为字符串
                 String result = EntityUtils.toString(entity);
                 resultJson = new JsonParser().parse(result).getAsJsonObject();
-                logger.debug(httpGetResponse.getStatusLine().toString());
             } else if (httpGetResponse != null) {
                 logger.debug(httpGetResponse.getStatusLine().toString());
             }

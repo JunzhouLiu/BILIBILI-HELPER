@@ -23,8 +23,7 @@ public class oftenAPI {
         JsonObject jsonObject = HttpUnit.Get(API.getCoinBalance);
         int responseCode = jsonObject.get("code").getAsInt();
         if (responseCode == 0) {
-            double coin_balance = jsonObject.get("data").getAsJsonObject().get("money").getAsDouble();
-            return coin_balance;
+            return jsonObject.get("data").getAsJsonObject().get("money").getAsDouble();
         } else {
             logger.debug(jsonObject);
             return 0.0;
