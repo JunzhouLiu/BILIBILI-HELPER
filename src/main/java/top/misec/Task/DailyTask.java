@@ -265,8 +265,19 @@ public class DailyTask implements ExpTask {
 
     }
 
-    public boolean query_isVip() {
-        return userInfo.getVipStatus() == 1;
+    /**
+     * @return 返回会员类型
+     * 0：无会员（会员过期，当前不是会员）
+     * 1：月会员
+     * 2：年会员
+     */
+    public int query_vipStatusType() {
+        if (userInfo.getVipStatus() == 1) {
+            return userInfo.getVipType();
+        } else {
+            return 0;
+        }
+
     }
 
 
@@ -277,18 +288,19 @@ public class DailyTask implements ExpTask {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
         int day = cal.get(Calendar.DATE);
         int coupon_balance = userInfo.getWallet().getCoupon_balance();
+        int vip_type = query_vipStatusType();
 
-        if (day == 1 && query_isVip()) {
+        if (day == 1 && vip_type == 2) {
             oftenAPI.vipPrivilege(1);
             oftenAPI.vipPrivilege(2);
         }
         String userId = Verify.getInstance().getUserId();//被充电用户的userID
         /*
-               月底，要是VIP，并且b币券余额大于2，配置项允许自动充电
+               月底，要是年大会员，并且b币券余额大于2，配置项允许自动充电
          */
         if (day == 28 && coupon_balance >= 2 &&
                 Config.getInstance().getMonth_end_auto_charge() == 1 &&
-                query_isVip()) {
+                vip_type == 2) {
             String requestBody = "elec_num=" + coupon_balance * 10
                     + "&up_mid=" + userId
                     + "&otype=up"
@@ -344,7 +356,9 @@ public class DailyTask implements ExpTask {
 
         //@happy888888: query_isVip貌似不能判断会员类型，上上面的charge函数应该做userInfo.getVipType()的判断，这里不需要
         //@JunzhouLiu: query_isVip是可以做是否VIP判断的 根据userInfo.getVipStatus() ,如果是1 ，会员有效，0会员失效。
-        if (day != 1 || !query_isVip()) {
+        //@JunzhouLiu: fixed query_vipStatusType()现在可以查询会员状态，以及会员类型了 2020-10-15
+        if (day != 1 || query_vipStatusType() != 0) {
+            //是会员就可以领取
             //一个月执行一次就行，跟几号没关系，由B站策略决定(有可能改领取时间)
             return;
         }
