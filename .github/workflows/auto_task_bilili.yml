@@ -9,7 +9,8 @@ on:
   pull_request:
     branches: [ dev,main ]
   schedule:
-    - cron: '30 2 * * *'
+    - cron: '10 10 * * *'
+    ##corn表达式，时区配置为Asia/Shanghai
 
 jobs:
   start:
