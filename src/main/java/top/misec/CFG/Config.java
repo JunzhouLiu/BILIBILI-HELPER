@@ -78,19 +78,19 @@ public class Config {
     }
 
     public String outputConfig() {
-        String outputConfig = "----默认每日投币数量为 : ";
+        String outputConfig = "----您设置的每日投币数量为: ";
         outputConfig += numberOfCoins;
 
         if (select_like == 0) {
-            outputConfig += " 投币时是否点赞 : 否  ";
+            outputConfig += " 投币时不点赞 ";
         } else {
-            outputConfig += " 投币时是否点赞 : 是  ";
+            outputConfig += " 投币时点赞 ";
         }
 
         if (watch_share == 1) {
-            outputConfig += " 观看时分享 : 是----";
+            outputConfig += " 观看时分享----";
         } else {
-            outputConfig += " 观看时分享 : 否----";
+            outputConfig += " 观看时不分享----";
         }
 
         return outputConfig;
@@ -99,13 +99,12 @@ public class Config {
     /**
      * 读取配置文件 src/main/resources/config.json
      */
-
     public void ConfigInit() {
         try {
             FileInputStream in = new FileInputStream("src/main/resources/config.json");
             Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
             Config.CONFIG = new Gson().fromJson(reader, Config.class);
-            logger.info("----init config file successful----");
+            logger.info("----Init ConfigFile Successful----");
             logger.debug(Config.getInstance().outputConfig());
         } catch (FileNotFoundException e) {
             logger.debug(e);
