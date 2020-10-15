@@ -320,7 +320,7 @@ public class DailyTask implements ExpTask {
     }
 
     public void chargeComments(String token) {
-    	
+
         String requestBody = "order_id=" + token
                 + "&&message=" + "BILIBILI-HELPER自动充电"
                 + "&csrf=" + Verify.getInstance().getBiliJct();
@@ -333,28 +333,31 @@ public class DailyTask implements ExpTask {
      * 获取大会员漫画权益
      *
      * @param reason_id 权益号，由https://api.bilibili.com/x/vip/privilege/my
-         *                                得到权益号数组，取值范围为数组中的整数
-         *                                为方便直接取1，为领取漫读劵，暂时不取其他的值
+     *                  得到权益号数组，取值范围为数组中的整数
+     *                  为方便直接取1，为领取漫读劵，暂时不取其他的值
      * @return 返回领取结果和数量
      */
     public void mangaGetVipReward(int reason_id) {
-    	
-    	Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
-    	int day = cal.get(Calendar.DATE);
-    	
-//query_isVip貌似不能判断会员类型，上上面的charge函数应该做userInfo.getVipType()的判断，这里不需要
-    	if (day != 1 || !query_isVip()) { 
-    		//一个月执行一次就行，跟几号没关系，由B站策略决定(有可能改领取时间)
+
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
+        int day = cal.get(Calendar.DATE);
+
+        //@happy888888: query_isVip貌似不能判断会员类型，上上面的charge函数应该做userInfo.getVipType()的判断，这里不需要
+        //@JunzhouLiu: query_isVip是可以做是否VIP判断的 根据userInfo.getVipStatus() ,如果是1 ，会员有效，0会员失效。
+        if (day != 1 || !query_isVip()) {
+            //一个月执行一次就行，跟几号没关系，由B站策略决定(有可能改领取时间)
             return;
         }
-    	
+
         String requestBody = "{\"reason_id\":" + reason_id + "}";
-                        //注意参数构造格式为json，不知道需不需要重载下面的Post函数改请求头
+        //注意参数构造格式为json，不知道需不需要重载下面的Post函数改请求头
         JsonObject jsonObject = HttpUnit.Post(API.mangaGetVipReward, requestBody);
-        if (jsonObject.get("code").getAsInt() == 0) {                                    //好像也可以getAsString或,getAsShort
-        	logger.info("大会员成功领取" + jsonObject.get("data").getAsJsonObject().get("amount").getAsInt() + "张漫读劵");
+        if (jsonObject.get("code").getAsInt() == 0) {
+            //@happy888888:好像也可以getAsString或,getAsShort
+            //@JunzhouLiu:Int比较好判断
+            logger.info("大会员成功领取" + jsonObject.get("data").getAsJsonObject().get("amount").getAsInt() + "张漫读劵");
         } else {
-        	logger.info("大会员领取漫读劵失败，原因为：" + jsonObject.get("msg").getAsString());
+            logger.info("大会员领取漫读劵失败，原因为：" + jsonObject.get("msg").getAsString());
         }
         logger.debug(jsonObject);
     }
@@ -367,7 +370,7 @@ public class DailyTask implements ExpTask {
             logger.info("-----Cookies可能失效了-----");
             //失效上面好像就抛出JsonParseException异常了，这里执行得到吗.......
         }
-        
+
         String uname = userInfo.getUname();
         int s1 = uname.length() / 2, s2 = (s1 + 1) / 2;
         logger.info("----用户名称: " + uname.substring(0, s2) + String.join("", Collections.nCopies(s1, "*")) + uname.substring(s1 + s2));
