@@ -363,12 +363,17 @@ public class DailyTask implements ExpTask {
     }
 
     public void doDailyTask() {
-        userInfo = new Gson().fromJson(HttpUnit.Get(API.LOGIN)
-                .getAsJsonObject("data"), Data.class);
 
-        if (userInfo == null) {
+        JsonObject userJson = null;
+        userJson = HttpUnit.Get(API.LOGIN);
+
+        if (userJson == null) {
             logger.info("-----Cookies可能失效了-----");
-            //失效上面好像就抛出JsonParseException异常了，这里执行得到吗.......
+            //@happy88888: 失效上面好像就抛出JsonParseException异常了，这里执行得到吗.......
+            //@JunzhouLiu: fixed 2020-10-15
+        } else {
+            userInfo = new Gson().fromJson(userJson
+                    .getAsJsonObject("data"), Data.class);
         }
 
         String uname = userInfo.getUname();
