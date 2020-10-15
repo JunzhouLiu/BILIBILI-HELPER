@@ -52,12 +52,16 @@ public class HttpUnit {
         // 为httpPost实例设置配置
         httpPost.setConfig(requestConfig);
         // 设置请求头
-        
+
+        /*
+            addHeader：添加一个新的请求头字段。（一个请求头中允许有重名字段。）
+            setHeader：设置一个请求头字段，有则覆盖，无则添加。
+         */
         if (requestBody.startsWith("{")) { //有什么好的方式判断key1=value和{"key1":"value"}
-        	                               //java的正则表达式咋写......
-        	httpPost.addHeader("Content-Type", "application/json");
+            //java的正则表达式咋写......
+            httpPost.setHeader("Content-Type", "application/json");
         } else {
-        	httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded");
+            httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
         }
         // httpPost.addHeader("Content-Type", "application/json");
         // httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded");
