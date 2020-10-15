@@ -11,6 +11,7 @@ on:
   schedule:
     - cron: '10 10 * * *'
     ##corn表达式，时区配置为Asia/Shanghai
+  workflow_dispatch:
 
 jobs:
   start:

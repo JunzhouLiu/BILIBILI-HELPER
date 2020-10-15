@@ -28,4 +28,6 @@ public class API {
     public static String chargeComment = "http://api.bilibili.com/x/ugcpay/trade/elec/message";
 
     public static String vipPrivilegeReceive = "https://api.bilibili.com/x/vip/privilege/receive";
+    
+    public static String mangaGetVipReward = "https://manga.bilibili.com/twirp/user.v1.User/GetVipReward";
 }
