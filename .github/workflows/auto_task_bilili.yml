@@ -9,8 +9,8 @@ on:
   pull_request:
     branches: [ dev,main ]
   schedule:
-    - cron: '10 10 * * *'
-    ##corn表达式，时区配置为Asia/Shanghai
+    - cron: '30 0 * * *'
+    # cron表达式，Actions时区是UTC时间，所以上午10点要往前推8个小时
   workflow_dispatch:
 
 jobs:
@@ -37,5 +37,6 @@ jobs:
           DEDEUSERID: ${{ secrets.DEDEUSERID }}
           SESSDATA: ${{ secrets.SESSDATA }}
           TZ: Asia/Shanghai
+          # 时区配置为Asia/Shanghai
         run:
           mvn compile exec:java -Dexec.mainClass="top.misec.BiliMain" -Dexec.args="${DEDEUSERID} ${SESSDATA} ${BILI_JCT}"
