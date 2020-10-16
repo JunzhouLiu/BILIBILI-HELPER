@@ -1,9 +1,9 @@
-package top.misec.Task;
+package top.misec.task;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.junit.Test;
-import top.misec.Login.Verify;
+import top.misec.login.Verify;
 
 /**
  * @author Junzhou Liu
@@ -18,15 +18,6 @@ public class DailyTaskTest {
         //System.out.println(AvBvConvert.bv2av("BV1eZ4y1p7GZ"));
 
         DailyTask dailyTask = new DailyTask();
-        //dailyTask.silver2coin();
-        //  dailyTask.videoWatch();
-
-
         dailyTask.doDailyTask();
-
-        //logger.debug(dailyTask.query_coupon_balances());
-
-
     }
-
 }
