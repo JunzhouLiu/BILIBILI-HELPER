@@ -1,11 +1,10 @@
-package top.misec.ApiQuery;
+package top.misec.apiquery;
 
 import com.google.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
-import top.misec.API.API;
-import top.misec.Login.Verify;
-import top.misec.Utils.HttpUnit;
+import top.misec.login.Verify;
+import top.misec.utils.HttpUnit;
 
 /**
  * 部分API简单封装。
@@ -13,14 +12,14 @@ import top.misec.Utils.HttpUnit;
  * @author Junzhou Liu
  * @create 2020/10/14 14:27
  */
-public class oftenAPI {
-    static Logger logger = (Logger) LogManager.getLogger(oftenAPI.class.getName());
+public class OftenAPI {
+    static Logger logger = (Logger) LogManager.getLogger(OftenAPI.class.getName());
 
     /**
      * @return 返回主站查询到的硬币余额，查询失败返回0.0
      */
     public static Double getCoinBalance() {
-        JsonObject jsonObject = HttpUnit.Get(API.getCoinBalance);
+        JsonObject jsonObject = HttpUnit.doGet(ApiList.getCoinBalance);
         int responseCode = jsonObject.get("code").getAsInt();
         if (responseCode == 0) {
             return jsonObject.get("data").getAsJsonObject().get("money").getAsDouble();
@@ -36,7 +35,7 @@ public class oftenAPI {
     public static void vipPrivilege(int type) {
         String requestBody = "type=" + type
                 + "&csrf=" + Verify.getInstance().getBiliJct();
-        JsonObject jsonObject = HttpUnit.Post(API.vipPrivilegeReceive, requestBody);
+        JsonObject jsonObject = HttpUnit.doPost(ApiList.vipPrivilegeReceive, requestBody);
         int responseCode = jsonObject.get("code").getAsInt();
         if (responseCode == 0) {
             if (type == 1) {

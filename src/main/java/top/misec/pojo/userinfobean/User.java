@@ -1,4 +1,4 @@
-package top.misec.Task.UserInfoBean;
+package top.misec.pojo.userinfobean;
 
 /**
  * @author Junzhou Liu
