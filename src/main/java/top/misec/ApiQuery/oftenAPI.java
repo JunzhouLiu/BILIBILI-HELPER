@@ -8,7 +8,7 @@ import top.misec.Login.Verify;
 import top.misec.Utils.HttpUnit;
 
 /**
- * 频繁使用的API数据简单封装。
+ * 部分API简单封装。
  *
  * @author Junzhou Liu
  * @create 2020/10/14 14:27
@@ -30,9 +30,8 @@ public class oftenAPI {
         }
     }
 
-    /*
-      type  1大会员B币券
-      2 大会员福利
+    /**
+     * @param type 1大会员B币券  2 大会员福利
      */
     public static void vipPrivilege(int type) {
         String requestBody = "type=" + type
@@ -40,9 +39,14 @@ public class oftenAPI {
         JsonObject jsonObject = HttpUnit.Post(API.vipPrivilegeReceive, requestBody);
         int responseCode = jsonObject.get("code").getAsInt();
         if (responseCode == 0) {
-            logger.info("领取类型 : " + type + " 领取成功  1大会员B币券  2大会员福利");
+            if (type == 1) {
+                logger.info("领取年度大会员每月赠送的B币券成功");
+            } else if (type == 2) {
+                logger.info("领取大会员福利/权益成功");
+            }
+
         } else {
-            logger.debug("领取类型 : " + type + jsonObject.get("message").getAsString());
+            logger.debug("领取年度大会员每月赠送的B币券/大会员福利失败，原因: " + jsonObject.get("message").getAsString());
         }
     }
 }

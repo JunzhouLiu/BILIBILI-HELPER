@@ -214,7 +214,7 @@ public class DailyTask implements ExpTask {
             numberOfCoins = 0;
         }
 
-        /**
+        /*
          * 开发时进行测试时。
          * 请勿修改 max_numberOfCoins 这里多判断一次保证投币数超过5时 不执行投币操作
          * 最后一道安全判断，保证即使前面的判断逻辑错了，也不至于发生投币事故
@@ -293,16 +293,22 @@ public class DailyTask implements ExpTask {
     public void charge() {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
         int day = cal.get(Calendar.DATE);
-        int coupon_balance = userInfo.getWallet().getCoupon_balance();
-        int vip_type = query_vipStatusType();
+        int coupon_balance = userInfo.getWallet().getCoupon_balance();//B币券余额
+        int vip_type = query_vipStatusType();//查询大会员类型
+        String userId = Verify.getInstance().getUserId();//被充电用户的userID
 
         if (day == 1 && vip_type == 2) {
             oftenAPI.vipPrivilege(1);
             oftenAPI.vipPrivilege(2);
         }
-        String userId = Verify.getInstance().getUserId();//被充电用户的userID
+
+        if (vip_type == 0 || vip_type == 1) {
+            logger.info("普通会员和月度大会员每月不赠送B币券，所以没法给自己充电哦");
+            return;
+        }
+
         /*
-               月底，要是年大会员，并且b币券余额大于2，配置项允许自动充电
+          判断条件 是月底&&是年大会员&&b币券余额大于2&&配置项允许自动充电
          */
         if (day == 28 && coupon_balance >= 2 &&
                 Config.getInstance().getMonth_end_auto_charge() == 1 &&
