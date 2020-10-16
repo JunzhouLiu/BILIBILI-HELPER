@@ -40,9 +40,9 @@ public class oftenAPI {
         JsonObject jsonObject = HttpUnit.Post(API.vipPrivilegeReceive, requestBody);
         int responseCode = jsonObject.get("code").getAsInt();
         if (responseCode == 0) {
-            logger.info("type= " + type + " 领取成功  1大会员B币券  2大会员福利");
+            logger.info("领取类型 : " + type + " 领取成功  1大会员B币券  2大会员福利");
         } else {
-            logger.debug("type= " + type + jsonObject.get("message").getAsString());
+            logger.debug("领取类型 : " + type + jsonObject.get("message").getAsString());
         }
     }
 }
