@@ -180,10 +180,10 @@ public class DailyTask implements ExpTask {
      */
     @Deprecated
     public void doCoinAdd() {
-        //从src/main/resources/config.json中读取配置值，默认为投币5，不点赞
-        //如果设定的投币数小于可获得经验的投币数，按设定的投币数执行。
-        int coinNum = Config.getInstance().getNumberOfCoins();
-        int exp_coin = expConfirm(coinNum);//今日能够获取经验的硬币数量
+        final int max_numberOfCoins = 5;//安全检查，最多最多只能投5个。
+        int numberOfCoins = Config.getInstance().getNumberOfCoins();
+        //获取自定义配置投币数 配置写在src/main/resources/config.json中
+        int exp_coin = expConfirm(numberOfCoins);//今日能够获取经验的硬币数量
 
         Double beforeAddCoinBalance = oftenAPI.getCoinBalance();
 
@@ -191,10 +191,11 @@ public class DailyTask implements ExpTask {
 
         int coinBalance = (int) Math.floor(beforeAddCoinBalance);
         /*
+          如果设定的投币数小于可获得经验的投币数，按设定的投币数执行。
           如果设定的投币数大于可获得经验的投币数，只投获能得经验的币数。
          */
-        if (coinNum >= exp_coin) {
-            coinNum = exp_coin;
+        if (numberOfCoins >= exp_coin) {
+            numberOfCoins = exp_coin;
         }
 
         /*
@@ -202,23 +203,28 @@ public class DailyTask implements ExpTask {
            不给我star的都是坏人！ 哼(￢︿̫̿￢☆)
            如果用户硬币余额小于以上判断后的投币数，则按用户的硬币余额数量投币。
          */
-        if (coinBalance < coinNum) {
-            coinNum = coinBalance;
+        if (coinBalance < numberOfCoins) {
+            numberOfCoins = coinBalance;
         }
 
         /*
          * 设定的硬币数小等于已获得经验的投币数时，不再投币
          */
-        if (coinNum <= 5 - exp_coin) {
-            coinNum = 0;
+        if (numberOfCoins <= 5 - exp_coin) {
+            numberOfCoins = 0;
         }
 
-        while (coinNum > 0) {
+        /**
+         * 开发时进行测试时。
+         * 请勿修改 max_numberOfCoins 这里多判断一次保证投币数超过5时 不执行投币操作
+         * 最后一道安全判断，保证即使前面的判断逻辑错了，也不至于发生投币事故
+         */
+        while (numberOfCoins > 0 && numberOfCoins <= max_numberOfCoins) {
             String aid = regionRanking();
             logger.debug("正在为av" + aid + "投币");
             boolean flag = CoinAdd(aid, 1, Config.getInstance().getSelect_like());
             if (flag) {
-                coinNum--;
+                numberOfCoins--;
             }
         }
         logger.debug("投币任务完成后余额为:  " + oftenAPI.getCoinBalance());
@@ -378,8 +384,7 @@ public class DailyTask implements ExpTask {
 
     public void doDailyTask() {
 
-        JsonObject userJson = null;
-        userJson = HttpUnit.Get(API.LOGIN);
+        JsonObject userJson = HttpUnit.Get(API.LOGIN);
 
         if (userJson == null) {
             logger.info("-----Cookies可能失效了-----");
@@ -391,12 +396,13 @@ public class DailyTask implements ExpTask {
         }
 
         String uname = userInfo.getUname();
+        //用户名模糊处理 @happy88888
         int s1 = uname.length() / 2, s2 = (s1 + 1) / 2;
         logger.info("----用户名称: " + uname.substring(0, s2) + String.join("", Collections.nCopies(s1, "*")) + uname.substring(s1 + s2));
         logger.info("----登录成功 经验+5----");
         logger.info("----硬币余额: " + userInfo.getMoney());
-        logger.info("----距离升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "----: " +
-                (userInfo.getLevel_info().getNext_exp() - userInfo.getLevel_info().getCurrent_exp()) / 65 + " day");
+        logger.info("----距离升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "还有: " +
+                (userInfo.getLevel_info().getNext_exp() - userInfo.getLevel_info().getCurrent_exp()) / 65 + "天");
 
         Config.getInstance().ConfigInit();
         videoWatch();//观看视频 默认会调用分享
