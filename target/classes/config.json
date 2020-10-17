@@ -1,6 +1,6 @@
 {
   "numberOfCoins": 5,
   "selectLike": 0,
-  "watchAndShare": 1,
-  "monthEndAutoCharge": 1
+  "monthEndAutoCharge": 1,
+  "devicePlatform": "ios"
 }
