@@ -19,12 +19,19 @@ public class OftenAPI {
      * @return 返回主站查询到的硬币余额，查询失败返回0.0
      */
     public static Double getCoinBalance() {
-        JsonObject jsonObject = HttpUnit.doGet(ApiList.getCoinBalance);
-        int responseCode = jsonObject.get("code").getAsInt();
+        JsonObject responseJson = HttpUnit.doGet(ApiList.getCoinBalance);
+        int responseCode = responseJson.get("code").getAsInt();
+
+        JsonObject dataObject = responseJson.get("data").getAsJsonObject();
+
         if (responseCode == 0) {
-            return jsonObject.get("data").getAsJsonObject().get("money").getAsDouble();
+            if (dataObject.get("money").isJsonNull()) {
+                return 0.0;
+            } else {
+                return dataObject.get("money").getAsDouble();
+            }
         } else {
-            logger.debug(jsonObject);
+            logger.debug("请求硬币余额接口错误，请稍后重试。错误请求信息：" + responseJson);
             return 0.0;
         }
     }
