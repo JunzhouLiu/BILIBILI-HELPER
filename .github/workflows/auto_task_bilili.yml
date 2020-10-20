@@ -20,6 +20,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Validation parameters
+        env:
+          BILI_JCT: ${{ secrets.BILI_JCT }}
+          DEDEUSERID: ${{ secrets.DEDEUSERID }}
+          SESSDATA: ${{ secrets.SESSDATA }}
+          TZ: Asia/Shanghai
+          # 时区配置为Asia/Shanghai
+        run: |
+          if [[ -z '${{ secrets.SESSDATA }}' ]]
+          then
+              echo "Secrets中SESSDATA参数未填写，请填写后重试"
+              exit -1
+          fi
+          if [[ -z '${{ secrets.BILI_JCT }}' ]]
+          then
+              echo "Secrets中BILI_JCT参数未填写，请填写后重试"
+              exit -1
+          fi
+          if [[ -z '${{ secrets.DEDEUSERID }}' ]]
+          then
+              echo "Secrets中DEDEUSERID参数未填写，请填写后重试"
+              exit -1
+          fi
+          ret=`wget --header="Cookie: SESSDATA=${{ secrets.SESSDATA }}" -q -O - https://api.bilibili.com/x/web-interface/nav`
+          if [[ ! $ret =~ '"isLogin":true' ]]
+          then
+              echo "账号登录状态已过期，请重新配置"
+              exit -1
+          fi
       - uses: actions/checkout@v2
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
@@ -39,5 +68,5 @@ jobs:
           SESSDATA: ${{ secrets.SESSDATA }}
           TZ: Asia/Shanghai
           # 时区配置为Asia/Shanghai
-        run:
+        run: |
           mvn compile exec:java -Dexec.mainClass="top.misec.BiliMain" -Dexec.args="${DEDEUSERID} ${SESSDATA} ${BILI_JCT}"
