@@ -416,14 +416,15 @@ public class DailyTask {
      */
     public void liveCheckin() {
         JsonObject liveCheckinResponse = HttpUnit.doGet("https://api.live.bilibili.com/xlive/web-ucenter/v1/sign/DoSign");
-        JsonObject data = liveCheckinResponse.get("data").getAsJsonObject();
-
-        int code = liveCheckinResponse.get("code").getAsInt();
-        if (code == 0) {
-            logger.info("直播签到成功!!获得" + data.get("text").getAsString() + "," + data.get("specialText").getAsString());
-        } else {
-            logger.info(data.get("text").getAsString());
-        }
+        logger.info(liveCheckinResponse.toString());
+//        JsonObject data = liveCheckinResponse.get("data").getAsJsonObject();
+//
+//        int code = liveCheckinResponse.get("code").getAsInt();
+//        if (code == 0) {
+//            logger.info("直播签到成功!!获得" + data.get("text").getAsString() + "," + data.get("specialText").getAsString());
+//        } else {
+//            logger.info(data.get("text").getAsString());
+//        }
     }
 
     public void doDailyTask() {
