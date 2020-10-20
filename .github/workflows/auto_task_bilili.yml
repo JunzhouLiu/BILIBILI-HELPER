@@ -46,6 +46,10 @@ jobs:
           ret=`wget --header="Cookie: SESSDATA=${{ secrets.SESSDATA }}" -q -O - https://api.bilibili.com/x/web-interface/nav`
           if [[ ! $ret =~ '"isLogin":true' ]]
           then
+              if [[ -n '${{ secrets.SCKEY }}' ]]
+              then
+                  wget -q -O - "http://sc.ftqq.com/${{ secrets.SCKEY }}.send?text=%e6%82%a8%e7%9a%84B%e7%ab%99cookie%e5%a4%b1%e6%95%88%e8%be%a3%ef%bc%8c%e5%bf%ab%e5%8e%bb%e9%87%8d%e6%96%b0%e9%85%8d%e7%bd%ae%e5%93%a6%7e"
+              fi
               echo "账号登录状态已过期，请重新配置"
               exit -1
           fi
