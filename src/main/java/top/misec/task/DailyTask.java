@@ -349,7 +349,6 @@ public class DailyTask {
             int resultCode = jsonObject.get("code").getAsInt();
             if (resultCode == 0) {
                 JsonObject dataJson = jsonObject.get("data").getAsJsonObject();
-                //logger.debug(dataJson);
                 int statusCode = dataJson.get("status").getAsInt();
                 if (statusCode == 4) {
                     logger.info("月底了，给自己充电成功啦，送的B币券没有浪费哦");
@@ -411,16 +410,40 @@ public class DailyTask {
         }
     }
 
+    /**
+     * 直播签到
+     */
+    public void doLiveCheckin() {
+        logger.info("开始直播签到");
+        JsonObject liveCheckinResponse = HttpUnit.doGet(ApiList.liveCheckin);
+        int code = liveCheckinResponse.get(statusCodeStr).getAsInt();
+        if (code == 0) {
+            JsonObject data = liveCheckinResponse.get("data").getAsJsonObject();
+            logger.info("直播签到成功，本次签到获得" + data.get("text").getAsString() + "," + data.get("specialText").getAsString());
+        } else {
+            String message = liveCheckinResponse.get("message").getAsString();
+            logger.debug(message);
+        }
+    }
+
     public void doDailyTask() {
 
         JsonObject userJson = HttpUnit.doGet(ApiList.LOGIN);
-
+        JsonObject levelInfo = userJson.getAsJsonObject("data").get("level_info").getAsJsonObject();
         //判断Cookies是否有效
-        if (userJson.get(statusCodeStr).getAsInt() == 0) {
+        if (userJson.get(statusCodeStr).getAsInt() == 0
+                && userJson.get("data").getAsJsonObject().get("isLogin").getAsBoolean()) {
+            if (levelInfo.get("current_exp").getAsInt() > levelInfo.get("current_min").getAsInt()) {
+                levelInfo.addProperty("next_exp", 28801);
+                //紧急修复，后续会通过运行时确定反序列化对象解决
+            }
+
             userInfo = new Gson().fromJson(userJson
                     .getAsJsonObject("data"), Data.class);
+
+            logger.info("登录成功");
         } else {
-            logger.debug(userJson.get("message").getAsString());
+            logger.debug(userJson);
             logger.warn("Cookies可能失效了,请仔细检查Github Secrets中DEDEUSERID SESSDATA BILI_JCT三项的值是否正确");
         }
 
@@ -428,18 +451,24 @@ public class DailyTask {
         //用户名模糊处理 @happy88888
         int s1 = uname.length() / 2, s2 = (s1 + 1) / 2;
         logger.info("用户名称: " + uname.substring(0, s2) + String.join("", Collections.nCopies(s1, "*")) + uname.substring(s1 + s2));
-        logger.info("登录成功 经验+5");
         logger.info("硬币余额: " + userInfo.getMoney());
-        logger.info("距离升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "还有: " +
-                (userInfo.getLevel_info().getNext_exp() - userInfo.getLevel_info().getCurrent_exp()) / 65 + "天");
+        if (userInfo.getLevel_info().getCurrent_level() < 6) {
+            logger.info("距离升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "还有: " +
+                    (userInfo.getLevel_info().getNext_exp() - userInfo.getLevel_info().getCurrent_exp()) / 65 + "天");
+        } else {
+            logger.info("当前等级Lv6，经验值为：" + userInfo.getLevel_info().getCurrent_exp());
+        }
+
 
         Config.getInstance().configInit();
         videoWatch();//观看视频 默认会调用分享
         doMangaSign();
         silver2coin();//银瓜子换硬币
         doCoinAdd();//投币任务
+        doLiveCheckin(); //直播签到
         doCharge();
         mangaGetVipReward(1);
+        logger.info("本日任务已全部执行完毕");
     }
 }
 
