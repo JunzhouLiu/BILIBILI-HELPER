@@ -14,6 +14,7 @@ import top.misec.pojo.userinfobean.Data;
 import top.misec.utils.HttpUnit;
 
 import java.util.*;
+import top.misec.task.ServerPush;
 
 /**
  * @author Junzhou Liu
@@ -426,7 +427,7 @@ public class DailyTask {
         }
     }
 
-    public void doDailyTask() {
+    public void doDailyTask(String serverMsgPush) {
 
         JsonObject userJson = HttpUnit.doGet(ApiList.LOGIN);
         JsonObject levelInfo = userJson.getAsJsonObject("data").get("level_info").getAsJsonObject();
@@ -439,6 +440,19 @@ public class DailyTask {
         } else {
             logger.debug(userJson);
             logger.warn("Cookies可能失效了,请仔细检查Github Secrets中DEDEUSERID SESSDATA BILI_JCT三项的值是否正确");
+          /* @happy88888
+                    *   对账号登录失效消息进行推送；
+                    *   同时建议另外推送一些消息
+           *  1.只推送操作成功消息(如：成功投x个硬币)
+           *  2.只推送失败消息(如：投币失败，原因为账号被封禁)
+                    *   同时不建议同时推送成功和失败消息
+                    *   额外信息：server酱使用"\n\n"作为换行符而不是"\n","\r\n","\r"
+           */
+            if (serverMsgPush != null && !serverMsgPush.equals("")) {
+                ServerPush serverPush = new ServerPush(serverMsgPush);
+                serverPush.pushMsg("BILIBILIHELPER账号cookie失效", "自动推送");
+            }
+            return; //@happy88888 上面登录判断失败直接返回，尽量避免用失效cookie访问敏感接口(ApiList.LOGIN是否登录都会访问不敏感)
         }
 
         String uname = userInfo.getUname();
@@ -462,6 +476,15 @@ public class DailyTask {
         doCharge();
         mangaGetVipReward(1);
         logger.info("本日任务已全部执行完毕");
+        
+        /* @happy88888
+                * 将成功推送移动到这里，避免账号失效还只推送成功消息对使用者产生误导
+         */
+        if (serverMsgPush != null && !serverMsgPush.equals("")) {
+            ServerPush serverPush = new ServerPush(serverMsgPush);
+            serverPush.pushMsg("BILIBILIHELPER已完成所有任务", "自动推送");
+        }
+        
     }
 }
 
