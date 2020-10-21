@@ -49,6 +49,9 @@ BILIBILI-HELPER
     - [运行效果](#运行效果)
   - [三、使用Windows10](#三使用windows10)
     - [步骤](#步骤-1)
+- [微信订阅通知](#微信订阅通知)
+  - [订阅执行结果](#订阅执行结果)
+  - [订阅版本更新](#订阅版本更新)
 - [快速更新](#快速更新)
   - [关于项目更新频率](#关于项目更新频率)
   - [使用Github Actions 自动同步源仓库代码](#使用github-actions-自动同步源仓库代码)
@@ -167,6 +170,26 @@ root@iZuf642f8w148fwdcpq169Z:~# crontab -l
 2. 执行`java -jar /home/BILIBILI-HELP.jar DEDEUSERID SESSDATA BILI_JCT `
 
 ![图示](docs/IMG/powershell.png)
+
+
+# 微信订阅通知
+## 订阅执行结果
+
+1. 前往[sc.ftqq.com](http://sc.ftqq.com/3.version)创建账号，并且生成一个Key。将其增加到Github Secrets中，变量名为`SERVERPUSHKEY`，值为你创建账号获得的key,可在[查看Key](http://sc.ftqq.com/?c=code),查看你的key。
+2. 绑定微信账号，开启微信推送。[绑定微信](http://sc.ftqq.com/?c=wechat&a=bind)
+
+![图示](docs/IMG/serverpush.png)
+3. 推送效果展示
+
+![图示](docs/IMG/serverpush1.jpg)
+![图示](docs/IMG/serverpush2.jpg)
+
+
+## 订阅版本更新
+
+微信扫描以下二维码订阅版本更新通知
+
+![图示](docs/IMG/suborcode.png)
 
 
 # 快速更新

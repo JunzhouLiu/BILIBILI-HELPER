@@ -41,9 +41,10 @@ jobs:
           BILI_JCT: ${{ secrets.BILI_JCT }}
           DEDEUSERID: ${{ secrets.DEDEUSERID }}
           SESSDATA: ${{ secrets.SESSDATA }}
+          SERVERPUSHKEY: ${{ secrets.SERVERPUSHKEY }}
           TZ: Asia/Shanghai
           # 时区配置为Asia/Shanghai
         run: |
           cp src/main/resources/config.json work/src/main/resources/config.json
           cd work
-          mvn compile exec:java -Dexec.mainClass="top.misec.BiliMain" -Dexec.args="${DEDEUSERID} ${SESSDATA} ${BILI_JCT}"
+          mvn compile exec:java -Dexec.mainClass="top.misec.BiliMain" -Dexec.args="${DEDEUSERID} ${SESSDATA} ${BILI_JCT} ${SERVERPUSHKEY}"
