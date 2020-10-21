@@ -39,4 +39,5 @@ jobs:
       env:
         DOWNSTREAM_BRANCH: main
         TZ: Asia/Shanghai
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       run: git push origin $DOWNSTREAM_BRANCH
