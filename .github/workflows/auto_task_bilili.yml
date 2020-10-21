@@ -13,14 +13,18 @@ on:
     - cron: '30 10 * * *'
     # cron表达式，Actions时区是UTC时间，所以下午18点要往前推8个小时
 
-
 jobs:
   start:
-
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Clone
+        uses: actions/checkout@v2
+      - name: Clone repo from JunzhouLiu/BILIBILI-HELPER
+        uses: actions/checkout@v2
+        with:
+          repository: JunzhouLiu/BILIBILI-HELPER
+          path: work
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
@@ -39,5 +43,7 @@ jobs:
           SESSDATA: ${{ secrets.SESSDATA }}
           TZ: Asia/Shanghai
           # 时区配置为Asia/Shanghai
-        run:
+        run: |
+          cp src/main/resources/config.json work/src/main/resources/config.json
+          cd work
           mvn compile exec:java -Dexec.mainClass="top.misec.BiliMain" -Dexec.args="${DEDEUSERID} ${SESSDATA} ${BILI_JCT}"
