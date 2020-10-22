@@ -487,9 +487,9 @@ public class DailyTask {
         Config.getInstance().configInit();
         videoWatch();//观看视频 默认会调用分享
         doMangaSign();//漫画签到
+        doLiveCheckin(); //直播签到
         silver2coin();//银瓜子换硬币
         doCoinAdd();//投币任务
-        doLiveCheckin(); //直播签到
         doCharge();
         mangaGetVipReward(1);
         logger.info("本日任务已全部执行完毕");
