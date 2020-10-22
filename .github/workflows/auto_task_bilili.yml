@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '30 12 * * *'
-    # cron表达式，Actions时区是UTC时间，所以下午18点要往前推8个小时
+    # cron表达式，Actions时区是UTC时间，所以下午18点要往前推8个小时1
 
 
 jobs:
