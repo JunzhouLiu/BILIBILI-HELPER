@@ -71,7 +71,7 @@ BILIBILI-HELPER
 
 ![图示](docs/IMG/20201012001307.png)
 
-3. **点击项目 Seeting->Secrets->New Secrets 添加以下3个Secrets。** 
+3. **点击项目 Settings->Secrets->New Secrets 添加以下3个Secrets。** 
    
 | Name       | Value          |
 | ---------- | -------------- |
