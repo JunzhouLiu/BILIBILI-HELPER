@@ -111,6 +111,6 @@ public class Config {
         String configJson = LoadJsonFromResources.loadJSONFromAsset();
         Config.CONFIG = new Gson().fromJson(configJson, Config.class);
         logger.info("----Init ConfigFile Successful----");
-        logger.debug(Config.getInstance().outputConfig());
+        logger.info(Config.getInstance().outputConfig());
     }
 }

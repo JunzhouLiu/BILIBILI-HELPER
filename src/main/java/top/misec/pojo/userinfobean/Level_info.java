@@ -11,7 +11,7 @@ public class Level_info {
     private int current_level;
     private int current_min;
     private int current_exp;
-    private int next_exp;
+    private String next_exp;
 
     public void setCurrent_level(int current_level) {
         this.current_level = current_level;
@@ -37,12 +37,19 @@ public class Level_info {
         return current_exp;
     }
 
-    public void setNext_exp(int next_exp) {
+    public void setNext_exp(String next_exp) {
         this.next_exp = next_exp;
     }
 
-    public int getNext_exp() {
+    public String getNext_exp() {
         return next_exp;
     }
 
+    public int getNext_exp_asInt() {
+        if (next_exp.equals("--")) {
+            return current_exp;
+        } else {
+            return Integer.parseInt(next_exp);
+        }
+    }
 }

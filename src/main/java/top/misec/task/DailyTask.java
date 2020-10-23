@@ -9,6 +9,7 @@ import org.apache.logging.log4j.core.Logger;
 import top.misec.apiquery.ApiList;
 import top.misec.apiquery.OftenAPI;
 import top.misec.config.Config;
+import top.misec.login.ServerVerify;
 import top.misec.login.Verify;
 import top.misec.pojo.userinfobean.Data;
 import top.misec.utils.HttpUnit;
@@ -22,7 +23,7 @@ import java.util.*;
 public class DailyTask {
     static Logger logger = (Logger) LogManager.getLogger(DailyTask.class.getName());
     private final String statusCodeStr = "code";
-
+    AppendPushMsg desp = AppendPushMsg.getInstance();
     Data userInfo = null;
 
     /**
@@ -34,8 +35,11 @@ public class DailyTask {
 
         if (result.get(statusCodeStr).getAsInt() == 0) {
             logger.info("视频: av" + aid + "分享成功");
+            desp.appendDesp("视频: av" + aid + "分享成功");
         } else {
-            logger.debug("视频分享失败，原因: " + result);
+            logger.debug("视频分享失败，原因: " + result.get("message").getAsString());
+            logger.debug("开发者提示: 如果是csrf校验失败请检查BILI_JCT参数是否正确或者失效");
+            desp.appendDesp("重要:csrf校验失败请检查BILI_JCT参数是否正确或者失效");
         }
 
     }
@@ -47,8 +51,10 @@ public class DailyTask {
 
         if (result == null) {
             logger.info("哔哩哔哩漫画已经签到过了");
+            desp.appendDesp("哔哩哔哩漫画已经签到过了");
         } else {
             logger.info("完成漫画签到");
+            desp.appendDesp("完成漫画签到");
         }
     }
 
@@ -70,6 +76,7 @@ public class DailyTask {
             JsonObject jsonObject = HttpUnit.doPost(ApiList.CoinAdd, requestBody);
             if (jsonObject.get(statusCodeStr).getAsInt() == 0) {
                 logger.info("为Av" + aid + "投币成功");
+                desp.appendDesp("为Av" + aid + "投币成功");
                 return true;
             } else {
                 logger.info("投币失败" + jsonObject.get("message").getAsString());
@@ -189,6 +196,7 @@ public class DailyTask {
         }
 
         logger.info("自定义投币数为: " + setCoin + "枚," + "程序执行前已投: " + useCoin + "枚");
+        desp.appendDesp("自定义投币数为: " + setCoin + "枚," + "程序执行前已投: " + useCoin + "枚");
         int needCoins = setCoin - useCoin;
 
         //投币前硬币余额
@@ -208,6 +216,7 @@ public class DailyTask {
         }
 
         logger.info("投币前余额为 : " + beforeAddCoinBalance);
+        desp.appendDesp("投币前余额为 : " + beforeAddCoinBalance);
         /*
          * 开始投币
          * 请勿修改 max_numberOfCoins 这里多判断一次保证投币数超过5时 不执行投币操作
@@ -216,7 +225,8 @@ public class DailyTask {
         while (needCoins > 0 && needCoins <= maxNumberOfCoins) {
             String aid = regionRanking();
             addCoinOperateCount++;
-            logger.debug("正在为av" + aid + "投币");
+            logger.info("正在为av" + aid + "投币");
+            desp.appendDesp("正在为av" + aid + "投币");
             boolean flag = coinAdd(aid, 1, Config.getInstance().getSelectLike());
             if (flag) {
                 needCoins--;
@@ -225,7 +235,8 @@ public class DailyTask {
                 break;
             }
         }
-        logger.debug("投币任务完成后余额为: " + OftenAPI.getCoinBalance());
+        logger.info("投币任务完成后余额为: " + OftenAPI.getCoinBalance());
+        desp.appendDesp("投币任务完成后余额为: " + OftenAPI.getCoinBalance());
     }
 
     public void silver2coin() {
@@ -233,13 +244,16 @@ public class DailyTask {
         int responseCode = resultJson.get("code").getAsInt();
         if (responseCode == 0) {
             logger.info("银瓜子兑换硬币成功");
+            desp.appendDesp("银瓜子兑换硬币成功");
         } else {
             logger.debug("银瓜子兑换硬币失败 原因是: " + resultJson.get("msg").getAsString());
+            desp.appendDesp("银瓜子兑换硬币失败 原因是: " + resultJson.get("msg").getAsString());
         }
 
         JsonObject queryStatus = HttpUnit.doGet(ApiList.getSilver2coinStatus).get("data").getAsJsonObject();
         double silver2coinMoney = OftenAPI.getCoinBalance();
         logger.info("当前银瓜子余额: " + queryStatus.get("silver").getAsInt());
+        desp.appendDesp("当前银瓜子余额: " + queryStatus.get("silver").getAsInt());
         logger.info("兑换银瓜子后硬币余额: " + silver2coinMoney);
 
         /*
@@ -259,6 +273,7 @@ public class DailyTask {
         int responseCode = jsonObject.get(statusCodeStr).getAsInt();
         if (responseCode == 0) {
             logger.info("请求本日任务完成状态成功");
+            desp.appendDesp("请求本日任务完成状态成功");
             return jsonObject.get("data").getAsJsonObject();
         } else {
             logger.debug(jsonObject.get("message").getAsString());
@@ -278,17 +293,21 @@ public class DailyTask {
             int responseCode = resultJson.get("code").getAsInt();
             if (responseCode == 0) {
                 logger.info("av" + aid + "播放成功,已观看到第" + playedTime + "秒");
+                desp.appendDesp("av" + aid + "播放成功,已观看到第" + playedTime + "秒");
             } else {
                 logger.debug("av" + aid + "播放失败,原因: " + resultJson.get("message").getAsString());
+                desp.appendDesp("av" + aid + "播放成功,已观看到第" + playedTime + "秒");
             }
         } else {
             logger.info("本日观看视频任务已经完成了，不需要再观看视频了");
+            desp.appendDesp("本日观看视频任务已经完成了，不需要再观看视频了");
         }
 
         if (!dailyTaskStatus.get("share").getAsBoolean()) {
             dailyAvShare(aid);
         } else {
             logger.info("本日分享视频任务已经完成了，不需要再分享视频了");
+            desp.appendDesp("本日分享视频任务已经完成了，不需要再分享视频了");
         }
     }
 
@@ -300,6 +319,7 @@ public class DailyTask {
      */
     public int queryVipStatusType() {
         if (userInfo.getVipStatus() == 1) {
+            //只有VipStatus为1的时候获取到VipType才是有效的。
             return userInfo.getVipType();
         } else {
             return 0;
@@ -347,11 +367,11 @@ public class DailyTask {
             int resultCode = jsonObject.get("code").getAsInt();
             if (resultCode == 0) {
                 JsonObject dataJson = jsonObject.get("data").getAsJsonObject();
-                logger.debug(dataJson);
                 int statusCode = dataJson.get("status").getAsInt();
                 if (statusCode == 4) {
                     logger.info("月底了，给自己充电成功啦，送的B币券没有浪费哦");
                     logger.info("本次给自己充值了: " + couponBalance * 10 + "个电池哦");
+                    desp.appendDesp("本次给自己充值了: " + couponBalance * 10 + "个电池哦");
                     //获取充电留言token
                     String order_no = dataJson.get("order_no").getAsString();
                     chargeComments(order_no);
@@ -363,17 +383,17 @@ public class DailyTask {
                 logger.debug("充电失败了啊 原因: " + jsonObject);
             }
         } else {
-            logger.debug("今天是本月的第: " + day + "天，还没到给自己充电日子呢");
+            logger.info("今天是本月的第: " + day + "天，还没到给自己充电日子呢");
+            desp.appendDesp("今天是本月的第: " + day + "天，还没到给自己充电日子呢");
         }
     }
 
     public void chargeComments(String token) {
 
         String requestBody = "order_id=" + token
-                + "&&message=" + "BILIBILI-HELPER自动充电"
+                + "&message=" + "BILIBILI-HELPER自动充电"
                 + "&csrf=" + Verify.getInstance().getBiliJct();
         JsonObject jsonObject = HttpUnit.doPost(ApiList.chargeComment, requestBody);
-        logger.debug(jsonObject);
 
     }
 
@@ -390,11 +410,9 @@ public class DailyTask {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
         int day = cal.get(Calendar.DATE);
 
-        //@happy888888: query_isVip貌似不能判断会员类型，上上面的charge函数应该做userInfo.getVipType()的判断，这里不需要
-        //@JunzhouLiu: query_isVip是可以做是否VIP判断的 根据userInfo.getVipStatus() ,如果是1 ，会员有效，0会员失效。
+        //根据userInfo.getVipStatus() ,如果是1 ，会员有效，0会员失效。
         //@JunzhouLiu: fixed query_vipStatusType()现在可以查询会员状态，以及会员类型了 2020-10-15
-        if (day != 1 || queryVipStatusType() != 0) {
-            //是会员就可以领取
+        if (day != 1 || queryVipStatusType() == 0) {
             //一个月执行一次就行，跟几号没关系，由B站策略决定(有可能改领取时间)
             return;
         }
@@ -409,19 +427,48 @@ public class DailyTask {
         } else {
             logger.info("大会员领取漫读劵失败，原因为:" + jsonObject.get("msg").getAsString());
         }
-        logger.debug(jsonObject);
+    }
+
+    /**
+     * 直播签到
+     */
+    public void doLiveCheckin() {
+        logger.info("开始直播签到");
+        JsonObject liveCheckinResponse = HttpUnit.doGet(ApiList.liveCheckin);
+        int code = liveCheckinResponse.get(statusCodeStr).getAsInt();
+        if (code == 0) {
+            JsonObject data = liveCheckinResponse.get("data").getAsJsonObject();
+            logger.info("直播签到成功，本次签到获得" + data.get("text").getAsString() + "," + data.get("specialText").getAsString());
+            desp.appendDesp("直播签到成功，本次签到获得" + data.get("text").getAsString() + "," + data.get("specialText").getAsString());
+        } else {
+            String message = liveCheckinResponse.get("message").getAsString();
+            logger.debug(message);
+        }
+    }
+
+
+    public void doServerPush() {
+        if (ServerVerify.getMsgPushKey() != null) {
+            ServerPush serverPush = new ServerPush();
+            serverPush.pushMsg("BILIBILIHELPER任务简报", desp.getPushDesp());
+        } else {
+            logger.info("未配置server酱,本次执行不推送日志到微信");
+        }
+
     }
 
     public void doDailyTask() {
 
         JsonObject userJson = HttpUnit.doGet(ApiList.LOGIN);
-
+        JsonObject levelInfo = userJson.getAsJsonObject("data").get("level_info").getAsJsonObject();
         //判断Cookies是否有效
-        if (userJson.get(statusCodeStr).getAsInt() == 0) {
+        if (userJson.get(statusCodeStr).getAsInt() == 0
+                && userJson.get("data").getAsJsonObject().get("isLogin").getAsBoolean()) {
             userInfo = new Gson().fromJson(userJson
                     .getAsJsonObject("data"), Data.class);
+            logger.info("登录成功");
         } else {
-            logger.debug(userJson.get("message").getAsString());
+            logger.debug(userJson);
             logger.warn("Cookies可能失效了,请仔细检查Github Secrets中DEDEUSERID SESSDATA BILI_JCT三项的值是否正确");
         }
 
@@ -429,18 +476,24 @@ public class DailyTask {
         //用户名模糊处理 @happy88888
         int s1 = uname.length() / 2, s2 = (s1 + 1) / 2;
         logger.info("用户名称: " + uname.substring(0, s2) + String.join("", Collections.nCopies(s1, "*")) + uname.substring(s1 + s2));
-        logger.info("登录成功 经验+5");
         logger.info("硬币余额: " + userInfo.getMoney());
-        logger.info("距离升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "还有: " +
-                (userInfo.getLevel_info().getNext_exp() - userInfo.getLevel_info().getCurrent_exp()) / 65 + "天");
+        if (userInfo.getLevel_info().getCurrent_level() < 6) {
+            logger.info("距离升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "还有: " +
+                    (userInfo.getLevel_info().getNext_exp_asInt() - userInfo.getLevel_info().getCurrent_exp()) / 65 + "天");
+        } else {
+            logger.info("当前等级Lv6，经验值为：" + userInfo.getLevel_info().getCurrent_exp());
+        }
 
         Config.getInstance().configInit();
         videoWatch();//观看视频 默认会调用分享
-        doMangaSign();
+        doMangaSign();//漫画签到
         silver2coin();//银瓜子换硬币
         doCoinAdd();//投币任务
+        doLiveCheckin(); //直播签到
         doCharge();
         mangaGetVipReward(1);
+        logger.info("本日任务已全部执行完毕");
+        doServerPush();
     }
 }
 
