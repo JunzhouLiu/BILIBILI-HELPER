@@ -21,12 +21,12 @@ public class AppendPushMsg {
     AppendPushMsg() {
     }
 
-    public String getPushDesp() {
+    public String getLoggerInfo() {
         return pushDesp;
     }
 
 
-    public void appendDesp(String loggerText) {
+    public void info(String loggerText) {
         pushDesp += loggerText + "%0D%0A%0D%0A";
     }
 
