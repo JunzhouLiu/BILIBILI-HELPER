@@ -23,7 +23,7 @@ import java.util.*;
 public class DailyTask {
     static Logger logger = (Logger) LogManager.getLogger(DailyTask.class.getName());
     private final String statusCodeStr = "code";
-    AppendPushMsg desp = AppendPushMsg.getInstance();
+    AppendPushMsg wechatLogger = AppendPushMsg.getInstance();
     Data userInfo = null;
 
     /**
@@ -35,11 +35,11 @@ public class DailyTask {
 
         if (result.get(statusCodeStr).getAsInt() == 0) {
             logger.info("视频: av" + aid + "分享成功");
-            desp.appendDesp("视频: av" + aid + "分享成功");
+            wechatLogger.info("视频: av" + aid + "分享成功");
         } else {
             logger.debug("视频分享失败，原因: " + result.get("message").getAsString());
             logger.debug("开发者提示: 如果是csrf校验失败请检查BILI_JCT参数是否正确或者失效");
-            desp.appendDesp("重要:csrf校验失败请检查BILI_JCT参数是否正确或者失效");
+            wechatLogger.info("重要:csrf校验失败请检查BILI_JCT参数是否正确或者失效");
         }
 
     }
@@ -51,10 +51,10 @@ public class DailyTask {
 
         if (result == null) {
             logger.info("哔哩哔哩漫画已经签到过了");
-            desp.appendDesp("哔哩哔哩漫画已经签到过了");
+            wechatLogger.info("哔哩哔哩漫画已经签到过了");
         } else {
             logger.info("完成漫画签到");
-            desp.appendDesp("完成漫画签到");
+            wechatLogger.info("完成漫画签到");
         }
     }
 
@@ -76,7 +76,7 @@ public class DailyTask {
             JsonObject jsonObject = HttpUnit.doPost(ApiList.CoinAdd, requestBody);
             if (jsonObject.get(statusCodeStr).getAsInt() == 0) {
                 logger.info("为Av" + aid + "投币成功");
-                desp.appendDesp("为Av" + aid + "投币成功");
+                wechatLogger.info("为Av" + aid + "投币成功");
                 return true;
             } else {
                 logger.info("投币失败" + jsonObject.get("message").getAsString());
@@ -196,7 +196,9 @@ public class DailyTask {
         }
 
         logger.info("自定义投币数为: " + setCoin + "枚," + "程序执行前已投: " + useCoin + "枚");
-        desp.appendDesp("自定义投币数为: " + setCoin + "枚," + "程序执行前已投: " + useCoin + "枚");
+        wechatLogger.info("自定义投币数为: " + setCoin + "枚," + "程序执行前已投: " + useCoin + "枚");
+
+        //调整投币数 设置投币数-已经投过的硬币数
         int needCoins = setCoin - useCoin;
 
         //投币前硬币余额
@@ -205,6 +207,7 @@ public class DailyTask {
 
         if (needCoins <= 0) {
             logger.info("已完成设定的投币任务，今日无需再投币了");
+            wechatLogger.info("已完成设定的投币任务，今日无需再投币了");
         } else {
             logger.info("投币数调整为: " + needCoins + "枚");
             //投币数大于余额时，按余额投
@@ -216,7 +219,7 @@ public class DailyTask {
         }
 
         logger.info("投币前余额为 : " + beforeAddCoinBalance);
-        desp.appendDesp("投币前余额为 : " + beforeAddCoinBalance);
+        wechatLogger.info("投币前余额为 : " + beforeAddCoinBalance);
         /*
          * 开始投币
          * 请勿修改 max_numberOfCoins 这里多判断一次保证投币数超过5时 不执行投币操作
@@ -226,7 +229,7 @@ public class DailyTask {
             String aid = regionRanking();
             addCoinOperateCount++;
             logger.info("正在为av" + aid + "投币");
-            desp.appendDesp("正在为av" + aid + "投币");
+            wechatLogger.info("正在为av" + aid + "投币");
             boolean flag = coinAdd(aid, 1, Config.getInstance().getSelectLike());
             if (flag) {
                 needCoins--;
@@ -236,7 +239,7 @@ public class DailyTask {
             }
         }
         logger.info("投币任务完成后余额为: " + OftenAPI.getCoinBalance());
-        desp.appendDesp("投币任务完成后余额为: " + OftenAPI.getCoinBalance());
+        wechatLogger.info("投币任务完成后余额为: " + OftenAPI.getCoinBalance());
     }
 
     public void silver2coin() {
@@ -244,16 +247,16 @@ public class DailyTask {
         int responseCode = resultJson.get("code").getAsInt();
         if (responseCode == 0) {
             logger.info("银瓜子兑换硬币成功");
-            desp.appendDesp("银瓜子兑换硬币成功");
+            wechatLogger.info("银瓜子兑换硬币成功");
         } else {
             logger.debug("银瓜子兑换硬币失败 原因是: " + resultJson.get("msg").getAsString());
-            desp.appendDesp("银瓜子兑换硬币失败 原因是: " + resultJson.get("msg").getAsString());
+            wechatLogger.info("银瓜子兑换硬币失败 原因是: " + resultJson.get("msg").getAsString());
         }
 
         JsonObject queryStatus = HttpUnit.doGet(ApiList.getSilver2coinStatus).get("data").getAsJsonObject();
         double silver2coinMoney = OftenAPI.getCoinBalance();
         logger.info("当前银瓜子余额: " + queryStatus.get("silver").getAsInt());
-        desp.appendDesp("当前银瓜子余额: " + queryStatus.get("silver").getAsInt());
+        wechatLogger.info("当前银瓜子余额: " + queryStatus.get("silver").getAsInt());
         logger.info("兑换银瓜子后硬币余额: " + silver2coinMoney);
 
         /*
@@ -273,7 +276,7 @@ public class DailyTask {
         int responseCode = jsonObject.get(statusCodeStr).getAsInt();
         if (responseCode == 0) {
             logger.info("请求本日任务完成状态成功");
-            desp.appendDesp("请求本日任务完成状态成功");
+            wechatLogger.info("请求本日任务完成状态成功");
             return jsonObject.get("data").getAsJsonObject();
         } else {
             logger.debug(jsonObject.get("message").getAsString());
@@ -293,21 +296,21 @@ public class DailyTask {
             int responseCode = resultJson.get("code").getAsInt();
             if (responseCode == 0) {
                 logger.info("av" + aid + "播放成功,已观看到第" + playedTime + "秒");
-                desp.appendDesp("av" + aid + "播放成功,已观看到第" + playedTime + "秒");
+                wechatLogger.info("av" + aid + "播放成功,已观看到第" + playedTime + "秒");
             } else {
                 logger.debug("av" + aid + "播放失败,原因: " + resultJson.get("message").getAsString());
-                desp.appendDesp("av" + aid + "播放成功,已观看到第" + playedTime + "秒");
+                wechatLogger.info("av" + aid + "播放成功,已观看到第" + playedTime + "秒");
             }
         } else {
             logger.info("本日观看视频任务已经完成了，不需要再观看视频了");
-            desp.appendDesp("本日观看视频任务已经完成了，不需要再观看视频了");
+            wechatLogger.info("本日观看视频任务已经完成了，不需要再观看视频了");
         }
 
         if (!dailyTaskStatus.get("share").getAsBoolean()) {
             dailyAvShare(aid);
         } else {
             logger.info("本日分享视频任务已经完成了，不需要再分享视频了");
-            desp.appendDesp("本日分享视频任务已经完成了，不需要再分享视频了");
+            wechatLogger.info("本日分享视频任务已经完成了，不需要再分享视频了");
         }
     }
 
@@ -347,6 +350,7 @@ public class DailyTask {
 
         if (vipType == 0 || vipType == 1) {
             logger.info("普通会员和月度大会员每月不赠送B币券，所以没法给自己充电哦");
+            wechatLogger.info("普通会员和月度大会员每月不赠送B币券，所以没法给自己充电哦");
             return;
         }
 
@@ -371,10 +375,10 @@ public class DailyTask {
                 if (statusCode == 4) {
                     logger.info("月底了，给自己充电成功啦，送的B币券没有浪费哦");
                     logger.info("本次给自己充值了: " + couponBalance * 10 + "个电池哦");
-                    desp.appendDesp("本次给自己充值了: " + couponBalance * 10 + "个电池哦");
+                    wechatLogger.info("本次给自己充值了: " + couponBalance * 10 + "个电池哦");
                     //获取充电留言token
-                    String order_no = dataJson.get("order_no").getAsString();
-                    chargeComments(order_no);
+                    String orderNo = dataJson.get("order_no").getAsString();
+                    chargeComments(orderNo);
                 } else {
                     logger.debug("充电失败了啊 原因: " + jsonObject);
                 }
@@ -384,7 +388,7 @@ public class DailyTask {
             }
         } else {
             logger.info("今天是本月的第: " + day + "天，还没到给自己充电日子呢");
-            desp.appendDesp("今天是本月的第: " + day + "天，还没到给自己充电日子呢");
+            wechatLogger.info("今天是本月的第: " + day + "天，还没到给自己充电日子呢");
         }
     }
 
@@ -394,6 +398,13 @@ public class DailyTask {
                 + "&message=" + "BILIBILI-HELPER自动充电"
                 + "&csrf=" + Verify.getInstance().getBiliJct();
         JsonObject jsonObject = HttpUnit.doPost(ApiList.chargeComment, requestBody);
+
+        if (jsonObject.get(statusCodeStr).getAsInt() == 0) {
+            logger.info("充电留言成功");
+
+        } else {
+            logger.debug(jsonObject.get("message").getAsString());
+        }
 
     }
 
@@ -439,9 +450,10 @@ public class DailyTask {
         if (code == 0) {
             JsonObject data = liveCheckinResponse.get("data").getAsJsonObject();
             logger.info("直播签到成功，本次签到获得" + data.get("text").getAsString() + "," + data.get("specialText").getAsString());
-            desp.appendDesp("直播签到成功，本次签到获得" + data.get("text").getAsString() + "," + data.get("specialText").getAsString());
+            wechatLogger.info("直播签到成功，本次签到获得" + data.get("text").getAsString() + "," + data.get("specialText").getAsString());
         } else {
             String message = liveCheckinResponse.get("message").getAsString();
+            wechatLogger.info(message);
             logger.debug(message);
         }
     }
@@ -450,7 +462,7 @@ public class DailyTask {
     public void doServerPush() {
         if (ServerVerify.getMsgPushKey() != null) {
             ServerPush serverPush = new ServerPush();
-            serverPush.pushMsg("BILIBILIHELPER任务简报", desp.getPushDesp());
+            serverPush.pushMsg("BILIBILIHELPER任务简报", wechatLogger.getLoggerInfo());
         } else {
             logger.info("未配置server酱,本次执行不推送日志到微信");
         }
@@ -460,7 +472,6 @@ public class DailyTask {
     public void doDailyTask() {
 
         JsonObject userJson = HttpUnit.doGet(ApiList.LOGIN);
-        JsonObject levelInfo = userJson.getAsJsonObject("data").get("level_info").getAsJsonObject();
         //判断Cookies是否有效
         if (userJson.get(statusCodeStr).getAsInt() == 0
                 && userJson.get("data").getAsJsonObject().get("isLogin").getAsBoolean()) {
