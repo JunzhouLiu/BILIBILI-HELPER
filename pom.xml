@@ -6,7 +6,10 @@
 
     <groupId>top.misec</groupId>
     <artifactId>BILIBILI-HELPER</artifactId>
-    <version>1.0.3</version>
+    <version>1.1.2</version>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
     <build>
         <plugins>
             <plugin>
@@ -16,7 +19,6 @@
                 <configuration>
                     <source>8</source>
                     <target>8</target>
-                    <encoding>utf8</encoding>
                 </configuration>
             </plugin>
 

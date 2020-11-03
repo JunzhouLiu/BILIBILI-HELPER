@@ -22,9 +22,9 @@ import java.io.IOException;
  * @author Junzhou Liu
  * @create 2020/10/11 4:03
  */
-public class HttpUnit {
+public class HttpUtil {
 
-    static Logger logger = (Logger) LogManager.getLogger(HttpUnit.class.getName());
+    static Logger logger = (Logger) LogManager.getLogger(HttpUtil.class.getName());
 
     private static final String PC_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
             "(KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36 Edg/85.0.564.70";
@@ -42,7 +42,7 @@ public class HttpUnit {
 
     static Verify verify = Verify.getInstance();
 
-    HttpUnit() {
+    HttpUtil() {
 
     }
 
