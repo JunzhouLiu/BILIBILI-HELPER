@@ -462,7 +462,8 @@ public class DailyTask {
     public void doServerPush() {
         if (ServerVerify.getFTKEY() != null) {
             ServerPush serverPush = new ServerPush();
-            serverPush.pushMsg("BILIBILIHELPER任务简报", wechatLogger.getLoggerInfo());
+            serverPush.pushMsg(wechatLogger.getLoggerInfo());
+//            serverPush.pushMsg("BILIBILIHELPER任务简报", wechatLogger.getLoggerInfo());
         } else {
             logger.info("未配置server酱,本次执行不推送日志到微信");
         }
