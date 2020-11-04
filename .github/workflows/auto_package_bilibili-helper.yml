@@ -77,6 +77,3 @@ jobs:
           asset_path: ./BILIBILI-HELPER v${{steps.tag_latest.outputs.value}}.zip
           asset_name: BILIBILI-HELPER-v${{steps.tag_latest.outputs.value}}.zip
           asset_content_type: application/zip
-      - name: PushBear
-        run: |
-          curl "https://pushbear.ftqq.com/sub?sendkey=${{secrets.PUSHBEARKEY }}\&text=BILIBILI-HELPER%e5%8f%91%e5%b8%83%e6%96%b0%e7%89%88%e6%9c%ac%e4%ba%86v${{steps.tag_latest.outputs.value}}\&desp=https://github.com/JunzhouLiu/BILIBILI-HELPER${{steps.description.outputs.content}}"|| exit 0

@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import top.misec.apiquery.ApiList;
 import top.misec.login.ServerVerify;
-import top.misec.utils.HttpUnit;
+import top.misec.utils.HttpUtil;
 
 /**
  * @author Junzhou Liu
@@ -17,13 +17,13 @@ public class ServerPush {
 
     public void pushMsg(String text, String desp) {
 
-        String url = ApiList.ServerPush + ServerVerify.getMsgPushKey() + ".send";
+        String url = ApiList.ServerPush + ServerVerify.getFTKEY() + ".send";
 
         String pushBody = "text=" + text + "&desp=" + desp;
 
-        JsonObject jsonObject = HttpUnit.doPost(url, pushBody);
+        JsonObject jsonObject = HttpUtil.doPost(url, pushBody);
 
-        if (jsonObject.get("errmsg").getAsString().equals("success")) {
+        if ("success".equals(jsonObject.get("errmsg").getAsString())) {
             logger.info("任务状态推送成功");
         } else {
             logger.debug(jsonObject);
