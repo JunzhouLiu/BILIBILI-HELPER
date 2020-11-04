@@ -5,7 +5,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import top.misec.apiquery.ApiList;
 import top.misec.login.ServerVerify;
+import top.misec.login.TelegramBotVerify;
 import top.misec.utils.HttpUtil;
+
+import java.io.IOException;
+import java.net.URLEncoder;
 
 /**
  * @author Junzhou Liu
@@ -27,6 +31,19 @@ public class ServerPush {
             logger.info("任务状态推送成功");
         } else {
             logger.debug(jsonObject);
+        }
+    }
+
+    public void pushMsg(String text){
+        String url = null;
+        try {
+            url = ApiList.TelegramBotPush + "bot" + TelegramBotVerify.getBOT_TOKEN() + "/sendMessage" +
+                    "?parse_mode=Markdown" +
+                    "&chat_id=" + TelegramBotVerify.getUSER_ID() +
+                    "&text=" + URLEncoder.encode(text.replace("%0D%0A%0D%0A","\n"), "utf-8");
+            HttpUtil.doGet(url);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

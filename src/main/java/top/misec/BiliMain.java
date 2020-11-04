@@ -3,6 +3,7 @@ package top.misec;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import top.misec.login.ServerVerify;
+import top.misec.login.TelegramBotVerify;
 import top.misec.login.Verify;
 import top.misec.task.DailyTask;
 
@@ -24,8 +25,11 @@ public class BiliMain {
         //读取环境变量
         Verify.verifyInit(args[0], args[1], args[2]);
 
-        if (args.length > 3) {
+        if(args.length > 3){
             ServerVerify.verifyInit(args[3]);
+            if (args.length > 4){
+                TelegramBotVerify.verifyInit(args[4], args[5]);
+            }
         }
 
 
