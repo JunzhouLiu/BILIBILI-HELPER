@@ -95,13 +95,13 @@ public class Config {
         outputConfig += numberOfCoins;
 
         if (selectLike == 1) {
-            outputConfig += " 投币时是否点赞: " + "是";
+            outputConfig += " \n投币时是否点赞: " + "是";
         } else {
-            outputConfig += " 投币时是否点赞: " + "否";
+            outputConfig += " \n投币时是否点赞: " + "否";
         }
 
 
-        return outputConfig + " 执行app客户端操作的系统是: " + devicePlatform;
+        return outputConfig + " \n执行app客户端操作的系统是: " + devicePlatform;
     }
 
     /**
