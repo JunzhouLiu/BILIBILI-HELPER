@@ -46,14 +46,7 @@ public class ServerPush {
                     "?parse_mode=Markdown" +
                     "&chat_id=" + TelegramBotVerify.getUSER_ID() +
                     "&text=" + URLEncoder.encode(text.replace("%0D%0A%0D%0A","\n"), "utf-8");
-            System.out.println(url);
-            JsonObject jsonObject = HttpUtil.doGet(url);
-
-            if ("success".equals(jsonObject.get("errmsg").getAsString())) {
-                logger.info("任务状态推送成功");
-            } else {
-                logger.debug(jsonObject);
-            }
+            HttpUtil.doGet(url);
         } catch (IOException e) {
             e.printStackTrace();
         }
