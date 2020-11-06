@@ -18,7 +18,7 @@ public class BiliMain {
     public static void main(String[] args) {
 
         if (args.length < 3) {
-            logger.info("-----任务启动失败-----");
+            logger.info("任务启动失败");
             logger.warn("Cooikes参数缺失，请检查是否在Github Secrets中配置Cooikes参数");
         }
         //读取环境变量
@@ -30,7 +30,7 @@ public class BiliMain {
 
 
         //每日任务65经验
-        logger.debug("-----任务启动-----");
+        logger.debug("任务启动中");
         DailyTask dailyTask = new DailyTask();
         dailyTask.doDailyTask();
     }

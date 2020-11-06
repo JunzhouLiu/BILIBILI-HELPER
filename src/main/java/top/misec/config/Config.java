@@ -3,7 +3,7 @@ package top.misec.config;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
-import top.misec.utils.LoadJsonFromResources;
+import top.misec.utils.LoadFileResource;
 
 /**
  * Auto-generated: 2020-10-13 17:10:40
@@ -108,9 +108,9 @@ public class Config {
      * 读取配置文件 src/main/resources/config.json
      */
     public void configInit() {
-        String configJson = LoadJsonFromResources.loadJSONFromAsset();
+        String configJson = LoadFileResource.loadConfigJsonFromAsset();
         Config.CONFIG = new Gson().fromJson(configJson, Config.class);
-        logger.info("----Init ConfigFile Successful----");
+        logger.info("读取配置文件成功");
         logger.info(Config.getInstance().outputConfig());
     }
 }
