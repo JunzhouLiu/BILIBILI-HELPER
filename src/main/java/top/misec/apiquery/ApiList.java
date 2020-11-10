@@ -20,6 +20,8 @@ public class ApiList {
      */
     public static String needCoin = "https://www.bilibili.com/plus/account/exp.php";
 
+    public static String needCoinNew = "https://api.bilibili.com/x/web-interface/coin/today/exp";
+
     /**
      * 硬币换银瓜子
      */

@@ -31,7 +31,8 @@ BILIBILI-HELPER
 * [x] 大会员月底使用快到期的 B币券，给自己充电，一点也不会浪费哦，默认开启。*【可配置】*
 * [x] 大会员月初 1 号自动领取每月 5 张 B币券 和福利。
 * [x] 每日哔哩哔哩直播自动签到，领取签到奖励。*【直播你可以不看，但是奖励咱们一定要领】*
-
+* [x] 通过server酱推送执行结果到微信。
+* [x] Linux用户支持自定义配置了。
 ......
 
 [点击快速开始使用](#快速开始使用)
@@ -57,15 +58,14 @@ BILIBILI-HELPER
   - [关于项目更新频率](#关于项目更新频率)
   - [使用 Github Actions 自动同步源仓库代码](#使用-github-actions-自动同步源仓库代码)
   - [手动拉取最新代码](#手动拉取最新代码)
-- [常见问题](#常见问题)
-  - [关于 Action 定时任务不执行的问题](#关于-action-定时任务不执行的问题)
+- [常见问题解答](#常见问题解答)
 - [API 参考列表](#api-参考列表)
 
 # 使用说明
 
 ## 一、Actions 定时任务（推荐）
 
-1. **fork 本项目**
+1. **Fork 本项目**
 2. **获取 Bilibili Cookies**
 - 浏览器打开并登录 [bilibili 网站](https://www.bilibili.com/)
 - 按 F12 打开 「开发者工具」 找到 应用程序/Application -> 存储 -> Cookies
@@ -85,7 +85,7 @@ BILIBILI-HELPER
 
 4. **开启 Actions 并触发每日自动执行**
 
-**Github Actions 默认处于关闭状态，还大家请手动开启 Actions，执行一次工作流，验证是否可以正常工作。**
+**Github Actions 默认处于关闭状态，还大家请手动开启 Actions ，执行一次工作流，验证是否可以正常工作。**
 
 ![图示](docs/IMG/workflow_dispatch.png)
 
@@ -142,9 +142,16 @@ BILIBILI-HELPER
 
 ### 步骤
 
-点击 [BILIBILI-HELPER/release](https://github.com/JunzhouLiu/BILIBILI-HELPER/releases)，下载已发布的版本，上传至 Liunx 服务器。
+1. 点击 [BILIBILI-HELPER/release](https://github.com/JunzhouLiu/BILIBILI-HELPER/releases)，下载已发布的版本，上传至 Liunx 服务器。
+   
+**Linux用户使用jar包时如果需要自定义配置，请[点此下载](https://github.com/JunzhouLiu/BILIBILI-HELPER/blob/main/src/main/resources/config.json)配置文件，将其到和jar包同一目录即可，执行时优先加载外部配置文件**
 
-1. `crontab -l`
+```
+BILIBILI-HELPER.jar
+config.json
+```
+
+2. `crontab -l`
 
 ```bash
 root@iZuf642f8w148fwdcpq169Z:~# crontab -l
@@ -154,7 +161,7 @@ root@iZuf642f8w148fwdcpq169Z:~# crontab -l
 0 0 1,15 * * nginx -s reload >>/var/log/cron.log 2>&1 &
 ```
 
-2. `corntab -e`，编辑 crontab 任务，退出保存即可。后面跟的三个参数为哔哩哔哩 Cookies 参数。
+3. `corntab -e`，编辑 crontab 任务，退出保存即可。后面跟的三个参数为哔哩哔哩 Cookies 参数。
 
 ```bash
 # m h  dom mon dow   command
@@ -172,8 +179,10 @@ root@iZuf642f8w148fwdcpq169Z:~# crontab -l
 ### 步骤
 
 1. 点击 [BILIBILI-HELPER/release](https://github.com/JunzhouLiu/BILIBILI-HELPER/releases)，下载已发布的版本。解压，在解压后的目录打开 `Powershell` 需要装有 Java 运行环境。
+   
+**Windows用户使用jar包时如果需要自定义配置，请[点此下载](https://github.com/JunzhouLiu/BILIBILI-HELPER/blob/main/src/main/resources/config.json)配置文件，将其到和jar包同一目录即可，执行时优先加载外部配置文件**
 
-2. 执行 `java -jar /home/BILIBILI-HELP.jar DEDEUSERID SESSDATA BILI_JCT `
+1. 执行 `java -jar /home/BILIBILI-HELP.jar DEDEUSERID SESSDATA BILI_JCT `
 
 ![图示](docs/IMG/powershell.png)
 
@@ -181,10 +190,11 @@ root@iZuf642f8w148fwdcpq169Z:~# crontab -l
 
 ## 订阅执行结果
 
-1. 前往 [sc.ftqq.com](http://sc.ftqq.com/3.version) 创建账号，并且生成一个 Key。将其增加到 Github Secrets 中，变量名为 `SERVERPUSHKEY`，值为你创建账号获得的 key，可在[查看 Key](http://sc.ftqq.com/?c=code) 查看你的 key。
-2. 绑定微信账号，开启微信推送。[绑定微信](http://sc.ftqq.com/?c=wechat&a=bind)
+1. 前往 [sc.ftqq.com](http://sc.ftqq.com/3.version) 点击登入，创建账号（建议使用 GitHub 登录）。
+2. 点击点[发送消息](http://sc.ftqq.com/?c=code) ，生成一个 Key。将其增加到 Github Secrets 中，变量名为 `SERVERPUSHKEY`
+3. [绑定微信账号](http://sc.ftqq.com/?c=wechat&a=bind) ，开启微信推送。
 ![图示](docs/IMG/serverpush.png)
-3. 推送效果展示
+4. 推送效果展示
 ![图示](docs/IMG/wechatMsgPush.png)
 
 ## 订阅版本更新
@@ -287,18 +297,10 @@ git push origin main
 
 5. 这样你就能快速的从我的仓库拉取最新的代码，并更新到你自己的仓库里了。自定义配置的同学，要注意 `config.json` 不要被我的文件覆盖了。
 
-# 常见问题
+# 常见问题解答
 
-## 关于 Action 定时任务不执行的问题
+请参阅[常见问题解答](https://github.com/JunzhouLiu/BILIBILI-HELPER/issues/4)
 
-**Fork 仓库后，GitHub 默认不自动执行 Actions 任务，请修改 `./github/trigger.json` 文件,将 `trigger` 的值改为 `1`，这样每天就会自动执行定时任务了。**
-
-```patch
-{
-- "trigger": 0
-+ "trigger": 1
-}
-```
 
 # API 参考列表
 

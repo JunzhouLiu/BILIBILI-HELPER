@@ -105,12 +105,22 @@ public class Config {
     }
 
     /**
+     * 优先从jar包同级目录读取
      * 读取配置文件 src/main/resources/config.json
      */
     public void configInit() {
-        String configJson = LoadFileResource.loadConfigJsonFromAsset();
+        String configJson = null;
+        String outConfig = LoadFileResource.loadConfigJsonFromFile();
+        if (outConfig != null) {
+            configJson = outConfig;
+            logger.info("读取外部配置文件成功");
+        } else {
+            logger.info("读取配置文件成功");
+            configJson = LoadFileResource.loadConfigJsonFromAsset();
+        }
+
         Config.CONFIG = new Gson().fromJson(configJson, Config.class);
-        logger.info("读取配置文件成功");
+
         logger.info(Config.getInstance().outputConfig());
     }
 }

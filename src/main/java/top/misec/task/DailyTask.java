@@ -56,15 +56,15 @@ public class DailyTask {
     }
 
     /**
-     * @param aid         av号
-     * @param multiply    投币数量
-     * @param select_like 是否同时点赞 1是
+     * @param aid        av号
+     * @param multiply   投币数量
+     * @param selectLike 是否同时点赞 1是
      * @return 是否投币成功
      */
-    public boolean coinAdd(String aid, int multiply, int select_like) {
+    public boolean coinAdd(String aid, int multiply, int selectLike) {
         String requestBody = "aid=" + aid
                 + "&multiply=" + multiply
-                + "&select_like=" + select_like
+                + "&select_like=" + selectLike
                 + "&cross_domain=" + "true"
                 + "&csrf=" + Verify.getInstance().getBiliJct();
 
@@ -96,10 +96,9 @@ public class DailyTask {
 
         int multiply = result.getAsJsonObject("data").get("multiply").getAsInt();
         if (multiply > 0) {
-            logger.info("已经为av" + aid + "投过" + multiply + "枚硬币啦");
+            logger.info("之前已经为av" + aid + "投过" + multiply + "枚硬币啦");
             return true;
         } else {
-            logger.info("还没有为av" + aid + " 投过硬币，开始投币");
             return false;
         }
     }
@@ -164,15 +163,14 @@ public class DailyTask {
      * @return 本日已经投了几个币
      */
     public int expConfirm() {
-        JsonObject resultJson = HttpUtil.doGet(ApiList.needCoin);
-        int getCoinExp = resultJson.get("number").getAsInt();
+        JsonObject resultJson = HttpUtil.doGet(ApiList.needCoinNew);
+        int getCoinExp = resultJson.get("data").getAsInt();
         logger.info("今日已获得投币经验: " + getCoinExp);
         return getCoinExp / 10;
     }
 
     /**
-     * 由于bilibili Api数据更新的问题，可能造成投币多投。
-     * 更换API后 已修复
+     * 投币操作
      */
     public void doCoinAdd() {
         //投币最多操作数 解决csrf校验失败时死循环的问题
@@ -436,29 +434,29 @@ public class DailyTask {
 
 
     public void doServerPush() {
-        if (ServerVerify.getFTKEY() != null) {
+        if (ServerVerify.getFtkey() != null) {
             ServerPush serverPush = new ServerPush();
-            serverPush.addOtherMsg("欢迎大家通过用户群反馈问题 " + "https://i.loli.net/2020/11/02/wiCY4JhANstkcmF.png");
             serverPush.pushMsg("BILIBILIHELPER任务简报", LoadFileResource.loadLogFile());
         } else {
             logger.info("未配置server酱,本次执行不推送日志到微信");
         }
     }
 
-    public void doDailyTask() {
-
+    public void userCheck() {
         JsonObject userJson = HttpUtil.doGet(ApiList.LOGIN);
         //判断Cookies是否有效
         if (userJson.get(statusCodeStr).getAsInt() == 0
                 && userJson.get("data").getAsJsonObject().get("isLogin").getAsBoolean()) {
             userInfo = new Gson().fromJson(userJson
                     .getAsJsonObject("data"), Data.class);
-            logger.info("登录成功");
+            logger.info("Cookies有效，登录成功");
         } else {
             logger.debug(userJson);
-            logger.warn("Cookies可能失效了,请仔细检查Github Secrets中DEDEUSERID SESSDATA BILI_JCT三项的值是否正确");
+            logger.warn("Cookies可能失效了,请仔细检查Github Secrets中DEDEUSERID SESSDATA BILI_JCT三项的值是否正确、过期");
             doServerPush();
         }
+
+        Config.getInstance().configInit();
 
         String uname = userInfo.getUname();
         //用户名模糊处理 @happy88888
@@ -466,14 +464,20 @@ public class DailyTask {
         logger.info("用户名称: " + uname.substring(0, s2) + String.join("",
                 Collections.nCopies(s1, "*")) + uname.substring(s1 + s2));
         logger.info("硬币余额: " + userInfo.getMoney());
+
+        int upgradeDay = (userInfo.getLevel_info().getNext_exp_asInt() - userInfo.getLevel_info().getCurrent_exp()) /
+                (Config.getInstance().getNumberOfCoins() * 10 + 15);
         if (userInfo.getLevel_info().getCurrent_level() < 6) {
             logger.info("距离升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "还有: " +
-                    (userInfo.getLevel_info().getNext_exp_asInt() - userInfo.getLevel_info().getCurrent_exp()) / 65 + "天");
+                    upgradeDay + "天");
         } else {
             logger.info("当前等级Lv6，经验值为：" + userInfo.getLevel_info().getCurrent_exp());
         }
+    }
 
-        Config.getInstance().configInit();
+    public void doDailyTask() {
+
+        userCheck();//检查登录是否有效
         videoWatch();//观看视频 默认会调用分享
         doMangaSign();//漫画签到
         silver2coin();//银瓜子换硬币

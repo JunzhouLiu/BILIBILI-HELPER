@@ -18,7 +18,7 @@ public class ServerPush {
 
     public void pushMsg(String text, String desp) {
         if (pushToken == null) {
-            pushToken = ServerVerify.getFTKEY();
+            pushToken = ServerVerify.getFtkey();
         }
 
         String url = ApiList.ServerPush + pushToken + ".send";
