@@ -10,7 +10,7 @@ on:
     branches: main
   workflow_dispatch:
   schedule:
-    - cron: '10 1 * * *'
+    - cron: '01 02 * * *'
     # cron表达式，Actions时区是UTC时间，所以上午9点要往前推8个小时
 
 
@@ -28,7 +28,7 @@ jobs:
       - name: Cache local Maven repository
         uses: actions/cache@v2
         with:
-          path: ~/.m2/repository
+          path: ~/.m2/repository  
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
