@@ -143,34 +143,16 @@ BILIBILI-HELPER
 
 ### 步骤
 
-1. 点击 [BILIBILI-HELPER/release](https://github.com/JunzhouLiu/BILIBILI-HELPER/releases)，下载已发布的版本，上传至 Liunx 服务器。
-   
+1. 在linux shell环境执行以下命令，并按照提示输入SESSDATA，DEDEUSERID，BILI_JCT，SCKEY四个参数
+```
+wget https://raw.githubusercontent.com/JunzhouLiu/BILIBILI-HELPER/master/setup.sh && chmod +x ./setup.sh && sudo ./setup.sh
+```
+
 **Linux用户使用jar包时如果需要自定义配置，请[点此下载](https://github.com/JunzhouLiu/BILIBILI-HELPER/blob/main/src/main/resources/config.json)配置文件，将其到和jar包同一目录即可，执行时优先加载外部配置文件**
 
 ```
 BILIBILI-HELPER.jar
 config.json
-```
-
-2. `crontab -l`
-
-```bash
-root@iZuf642f8w148fwdcpq169Z:~# crontab -l
-.......
-# m h  dom mon dow   command
-0 0 1,15 * * /home/./acme.sh-master/acme.sh --renew-all >>/var/log/cron.log 2>&1 &
-0 0 1,15 * * nginx -s reload >>/var/log/cron.log 2>&1 &
-```
-
-3. `corntab -e`，编辑 crontab 任务，退出保存即可。后面跟的三个参数为哔哩哔哩 Cookies 参数。顺序为 `DEDEUSERID` `SESSDATA` `BILI_JCT`（如需配置 server 酱，则 server 酱的 key 作为第四个参数配置即可）
-
-*如果Cookies参数中包含特殊字符，例如`%`请使用`\`转义*
-
-```bash
-# m h  dom mon dow   command
-0 0 1,15 * * /home/./acme.sh-master/acme.sh --renew-all >>/var/log/cron.log 2>&1 &
-0 0 1,15 * * nginx -s reload >>/var/log/cron.log 2>&1 &
-30 10 * * * java -jar /home/BILIBILI-HELP.jar DEDEUSERID SESSDATA BILI_JCT >>/var/log/cron.log 2>&1 &
 ```
 
 ### 运行效果
