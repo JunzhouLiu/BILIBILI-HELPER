@@ -145,7 +145,7 @@ BILIBILI-HELPER
 
 1. 在linux shell环境执行以下命令，并按照提示输入SESSDATA，DEDEUSERID，BILI_JCT，SCKEY四个参数
 ```
-wget https://raw.githubusercontent.com/JunzhouLiu/BILIBILI-HELPER/master/setup.sh && chmod +x ./setup.sh && sudo ./setup.sh
+wget https://raw.githubusercontent.com/JunzhouLiu/BILIBILI-HELPER/main/setup.sh && chmod +x ./setup.sh && sudo ./setup.sh
 ```
 
 **Linux用户使用jar包时如果需要自定义配置，请[点此下载](https://github.com/JunzhouLiu/BILIBILI-HELPER/blob/main/src/main/resources/config.json)配置文件，将其到和jar包同一目录即可，执行时优先加载外部配置文件**
