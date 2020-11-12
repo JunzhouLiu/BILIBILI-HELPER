@@ -9,6 +9,7 @@ import top.misec.utils.HttpUtil;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * @author Junzhou Liu
@@ -17,10 +18,15 @@ import java.util.Random;
 public class GetVideoId {
     private ArrayList<String> followUpVideoList;
     private ArrayList<String> rankVideoList;
+    private ArrayBlockingQueue<String> followUpVideoQueue;
 
     public GetVideoId() {
         this.followUpVideoList = queryDynamicNew();
         this.rankVideoList = regionRanking();
+        if (this.followUpVideoList.size() > 0) {
+            this.followUpVideoQueue = new ArrayBlockingQueue<>(followUpVideoList.size());
+            this.followUpVideoQueue.addAll(followUpVideoList);
+        }
     }
 
     public void updateAllVideoList() {
@@ -28,18 +34,29 @@ public class GetVideoId {
         this.rankVideoList = regionRanking();
     }
 
-
-    public String getFollowUpVideoBvid() {
-        Random random = new Random();
+    /**
+     * 从动态中获取随机bv号
+     */
+    public String getFollowUpRandomVideoBvid() {
         if (followUpVideoList.size() == 0) {
             return getRegionRankingVideoBvid();
         }
+        Random random = new Random();
         return followUpVideoList.get(random.nextInt(followUpVideoList.size()));
     }
 
+    /**
+     * 从阻塞队列中获取bv号
+     */
+    public String getFollowUpRecentVideoBvid() {
+        return followUpVideoQueue.peek() == null ? getRegionRankingVideoBvid() : followUpVideoQueue.poll();
+    }
+
+    /**
+     * 排行榜获取随机bv号
+     */
     public String getRegionRankingVideoBvid() {
         Random random = new Random();
-
         return rankVideoList.get(random.nextInt(rankVideoList.size()));
     }
 
