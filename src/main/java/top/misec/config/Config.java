@@ -48,12 +48,12 @@ public class Config {
     private int coinAddPriority;
 
     /**
-     * 硬币投给关注的UP最近发布 [0,1]
+     * 硬币投给关注的UP最近发布 [0,1] 暂不引入
      * coinAddPriority 为 1 时生效
      * 0: 忽略
      * 1: 生效
      */
-    private int coinAddToUpRecentVideo;
+    //private int coinAddToUpRecentVideo;
 
     private static Config CONFIG = new Config();
 
@@ -81,17 +81,17 @@ public class Config {
         return coinAddPriority;
     }
 
-    public void setCoinAddPriority(int coinAddPriority) {
-        this.coinAddPriority = coinAddPriority;
-    }
+//     public void setCoinAddPriority(int coinAddPriority) {
+//         this.coinAddPriority = coinAddPriority;
+//     }
 
-    public int getCoinAddToUpRecentVideo() {
-        return coinAddToUpRecentVideo;
-    }
+//     public int getCoinAddToUpRecentVideo() {
+//         return coinAddToUpRecentVideo;
+//     }
 
-    public void setCoinAddToUpRecentVideo(int coinAddToUpRecentVideo) {
-        this.coinAddToUpRecentVideo = coinAddToUpRecentVideo;
-    }
+//     public void setCoinAddToUpRecentVideo(int coinAddToUpRecentVideo) {
+//         this.coinAddToUpRecentVideo = coinAddToUpRecentVideo;
+//     }
 
     public boolean isMonthEndAutoCharge() {
         return monthEndAutoCharge;
@@ -123,11 +123,11 @@ public class Config {
         outputConfig += numberOfCoins;
 
         if (coinAddPriority == 1) {
-            if (coinAddToUpRecentVideo == 1) {
-                outputConfig += " 优先给关注的up最近更新的视频投币";
-            } else {
+           // if (coinAddToUpRecentVideo == 1) {
+                //outputConfig += " 优先给关注的up最近更新的视频投币";
+           // } else {
                 outputConfig += " 优先给关注的up投币";
-            }
+            //}
         } else {
             outputConfig += " 优先给热榜视频投币";
         }
