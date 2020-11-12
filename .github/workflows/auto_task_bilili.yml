@@ -6,8 +6,6 @@ name: AUTO_TASK_FOR_BILIBILI
 on:
   push:
     branches: main
-  pull_request:
-    branches: main
   workflow_dispatch:
   schedule:
     - cron: '10 1 * * *'
