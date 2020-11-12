@@ -43,6 +43,16 @@ public class Config {
      */
     private String devicePlatform;
 
+    public int getCoinAddPriority() {
+        return coinAddPriority;
+    }
+
+    public void setCoinAddPriority(int coinAddPriority) {
+        this.coinAddPriority = coinAddPriority;
+    }
+
+    private int coinAddPriority;
+
     public String getDevicePlatform() {
         return devicePlatform;
     }
@@ -87,12 +97,19 @@ public class Config {
                 ", watchAndShare=" + watchAndShare +
                 ", monthEndAutoCharge=" + monthEndAutoCharge +
                 ", devicePlatform='" + devicePlatform + '\'' +
+                ", coinAddPriority=" + coinAddPriority +
                 '}';
     }
 
     public String outputConfig() {
         String outputConfig = "您设置的每日投币数量为: ";
         outputConfig += numberOfCoins;
+
+        if (coinAddPriority == 1) {
+            outputConfig += " 优先给关注的up投币";
+        } else {
+            outputConfig += " 优先给热榜视频投币";
+        }
 
         if (selectLike == 1) {
             outputConfig += " 投币时是否点赞: " + "是";
