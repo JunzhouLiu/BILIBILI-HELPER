@@ -180,6 +180,7 @@ public class DailyTask {
             addCoinOperateCount++;
             boolean flag = coinAdd(bvid, 1, Config.getInstance().getSelectLike());
             if (flag) {
+                logger.debug("给视频 {} 投币成功", bvid);
                 try {
                     Random random = new Random();
                     int sleepTime = random.nextInt(1000) + 2000;

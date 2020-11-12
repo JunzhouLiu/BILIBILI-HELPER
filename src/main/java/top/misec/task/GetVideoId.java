@@ -7,9 +7,7 @@ import top.misec.apiquery.ApiList;
 import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 
