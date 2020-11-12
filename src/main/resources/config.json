@@ -3,5 +3,6 @@
   "selectLike": 0,
   "monthEndAutoCharge": true,
   "devicePlatform": "ios",
-  "coinAddPriority": 0
+  "coinAddPriority": 1,
+  "coinAddToUpRecentVideo": 1
 }

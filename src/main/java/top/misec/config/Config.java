@@ -11,8 +11,6 @@ import top.misec.utils.LoadFileResource;
  * @author Junzhou Liu
  * @create 2020/10/13 17:11
  */
-
-
 public class Config {
 
     static Logger logger = (Logger) LogManager.getLogger(Config.class.getName());
@@ -43,25 +41,31 @@ public class Config {
      */
     private String devicePlatform;
 
-    public int getCoinAddPriority() {
-        return coinAddPriority;
-    }
-
-    public void setCoinAddPriority(int coinAddPriority) {
-        this.coinAddPriority = coinAddPriority;
-    }
-
+    /**
+     * 投币优先级 [0,1]
+     * 0：优先给热榜视频投币，1：优先给关注的up投币
+     */
     private int coinAddPriority;
 
-    public String getDevicePlatform() {
-        return devicePlatform;
-    }
-
+    /**
+     * 硬币投给关注的UP最近发布 [0,1]
+     * coinAddPriority 为 1 时生效
+     * 0: 忽略
+     * 1: 生效
+     */
+    private int coinAddToUpRecentVideo;
 
     private static Config CONFIG = new Config();
 
+    private Config() {
+    }
+
     public static Config getInstance() {
         return CONFIG;
+    }
+
+    public String getDevicePlatform() {
+        return devicePlatform;
     }
 
     public int getSelectLike() {
@@ -72,9 +76,22 @@ public class Config {
         return watchAndShare;
     }
 
-    public Config() {
+
+    public int getCoinAddPriority() {
+        return coinAddPriority;
     }
 
+    public void setCoinAddPriority(int coinAddPriority) {
+        this.coinAddPriority = coinAddPriority;
+    }
+
+    public int getCoinAddToUpRecentVideo() {
+        return coinAddToUpRecentVideo;
+    }
+
+    public void setCoinAddToUpRecentVideo(int coinAddToUpRecentVideo) {
+        this.coinAddToUpRecentVideo = coinAddToUpRecentVideo;
+    }
 
     public boolean isMonthEndAutoCharge() {
         return monthEndAutoCharge;
@@ -106,7 +123,11 @@ public class Config {
         outputConfig += numberOfCoins;
 
         if (coinAddPriority == 1) {
-            outputConfig += " 优先给关注的up投币";
+            if (coinAddToUpRecentVideo == 1) {
+                outputConfig += " 优先给关注的up最近更新的视频投币";
+            } else {
+                outputConfig += " 优先给关注的up投币";
+            }
         } else {
             outputConfig += " 优先给热榜视频投币";
         }
@@ -116,7 +137,6 @@ public class Config {
         } else {
             outputConfig += " 投币时是否点赞: " + "否";
         }
-
 
         return outputConfig + " 执行app客户端操作的系统是: " + devicePlatform;
     }
