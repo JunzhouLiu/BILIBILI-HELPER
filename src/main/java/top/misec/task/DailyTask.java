@@ -131,7 +131,7 @@ public class DailyTask {
         int setCoin = Config.getInstance().getNumberOfCoins();
         //已投的硬币
         int useCoin = expConfirm();
-
+        //投币策略
         int coinAddPriority = Config.getInstance().getCoinAddPriority();
 
         if (setCoin > maxNumberOfCoins) {
@@ -167,10 +167,10 @@ public class DailyTask {
          * 最后一道安全判断，保证即使前面的判断逻辑错了，也不至于发生投币事故
          */
         while (needCoins > 0 && needCoins <= maxNumberOfCoins) {
-            String bvid = null;
+            String bvid;
 
-            if (coinAddPriority == 1 && addCoinOperateCount < 10) {
-                bvid = getVideoId.getFollowUpVideoBvid();
+            if (coinAddPriority == 1 && addCoinOperateCount < 7) {
+                bvid = getVideoId.getFollowUpRandomVideoBvid();
             } else {
                 bvid = getVideoId.getRegionRankingVideoBvid();
             }
@@ -181,7 +181,7 @@ public class DailyTask {
                 try {
                     Random random = new Random();
                     int sleepTime = random.nextInt(1000) + 2000;
-                    logger.info("投币后随机暂停" + sleepTime / 1000 + "秒");
+                    logger.info("投币后随机暂停" + sleepTime + "毫秒");
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -354,12 +354,12 @@ public class DailyTask {
     /**
      * 获取大会员漫画权益
      *
-     * @param reason_id 权益号，由https://api.bilibili.com/x/vip/privilege/my
-     *                  得到权益号数组，取值范围为数组中的整数
-     *                  为方便直接取1，为领取漫读劵，暂时不取其他的值
+     * @param reasonId 权益号，由https://api.bilibili.com/x/vip/privilege/my
+     *                 得到权益号数组，取值范围为数组中的整数
+     *                 为方便直接取1，为领取漫读劵，暂时不取其他的值
      * @return 返回领取结果和数量
      */
-    public void mangaGetVipReward(int reason_id) {
+    public void mangaGetVipReward(int reasonId) {
 
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
         int day = cal.get(Calendar.DATE);
@@ -371,7 +371,7 @@ public class DailyTask {
             return;
         }
 
-        String requestBody = "{\"reason_id\":" + reason_id + "}";
+        String requestBody = "{\"reason_id\":" + reasonId + "}";
         //注意参数构造格式为json，不知道需不需要重载下面的Post函数改请求头
         JsonObject jsonObject = HttpUtil.doPost(ApiList.mangaGetVipReward, requestBody);
         if (jsonObject.get(statusCodeStr).getAsInt() == 0) {
