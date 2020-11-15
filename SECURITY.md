@@ -1,21 +1,10 @@
 # Security Policy
 
-## Supported Versions
+## Versions History
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| Date       | Version | Supported                                                        |
+| ---------- | ------- | ---------------------------------------------------------------- |
+| 2020-11-12 | v1.1.6  | 1.支持优先投币给关注的up主投币                                   |
+| 2020-11-09 | v1.1.4  | 1.支持jar包从外部文件读取配置 </br>2.使用新api和优化升级时间提示 |
 
-## Reporting a Vulnerability
-
-Use this section to tell people how to report a vulnerability.
-
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
