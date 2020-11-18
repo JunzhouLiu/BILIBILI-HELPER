@@ -95,7 +95,7 @@ public class HttpUtil {
         } catch (ClientProtocolException e) {
             logger.error(e);
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             // 关闭资源
@@ -135,7 +135,7 @@ public class HttpUtil {
                 logger.debug(httpGetResponse.getStatusLine().toString());
             }
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             // 关闭资源

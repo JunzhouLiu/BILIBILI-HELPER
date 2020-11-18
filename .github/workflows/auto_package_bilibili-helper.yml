@@ -2,6 +2,8 @@ name: Auto_Package_BILIBILI-HELPER
 
 on:
   push:
+    branches:
+      - main
     paths:
       - ".github/release.json"
 
