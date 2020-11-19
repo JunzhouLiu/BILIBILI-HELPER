@@ -15,6 +15,11 @@ public class LoadFileResource {
 
     static Logger logger = (Logger) LogManager.getLogger(LoadFileResource.class.getName());
 
+    /**
+     * 从外部资源读取配置文件
+     *
+     * @return config
+     */
     public static String loadConfigJsonFromFile() {
         String config = null;
         try {
@@ -35,7 +40,7 @@ public class LoadFileResource {
     }
 
     /**
-     * 读取配置文件信息
+     * 从resource读取配置文件
      *
      * @return configJson 返回配置文件json
      */
@@ -43,11 +48,13 @@ public class LoadFileResource {
         String configJson = null;
         try {
             InputStream is = LoadFileResource.class.getClassLoader().getResourceAsStream("config.json");
+            assert is != null;
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
             configJson = new String(buffer, StandardCharsets.UTF_8);
+
         } catch (IOException e) {
             e.printStackTrace();
             logger.debug(e);
