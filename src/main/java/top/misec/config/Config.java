@@ -3,6 +3,7 @@ package top.misec.config;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
+import top.misec.utils.HttpUtil;
 import top.misec.utils.LoadFileResource;
 
 /**
@@ -40,6 +41,11 @@ public class Config {
      * 0：优先给热榜视频投币，1：优先给关注的up投币
      */
     private int coinAddPriority;
+    private String userAgent;
+
+    public String getUserAgent() {
+        return userAgent;
+    }
 
     private static Config CONFIG = new Config();
 
@@ -114,12 +120,12 @@ public class Config {
             configJson = outConfig;
             logger.info("读取外部配置文件成功");
         } else {
-            logger.info("读取配置文件成功");
             configJson = LoadFileResource.loadConfigJsonFromAsset();
+            logger.info("读取配置文件成功");
         }
 
         Config.CONFIG = new Gson().fromJson(configJson, Config.class);
-
+        HttpUtil.setUserAgent(Config.getInstance().getUserAgent());
         logger.info(Config.getInstance().outputConfig());
     }
 }

@@ -115,7 +115,7 @@ public class DailyTask {
     public int expConfirm() {
         JsonObject resultJson = HttpUtil.doGet(ApiList.needCoinNew);
         int getCoinExp = resultJson.get("data").getAsInt();
-        logger.info("今日已获得投币经验: " + getCoinExp);
+        // logger.info("今日已获得投币经验: " + getCoinExp);
         return getCoinExp / 10;
     }
 
@@ -426,6 +426,7 @@ public class DailyTask {
     }
 
     public void userCheck() {
+        Config.getInstance().configInit();
         JsonObject userJson = HttpUtil.doGet(ApiList.LOGIN);
         //判断Cookies是否有效
         if (userJson.get(statusCodeStr).getAsInt() == 0
@@ -439,7 +440,6 @@ public class DailyTask {
             doServerPush();
         }
 
-        Config.getInstance().configInit();
 
         String uname = userInfo.getUname();
         //用户名模糊处理 @happy88888
