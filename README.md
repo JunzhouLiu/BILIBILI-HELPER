@@ -130,14 +130,24 @@ BILIBILI-HELPER
 
 参数示意
 
-| Key                | Value         | 说明                                                      |
-| ------------------ | ------------- | --------------------------------------------------------- |
-| numberOfCoins      | [0,5]         | 每日投币数量,默认 5                                       |
-| selectLike         | [0,1]         | 投币时是否点赞，默认 0, 0：否 1：是                       |
-| ~~watchAndShare~~  | ~~[0,1]~~     | ~~观看时是否分享~~                                        |
-| monthEndAutoCharge | [false,true]  | 年度大会员月底是否用 B币券 给自己充电，默认 `true`        |
-| devicePlatform     | [ios,android] | 手机端漫画签到时的平台，建议选择你设备的平台 ，默认 `ios` |
-| coinAddPriority    | [0,1]         | 0：优先给热榜视频投币，1：优先给关注的up投币              |
+| Key                | Value         | 说明                                                                                                          |
+| ------------------ | ------------- | ------------------------------------------------------------------------------------------------------------- |
+| numberOfCoins      | [0,5]         | 每日投币数量,默认 5                                                                                           |
+| selectLike         | [0,1]         | 投币时是否点赞，默认 0, 0：否 1：是                                                                           |
+| ~~watchAndShare~~  | ~~[0,1]~~     | ~~观看时是否分享~~                                                                                            |
+| monthEndAutoCharge | [false,true]  | 年度大会员月底是否用 B币券 给自己充电，默认 `true`                                                            |
+| devicePlatform     | [ios,android] | 手机端漫画签到时的平台，建议选择你设备的平台 ，默认 `ios`                                                     |
+| coinAddPriority    | [0,1]         | 0：优先给热榜视频投币，1：优先给关注的up投币                                                                  |
+| userAgent          | 浏览器UA      | 用户可根据部署平台配置，可根据userAgent参数列表自由选取，如果触发了HTTP/1.1 412 Precondition Failed也请修改UA |
+
+userAgent可选参数列表
+| 平台      | 浏览器         | userAgent                                                                                                                           |
+| --------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Windows10 | EDGE(chromium) | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36 Edg/86.0.622.69 |
+| Windows10 | Chrome         | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36                 |
+| masOS     | safari         | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15               |
+| macOS     | Firefox        | Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:65.0) Gecko/20100101 Firefox/65.0                                                  |
+| macOS     | Chrome         | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36            |
 
 *ps：如果尝试给关注的 up 投币十次后（保不准你关注的是年更up主），还没完成每日投币任务，则切换成热榜模式，给热榜视频投币*
 

@@ -426,6 +426,7 @@ public class DailyTask {
     }
 
     public void userCheck() {
+        Config.getInstance().configInit();
         JsonObject userJson = HttpUtil.doGet(ApiList.LOGIN);
         //判断Cookies是否有效
         if (userJson.get(statusCodeStr).getAsInt() == 0
@@ -439,7 +440,6 @@ public class DailyTask {
             doServerPush();
         }
 
-        Config.getInstance().configInit();
 
         String uname = userInfo.getUname();
         //用户名模糊处理 @happy88888
