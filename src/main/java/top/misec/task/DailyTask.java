@@ -115,8 +115,24 @@ public class DailyTask {
     public int expConfirm() {
         JsonObject resultJson = HttpUtil.doGet(ApiList.needCoinNew);
         int getCoinExp = resultJson.get("data").getAsInt();
-        logger.info("今日已获得投币经验: " + getCoinExp);
+        // logger.info("今日已获得投币经验: " + getCoinExp);
         return getCoinExp / 10;
+    }
+
+    public void calculateUpgradeDays() {
+
+        int needExp = userInfo.getLevel_info().getNext_exp_asInt()
+                - userInfo.getLevel_info().getCurrent_exp();
+        int todayExp = 15;
+        todayExp += expConfirm() * 10;
+        logger.info("今日获得的总经验值为: " + todayExp);
+
+        if (userInfo.getLevel_info().getCurrent_level() < 6) {
+            logger.info("按照当前进度，升级到升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "还需要: " +
+                    needExp / todayExp + "天");
+        } else {
+            logger.info("当前等级Lv6，经验值为：" + userInfo.getLevel_info().getCurrent_exp());
+        }
     }
 
     /**
@@ -410,6 +426,7 @@ public class DailyTask {
     }
 
     public void userCheck() {
+        Config.getInstance().configInit();
         JsonObject userJson = HttpUtil.doGet(ApiList.LOGIN);
         //判断Cookies是否有效
         if (userJson.get(statusCodeStr).getAsInt() == 0
@@ -423,7 +440,6 @@ public class DailyTask {
             doServerPush();
         }
 
-        Config.getInstance().configInit();
 
         String uname = userInfo.getUname();
         //用户名模糊处理 @happy88888
@@ -432,14 +448,6 @@ public class DailyTask {
                 Collections.nCopies(s1, "*")) + uname.substring(s1 + s2));
         logger.info("硬币余额: " + userInfo.getMoney());
 
-        int upgradeDay = (userInfo.getLevel_info().getNext_exp_asInt() - userInfo.getLevel_info().getCurrent_exp()) /
-                (Config.getInstance().getNumberOfCoins() * 10 + 15);
-        if (userInfo.getLevel_info().getCurrent_level() < 6) {
-            logger.info("距离升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "还有: " +
-                    upgradeDay + "天");
-        } else {
-            logger.info("当前等级Lv6，经验值为：" + userInfo.getLevel_info().getCurrent_exp());
-        }
     }
 
     public void doDailyTask() {
@@ -452,6 +460,7 @@ public class DailyTask {
         doCharge();
         mangaGetVipReward(1);
         logger.info("本日任务已全部执行完毕");
+        calculateUpgradeDays();
         doServerPush();
     }
 }
