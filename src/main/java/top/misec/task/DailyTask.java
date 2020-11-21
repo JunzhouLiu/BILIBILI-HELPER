@@ -12,6 +12,7 @@ import top.misec.login.Verify;
 import top.misec.pojo.userinfobean.Data;
 import top.misec.utils.HttpUtil;
 import top.misec.utils.LoadFileResource;
+import top.misec.utils.LogFormat;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -115,8 +116,23 @@ public class DailyTask {
     public int expConfirm() {
         JsonObject resultJson = HttpUtil.doGet(ApiList.needCoinNew);
         int getCoinExp = resultJson.get("data").getAsInt();
-        logger.info("今日已获得投币经验: " + getCoinExp);
         return getCoinExp / 10;
+    }
+
+    public void calculateUpgradeDays() {
+
+        int needExp = userInfo.getLevel_info().getNext_exp_asInt()
+                - userInfo.getLevel_info().getCurrent_exp();
+        int todayExp = 15;
+        todayExp += expConfirm() * 10;
+        logger.info("今日获得的总经验值为: " + todayExp);
+
+        if (userInfo.getLevel_info().getCurrent_level() < 6) {
+            logger.info("按照当前进度，升级到升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "还需要: " +
+                    needExp / todayExp + "天");
+        } else {
+            logger.info("当前等级Lv6，经验值为：" + userInfo.getLevel_info().getCurrent_exp());
+        }
     }
 
     /**
@@ -368,6 +384,7 @@ public class DailyTask {
         //@JunzhouLiu: fixed query_vipStatusType()现在可以查询会员状态，以及会员类型了 2020-10-15
         if (day != 1 || queryVipStatusType() == 0) {
             //一个月执行一次就行，跟几号没关系，由B站策略决定(有可能改领取时间)
+            logger.info("本日非执行日期");
             return;
         }
 
@@ -403,13 +420,16 @@ public class DailyTask {
     public void doServerPush() {
         if (ServerVerify.getFtkey() != null) {
             ServerPush serverPush = new ServerPush();
-            serverPush.pushMsg("BILIBILIHELPER任务简报", LoadFileResource.loadLogFile());
+            serverPush.pushMsg("BILIBILI-HELPER任务简报", LoadFileResource.loadLogFile());
         } else {
             logger.info("未配置server酱,本次执行不推送日志到微信");
         }
     }
 
     public void userCheck() {
+        LogFormat.printTime();
+        logger.debug("任务启动中");
+        Config.getInstance().configInit();
         JsonObject userJson = HttpUtil.doGet(ApiList.LOGIN);
         //判断Cookies是否有效
         if (userJson.get(statusCodeStr).getAsInt() == 0
@@ -423,7 +443,6 @@ public class DailyTask {
             doServerPush();
         }
 
-        Config.getInstance().configInit();
 
         String uname = userInfo.getUname();
         //用户名模糊处理 @happy88888
@@ -432,26 +451,42 @@ public class DailyTask {
                 Collections.nCopies(s1, "*")) + uname.substring(s1 + s2));
         logger.info("硬币余额: " + userInfo.getMoney());
 
-        int upgradeDay = (userInfo.getLevel_info().getNext_exp_asInt() - userInfo.getLevel_info().getCurrent_exp()) /
-                (Config.getInstance().getNumberOfCoins() * 10 + 15);
-        if (userInfo.getLevel_info().getCurrent_level() < 6) {
-            logger.info("距离升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "还有: " +
-                    upgradeDay + "天");
-        } else {
-            logger.info("当前等级Lv6，经验值为：" + userInfo.getLevel_info().getCurrent_exp());
-        }
     }
 
     public void doDailyTask() {
+        LogFormat.taskBegin("登录检查");
         userCheck();//检查登录是否有效
+        LogFormat.taskEnd();
+
+        LogFormat.taskBegin("观看分享视频");
         videoWatch();//观看视频 默认会调用分享
+        LogFormat.taskEnd();
+
+        LogFormat.taskBegin("漫画签到");
         doMangaSign();//漫画签到
+        LogFormat.taskEnd();
+
+        LogFormat.taskBegin("银瓜子换硬币");
         silver2coin();//银瓜子换硬币
+        LogFormat.taskEnd();
+
+        LogFormat.taskBegin("投币任务");
         doCoinAdd();//投币任务
+        LogFormat.taskEnd();
+
+        LogFormat.taskBegin("直播每日签到");
         doLiveCheckin(); //直播签到
+        LogFormat.taskEnd();
+
+        LogFormat.taskBegin("给自己充电");
         doCharge();
+        LogFormat.taskEnd();
+
+        LogFormat.taskBegin("漫画权益领取");
         mangaGetVipReward(1);
+        LogFormat.taskEnd();
         logger.info("本日任务已全部执行完毕");
+        calculateUpgradeDays();
         doServerPush();
     }
 }
