@@ -9,7 +9,7 @@ import org.apache.logging.log4j.core.Logger;
  */
 public class VersionInfo {
     static Logger logger = (Logger) LogManager.getLogger(VersionInfo.class.getName());
-    private static String version = "v1.1.7";
+    private static String version = "v1.1.8";
     private static String updateDate = "2020-11-21";
     private static String projectRepo = "https://github.com/JunzhouLiu/BILIBILI-HELPER";
 
