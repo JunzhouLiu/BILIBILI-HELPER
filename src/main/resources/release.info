@@ -1,2 +1,1 @@
-1. 增加docker版本指路链接
-2. @NatsuSai 优化任务相关代码
+1. 本版本在release压缩包中会携带config.json，自定义用户不用手动下载config文件了

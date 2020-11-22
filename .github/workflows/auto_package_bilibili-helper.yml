@@ -53,9 +53,9 @@ jobs:
         run: |
           mv -f ./target/BILIBILI-HELPER-${{steps.tag_main.outputs.value}}-jar-with-dependencies.jar BILIBILI-HELPER-v${{steps.tag_latest.outputs.value}}.jar
           zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip BILIBILI-HELPER-v${{steps.tag_latest.outputs.value}}.jar
-          zip -f BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip ./src/main/resources/config.json
-          zip -f BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip LICENSE
-          zip -f BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip README.md
+          zip -m BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip ./src/main/resources/config.json
+          zip -m BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip LICENSE
+          zip -m BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip README.md
 
       - name: Create Release
         id: create_release
