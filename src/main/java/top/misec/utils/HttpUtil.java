@@ -22,12 +22,20 @@ import java.io.IOException;
  * @author Junzhou Liu
  * @create 2020/10/11 4:03
  */
-public class HttpUnit {
+public class HttpUtil {
 
-    static Logger logger = (Logger) LogManager.getLogger(HttpUnit.class.getName());
+    static Logger logger = (Logger) LogManager.getLogger(HttpUtil.class.getName());
 
-    private static final String PC_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
+    private static String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
             "(KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36 Edg/85.0.564.70";
+
+    public static String getUserAgent() {
+        return userAgent;
+    }
+
+    public static void setUserAgent(String userAgent) {
+        HttpUtil.userAgent = userAgent;
+    }
 
     /**
      * 设置配置请求参数
@@ -42,7 +50,7 @@ public class HttpUnit {
 
     static Verify verify = Verify.getInstance();
 
-    HttpUnit() {
+    HttpUtil() {
 
     }
 
@@ -70,7 +78,7 @@ public class HttpUnit {
         }
         httpPost.setHeader("Referer", "https://www.bilibili.com/");
         httpPost.setHeader("Connection", "keep-alive");
-        httpPost.setHeader("User-Agent", PC_USER_AGENT);
+        httpPost.setHeader("User-Agent", userAgent);
         httpPost.setHeader("Cookie", verify.getVerify());
 
         // 封装post请求参数
@@ -95,7 +103,7 @@ public class HttpUnit {
         } catch (ClientProtocolException e) {
             logger.error(e);
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             // 关闭资源
@@ -117,7 +125,7 @@ public class HttpUnit {
             httpGet.setHeader("Content-Type", "application/json");
             httpGet.setHeader("Referer", "https://www.bilibili.com/");
             httpGet.setHeader("Connection", "keep-alive");
-            httpGet.setHeader("User-Agent", PC_USER_AGENT);
+            httpGet.setHeader("User-Agent", userAgent);
             httpGet.setHeader("Cookie", verify.getVerify());
             // 为httpGet实例设置配置
             httpGet.setConfig(REQUEST_CONFIG);
@@ -135,7 +143,7 @@ public class HttpUnit {
                 logger.debug(httpGetResponse.getStatusLine().toString());
             }
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             // 关闭资源

@@ -6,12 +6,10 @@ name: AUTO_TASK_FOR_BILIBILI
 on:
   push:
     branches: main
-  pull_request:
-    branches: main
   workflow_dispatch:
   schedule:
-    - cron: '30 10 * * *'
-    # cron表达式，Actions时区是UTC时间，所以下午18点要往前推8个小时
+    - cron: '10 1 * * *'
+    # cron表达式，Actions时区是UTC时间，所以上午9点要往前推8个小时
 
 
 jobs:
@@ -37,7 +35,8 @@ jobs:
           BILI_JCT: ${{ secrets.BILI_JCT }}
           DEDEUSERID: ${{ secrets.DEDEUSERID }}
           SESSDATA: ${{ secrets.SESSDATA }}
+          SERVERPUSHKEY: ${{ secrets.SERVERPUSHKEY }}
           TZ: Asia/Shanghai
           # 时区配置为Asia/Shanghai
         run:
-          mvn compile exec:java -Dexec.mainClass="top.misec.BiliMain" -Dexec.args="${DEDEUSERID} ${SESSDATA} ${BILI_JCT}"
+          mvn compile exec:java -Dexec.mainClass="top.misec.BiliMain" -Dexec.args="${DEDEUSERID} ${SESSDATA} ${BILI_JCT} ${SERVERPUSHKEY}"

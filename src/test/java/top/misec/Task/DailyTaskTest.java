@@ -3,6 +3,7 @@ package top.misec.task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.junit.Test;
+import top.misec.login.ServerVerify;
 import top.misec.login.Verify;
 
 /**
@@ -15,6 +16,6 @@ public class DailyTaskTest {
     @Test
     public static void main(String[] args) {
         Verify.verifyInit(args[0], args[1], args[2]);
-        //System.out.println(AvBvConvert.bv2av("BV1eZ4y1p7GZ"));
+        ServerVerify.verifyInit(args[3]);
     }
 }

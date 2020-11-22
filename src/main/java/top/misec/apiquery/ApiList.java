@@ -5,6 +5,8 @@ package top.misec.apiquery;
  * @create 2020/10/11 3:40
  */
 public class ApiList {
+
+    public static String ServerPush = "https://sc.ftqq.com/";
     public static String LOGIN = "https://api.bilibili.com/x/web-interface/nav";
     public static String Manga = "https://manga.bilibili.com/twirp/activity.v1.Activity/ClockIn";
     public static String AvShare = "https://api.bilibili.com/x/web-interface/share/add";
@@ -17,6 +19,8 @@ public class ApiList {
      * 查询获取已获取的投币经验
      */
     public static String needCoin = "https://www.bilibili.com/plus/account/exp.php";
+
+    public static String needCoinNew = "https://api.bilibili.com/x/web-interface/coin/today/exp";
 
     /**
      * 硬币换银瓜子
@@ -57,4 +61,12 @@ public class ApiList {
      * 领取大会员漫画福利
      */
     public static String mangaGetVipReward = "https://manga.bilibili.com/twirp/user.v1.User/GetVipReward";
+    /**
+     * 直播签到
+     */
+    public static String liveCheckin = "https://api.live.bilibili.com/xlive/web-ucenter/v1/sign/DoSign";
+
+    public static String queryDynamicNew = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/dynamic_new";
+
+    public static String videoView = "https://api.bilibili.com/x/web-interface/view";
 }

@@ -2,13 +2,19 @@
 <Configuration status="WARN">
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS}{GMT+8}[%t] %-5level %logger{36} - %msg%n"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss}{GMT+8} %-5level : %msg%n"/>
         </Console>
+        <RollingFile name="RollingFile" fileName="logs/daily.log" append="false"
+                     filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout pattern="%msg%n%n"/>
+            <SizeBasedTriggeringPolicy size="5 MB"/>
+        </RollingFile>
     </Appenders>
 
     <Loggers>
         <Root level="all">
-            <AppenderRef ref="Console" />
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
         </Root>
     </Loggers>
 </Configuration>
