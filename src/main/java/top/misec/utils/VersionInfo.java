@@ -9,9 +9,9 @@ import org.apache.logging.log4j.core.Logger;
  */
 public class VersionInfo {
     static Logger logger = (Logger) LogManager.getLogger(VersionInfo.class.getName());
-    private static String version = "v1.1.8";
-    private static String updateDate = "2020-11-21";
-    private static String projectRepo = "https://github.com/JunzhouLiu/BILIBILI-HELPER";
+    private static String version = "v1.1.9";
+    private static String updateDate = "2020-12-26";
+    private static String projectRepo = "还不滚回去学习！";
 
     public String getVersion() {
         return version;
@@ -28,8 +28,8 @@ public class VersionInfo {
     public static void printVersionInfo() {
         logger.info("-----版本信息-----");
         logger.info("当前版本: " + version);
-        logger.info("最后更新日期: " + updateDate);
-        logger.info("项目开源地址: " + projectRepo);
+        logger.info("考试时间为: " + updateDate);
+        logger.info("看什么看？ " + projectRepo);
         logger.info("-----版本信息-----\n");
     }
 }
