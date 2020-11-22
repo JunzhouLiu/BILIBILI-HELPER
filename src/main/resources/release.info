@@ -1,4 +1,0 @@
-1.原仓库被GitHub关闭了，新仓库地址为： https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE
-2.增加了对腾讯云函数的支持。
-3.以前投币都是从热榜获取，目前投币有一定几率会投给项目贡献者。
-4.修复日志等级，默认开启每日任务。
