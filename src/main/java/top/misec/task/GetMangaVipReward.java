@@ -15,7 +15,7 @@ import static top.misec.task.TaskInfoHolder.statusCodeStr;
 /**
  * 漫画权益领取
  *
- * @author Kurenai
+ * @author @JunzhouLiu @Kurenai @happy888888
  * @since 2020-11-22 5:48
  */
 
