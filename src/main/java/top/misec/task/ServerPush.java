@@ -8,7 +8,7 @@ import top.misec.login.ServerVerify;
 import top.misec.utils.HttpUtil;
 
 /**
- * @author Junzhou Liu
+ * @author @JunzhouLiu @Kurenai
  * @create 2020/10/21 17:39
  */
 public class ServerPush {
