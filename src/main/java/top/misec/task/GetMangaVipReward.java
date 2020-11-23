@@ -61,9 +61,7 @@ public class GetMangaVipReward implements Task {
             //@JunzhouLiu:Int比较好判断
             logger.info("大会员成功领取" + jsonObject.get("data").getAsJsonObject().get("amount").getAsInt() + "张漫读劵");
         } else {
-            logger
-
-                    .info("大会员领取漫读劵失败，原因为:" + jsonObject.get("msg").getAsString());
+            logger.info("大会员领取漫读劵失败，原因为:" + jsonObject.get("msg").getAsString());
         }
     }
 
