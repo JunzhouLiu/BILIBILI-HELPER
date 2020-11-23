@@ -1,11 +1,5 @@
 package top.misec.pojo.rewardbean;
 
-/**
- * Auto-generated: 2020-10-12 20:35:37
- *
- * @author bejson.com (i@bejson.com)
- * @website http://www.bejson.com/java2pojo/
- */
 public class JsonRootBean {
 
     private int code;

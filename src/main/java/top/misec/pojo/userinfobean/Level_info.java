@@ -46,7 +46,7 @@ public class Level_info {
     }
 
     public int getNext_exp_asInt() {
-        if (next_exp.equals("--")) {
+        if ("--".equals(next_exp)) {
             return current_exp;
         } else {
             return Integer.parseInt(next_exp);

@@ -2,8 +2,10 @@ name: Auto_Package_BILIBILI-HELPER
 
 on:
   push:
+    branches:
+      - main
     paths:
-      - ".github/release.json"
+      - "src/main/resources/release.json"
 
 jobs:
   build:
@@ -20,21 +22,21 @@ jobs:
         id: tag_main
         uses: ashley-taylor/read-json-property-action@v1.0
         with:
-          path: ./.github/release.json
+          path: ./src/main/resources/release.json
           property: tag_main
 
       - name: Read tag_latest
         id: tag_latest
         uses: ashley-taylor/read-json-property-action@v1.0
         with:
-          path: ./.github/release.json
+          path: ./src/main/resources/release.json
           property: tag_latest
 
       - name: Read description
         id: description
         uses: juliangruber/read-file-action@v1
         with:
-          path: ./.github/release.info
+          path: ./src/main/resources/release.info
 
       - name: Cache local Maven repository
         uses: actions/cache@v2
@@ -51,8 +53,10 @@ jobs:
         run: |
           mv -f ./target/BILIBILI-HELPER-${{steps.tag_main.outputs.value}}-jar-with-dependencies.jar BILIBILI-HELPER-v${{steps.tag_latest.outputs.value}}.jar
           zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip BILIBILI-HELPER-v${{steps.tag_latest.outputs.value}}.jar
-          zip -m BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip LICENSE
-          zip -m BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip README.md
+          cp ./src/main/resources/config.json ./
+          zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip config.json
+          zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip LICENSE
+          zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip README.md
 
       - name: Create Release
         id: create_release
@@ -77,6 +81,3 @@ jobs:
           asset_path: ./BILIBILI-HELPER v${{steps.tag_latest.outputs.value}}.zip
           asset_name: BILIBILI-HELPER-v${{steps.tag_latest.outputs.value}}.zip
           asset_content_type: application/zip
-      - name: PushBear
-        run: |
-          curl "https://pushbear.ftqq.com/sub?sendkey=${{secrets.PUSHBEARKEY }}\&text=BILIBILI-HELPER%e5%8f%91%e5%b8%83%e6%96%b0%e7%89%88%e6%9c%ac%e4%ba%86v${{steps.tag_latest.outputs.value}}\&desp=https://github.com/JunzhouLiu/BILIBILI-HELPER${{steps.description.outputs.content}}"|| exit 0
