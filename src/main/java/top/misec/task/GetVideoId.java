@@ -12,7 +12,7 @@ import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
- * @author Junzhou Liu
+ * @author @JunzhouLiu
  * @create 2020/11/12 13:17
  */
 public class GetVideoId {
