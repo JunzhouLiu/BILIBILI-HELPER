@@ -57,20 +57,27 @@ public class oftenAPI {
     }
 
     /**
-     * 请求关注列表更新的视频，随机返回一个bvid
+     * 请求视频title，未获取到时返回bvid
      *
-     * @return bvid
+     * @return title
      */
-
-
     public static String videoTitle(String bvid) {
-        String title = null;
-        String author = null;
+        String title;
         String urlParameter = "?bvid=" + bvid;
         JsonObject jsonObject = HttpUtil.doGet(ApiList.videoView + urlParameter);
-        author = jsonObject.getAsJsonObject("data").getAsJsonObject("owner").get("name").getAsString();
-        title = jsonObject.getAsJsonObject("data").get("title").getAsString();
-        return author + " : " + title;
+
+        if (jsonObject.get("code").getAsInt() == 0) {
+            title = jsonObject.getAsJsonObject("data").getAsJsonObject("owner").get("name").getAsString() + ": ";
+            title += jsonObject.getAsJsonObject("data").get("title").getAsString();
+            title.replace("&", "-");
+        } else {
+            title = "未能获取标题";
+            logger.info(title);
+            logger.debug(jsonObject.get("message").getAsString());
+        }
+
+        return title;
     }
+
 
 }
