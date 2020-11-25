@@ -6,20 +6,20 @@ package top.misec.login;
  */
 public class ServerVerify {
 
-    private static String MsgPushKey = null;
+    private static String FTKEY = null;
 
 
-    private final static ServerVerify SERVER_VERIFYVERIFY = new ServerVerify();
+    private final static ServerVerify SERVER_VERIFY = new ServerVerify();
 
-    public static void verifyInit(String MsgPushKey) {
-        ServerVerify.MsgPushKey = MsgPushKey;
+    public static void verifyInit(String ftKey) {
+        ServerVerify.FTKEY = ftKey;
     }
 
-    public static String getMsgPushKey() {
-        return MsgPushKey;
+    public static String getFtkey() {
+        return FTKEY;
     }
 
     public static ServerVerify getInstance() {
-        return SERVER_VERIFYVERIFY;
+        return SERVER_VERIFY;
     }
 }
