@@ -8,16 +8,20 @@ import top.misec.login.ServerVerify;
 import top.misec.utils.HttpUtil;
 
 /**
- * @author Junzhou Liu
+ * @author @JunzhouLiu @Kurenai
  * @create 2020/10/21 17:39
  */
 public class ServerPush {
     static Logger logger = (Logger) LogManager.getLogger(ServerPush.class.getName());
 
+    private String pushToken = null;
 
     public void pushMsg(String text, String desp) {
+        if (pushToken == null) {
+            pushToken = ServerVerify.getFtkey();
+        }
 
-        String url = ApiList.ServerPush + ServerVerify.getFTKEY() + ".send";
+        String url = ApiList.ServerPush + pushToken + ".send";
 
         String pushBody = "text=" + text + "&desp=" + desp;
 
@@ -28,6 +32,14 @@ public class ServerPush {
         } else {
             logger.debug(jsonObject);
         }
+    }
+
+    public void addOtherMsg(String msg) {
+        logger.info(msg);
+    }
+
+    public void setPushToken(String pushToken) {
+        this.pushToken = pushToken;
     }
 
 }
