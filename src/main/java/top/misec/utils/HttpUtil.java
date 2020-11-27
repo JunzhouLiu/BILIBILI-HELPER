@@ -3,7 +3,6 @@ package top.misec.utils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -91,19 +90,24 @@ public class HttpUtil {
             // httpClient对象执行post请求,并返回响应参数对象
             httpPostResponse = httpClient.execute(httpPost);
 
-            if (httpPostResponse != null && httpPostResponse.getStatusLine().getStatusCode() == 200) {
-                // 从响应对象中获取响应内容
-                HttpEntity entity = httpPostResponse.getEntity();
-                String result = EntityUtils.toString(entity);
-                resultJson = new JsonParser().parse(result).getAsJsonObject();
-            } else if (httpPostResponse != null) {
-                logger.debug(httpPostResponse.getStatusLine().toString());
-            }
 
-        } catch (ClientProtocolException e) {
-            logger.error(e);
-            e.printStackTrace();
+            if (httpPostResponse != null) {
+                int responseStatusCode = httpPostResponse.getStatusLine().getStatusCode();
+                if (responseStatusCode == 200) {
+                    // 从响应对象中获取响应内容
+                    HttpEntity entity = httpPostResponse.getEntity();
+                    String result = EntityUtils.toString(entity);
+                    resultJson = new JsonParser().parse(result).getAsJsonObject();
+                } else if (responseStatusCode == 412) {
+                    logger.info("出了一些问题，请在自定义配置中更换UA");
+                } else {
+                    logger.debug(httpPostResponse.getStatusLine().toString());
+                }
+            } else {
+                logger.debug("httpPostResponse null");
+            }
         } catch (Exception e) {
+            logger.error(e);
             e.printStackTrace();
         } finally {
             // 关闭资源
