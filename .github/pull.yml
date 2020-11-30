@@ -4,3 +4,6 @@ rules:                      # Array of rules
     upstream: JunzhouLiu:autopull    # Required. Must be in the same fork network.
     mergeMethod: hardreset  # Optional, one of [none, merge, squash, rebase, hardreset], Default: none.
     mergeUnstable: ture    # Optional, merge pull request even when the mergeable_state is not clean. Default: false
+- base: docs
+    upstream: baer9:docs
+    mergeMethod: hardreset
