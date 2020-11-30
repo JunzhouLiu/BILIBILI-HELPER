@@ -50,7 +50,6 @@ public class TaskInfoHolder {
     }
 
 
-
     /**
      * @return 返回会员类型
      * 0:无会员（会员过期，当前不是会员）

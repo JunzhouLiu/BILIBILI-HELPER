@@ -31,24 +31,28 @@ public class UserCheck implements Task {
     public void run() {
         Config.getInstance().configInit();
         JsonObject userJson = HttpUtil.doGet(ApiList.LOGIN);
-        //判断Cookies是否有效
-        if (userJson.get(statusCodeStr).getAsInt() == 0
-                && userJson.get("data").getAsJsonObject().get("isLogin").getAsBoolean()) {
-            userInfo = new Gson().fromJson(userJson
-                    .getAsJsonObject("data"), Data.class);
-            logger.info("Cookies有效，登录成功");
+        if (userJson != null) {
+            //判断Cookies是否有效
+            if (userJson.get(statusCodeStr).getAsInt() == 0
+                    && userJson.get("data").getAsJsonObject().get("isLogin").getAsBoolean()) {
+                userInfo = new Gson().fromJson(userJson
+                        .getAsJsonObject("data"), Data.class);
+                logger.info("Cookies有效，登录成功");
+            } else {
+                logger.debug(String.valueOf(userJson));
+                logger.warn("Cookies可能失效了,请仔细检查Github Secrets中DEDEUSERID SESSDATA BILI_JCT三项的值是否正确、过期");
+            }
+
+            String uname = userInfo.getUname();
+            //用户名模糊处理 @happy88888
+            int s1 = uname.length() / 2, s2 = (s1 + 1) / 2;
+            logger.info("用户名称: " + uname.substring(0, s2) + String.join("",
+                    Collections.nCopies(s1, "*")) + uname.substring(s1 + s2));
+            logger.info("硬币余额: " + userInfo.getMoney());
         } else {
-            logger.debug(String.valueOf(userJson));
-            logger.warn("Cookies可能失效了,请仔细检查Github Secrets中DEDEUSERID SESSDATA BILI_JCT三项的值是否正确、过期");
+            logger.info("用户信息请求失败，请结合日志上下文反馈问题，如果是412错误，请在config.json中更换UA");
         }
 
-
-        String uname = userInfo.getUname();
-        //用户名模糊处理 @happy88888
-        int s1 = uname.length() / 2, s2 = (s1 + 1) / 2;
-        logger.info("用户名称: " + uname.substring(0, s2) + String.join("",
-                Collections.nCopies(s1, "*")) + uname.substring(s1 + s2));
-        logger.info("硬币余额: " + userInfo.getMoney());
     }
 
     @Override
