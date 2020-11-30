@@ -20,6 +20,8 @@ public class ApiList {
      */
     public static String needCoin = "https://www.bilibili.com/plus/account/exp.php";
 
+    public static String needCoinNew = "https://api.bilibili.com/x/web-interface/coin/today/exp";
+
     /**
      * 硬币换银瓜子
      */
@@ -63,4 +65,8 @@ public class ApiList {
      * 直播签到
      */
     public static String liveCheckin = "https://api.live.bilibili.com/xlive/web-ucenter/v1/sign/DoSign";
+
+    public static String queryDynamicNew = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/dynamic_new";
+
+    public static String videoView = "https://api.bilibili.com/x/web-interface/view";
 }
