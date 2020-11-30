@@ -120,7 +120,7 @@ public class Config {
             configJson = outConfig;
             logger.info("读取外部配置文件成功");
         } else {
-            configJson = LoadFileResource.loadConfigJsonFromAsset();
+            configJson = LoadFileResource.loadJsonFromAsset("config.json");
             logger.info("读取配置文件成功");
         }
 

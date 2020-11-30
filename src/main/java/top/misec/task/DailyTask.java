@@ -70,7 +70,7 @@ public class DailyTask {
     private void doServerPush() {
         if (ServerVerify.getFtkey() != null) {
             ServerPush serverPush = new ServerPush();
-            serverPush.pushMsg("BILIBILI-HELPER任务简报", LoadFileResource.loadLogFile());
+            serverPush.pushMsg("BILIBILI-HELPER任务简报", LoadFileResource.loadFile("logs/daily.log"));
         } else {
             logger.info("未配置server酱,本次执行不推送日志到微信");
         }

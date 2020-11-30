@@ -69,6 +69,7 @@ public class oftenAPI {
         if (jsonObject.get("code").getAsInt() == 0) {
             title = jsonObject.getAsJsonObject("data").getAsJsonObject("owner").get("name").getAsString() + ": ";
             title += jsonObject.getAsJsonObject("data").get("title").getAsString();
+            title.replace("&", "-");
         } else {
             logger.info("未能获取标题");
             logger.debug(jsonObject.get("message").getAsString());
@@ -76,5 +77,6 @@ public class oftenAPI {
 
         return title;
     }
+
 
 }
