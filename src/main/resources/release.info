@@ -1,1 +1,1 @@
-1. 本版本在release压缩包中会携带config.json，自定义用户不用手动下载config文件。
+1. 日志增加对HTTP/1.1 412 Precondition Failed导致的空指针异常提示
