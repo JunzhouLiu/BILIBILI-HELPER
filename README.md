@@ -282,5 +282,7 @@ config.json
 - **基于本项目的docker封装项目：[SuperNG6/docker-bilbili-helper](https://github.com/SuperNG6/docker-bilbili-helper)**
 
 - **基于本项目的docker镜像：[superng6/bilbili-helper](https://hub.docker.com/r/superng6/bilbili-helper)**
-- 
+
+- **基于本项目的k8s项目：[yangyang0507/k8s-bilbili-helper](https://github.com/yangyang0507/k8s-bilbili-helper)**
+
 - **基于本项目的runer项目：[KurenaiRyu/bilibili-helper-runer](https://github.com/KurenaiRyu/bilibili-helper-runer)**
