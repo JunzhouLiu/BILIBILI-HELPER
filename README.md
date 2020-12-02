@@ -99,7 +99,7 @@ BILIBILI-HELPER
 
 ![图示](docs/IMG/workflow_dispatch.png)
 
-**Fork 仓库后，GitHub 默认不自动执行 Actions 任务，请修改 `./github/trigger.json` 文件,将 `trigger` 的值改为 `1`，这样每天就会自动执行定时任务了。**
+**Fork 仓库后，GitHub 默认不自动执行 Actions 任务，请修改 `.github/trigger.json` 文件,将 `trigger` 的值改为 `1`，这样每天就会自动执行定时任务了。**
 
 ```patch
 {
@@ -140,6 +140,7 @@ BILIBILI-HELPER
 | devicePlatform     | [ios,android] | 手机端漫画签到时的平台，建议选择你设备的平台 ，默认 `ios`                                                     |
 | coinAddPriority    | [0,1]         | 0：优先给热榜视频投币，1：优先给关注的up投币                                                                  |
 | userAgent          | 浏览器UA      | 用户可根据部署平台配置，可根据userAgent参数列表自由选取，如果触发了HTTP/1.1 412 Precondition Failed也请修改UA |
+| skipDailyTask      | [0,1]         | 是否跳过每日任务，如果需要临时关闭每日任务，此项改为1即可，开启则改为0即可                                    |
 
 userAgent可选参数列表
 | 平台      | 浏览器         | userAgent                                                                                                                           |
@@ -281,3 +282,5 @@ config.json
 - **基于本项目的docker封装项目：[SuperNG6/docker-bilbili-helper](https://github.com/SuperNG6/docker-bilbili-helper)**
 
 - **基于本项目的docker镜像：[superng6/bilbili-helper](https://hub.docker.com/r/superng6/bilbili-helper)**
+- 
+- **基于本项目的runer项目：[KurenaiRyu/bilibili-helper-runer](https://github.com/KurenaiRyu/bilibili-helper-runer)**

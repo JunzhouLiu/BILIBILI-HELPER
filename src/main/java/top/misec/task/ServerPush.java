@@ -28,9 +28,10 @@ public class ServerPush {
 
         JsonObject jsonObject = HttpUtil.doPost(url, pushBody);
 
-        if ("success".equals(jsonObject.get("errmsg").getAsString())) {
+        if (jsonObject != null && "success".equals(jsonObject.get("errmsg").getAsString())) {
             logger.info("任务状态推送成功");
         } else {
+            logger.info("任务状态推送失败");
             logger.debug(jsonObject);
         }
     }
