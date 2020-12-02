@@ -1,0 +1,5 @@
+git remote -v
+git remote add upstream https://github.com/JunzhouLiu/BILIBILI-HELPER.git
+git pull upstream main
+git push origin main
+config.json
