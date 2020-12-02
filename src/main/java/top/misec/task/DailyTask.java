@@ -22,7 +22,7 @@ public class DailyTask {
     static Logger logger = (Logger) LogManager.getLogger(DailyTask.class.getName());
 
     private final List<Task> dailyTasks =
-            Arrays.asList(new UserCheck(), new VideoWatch(), new MangaSign(), new Silver2coin(), new CoinAdd(), new LiveCheckin(), new ChargeMe(), new GetMangaVipReward());
+            Arrays.asList(new UserCheck(), new VideoWatch(), new MangaSign(), new CoinAdd(), new Silver2coin(), new LiveCheckin(), new ChargeMe(), new GetMangaVipReward());
 
     public void doDailyTask() {
         try {
