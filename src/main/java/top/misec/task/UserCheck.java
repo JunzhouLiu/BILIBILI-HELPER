@@ -29,9 +29,12 @@ public class UserCheck implements Task {
 
     @Override
     public void run() {
-        Config.getInstance().configInit();
-        JsonObject userJson = HttpUtil.doGet(ApiList.LOGIN);
-        if (userJson != null) {
+        String requestPram = "";
+        JsonObject userJson = HttpUtil.doGet(ApiList.LOGIN + requestPram);
+        if (userJson == null) {
+            logger.info("用户信息请求失败，如果是412错误，请在config.json中更换UA，412问题仅影响用户信息确认，不影响任务");
+        } else {
+            userJson = HttpUtil.doGet(ApiList.LOGIN);
             //判断Cookies是否有效
             if (userJson.get(statusCodeStr).getAsInt() == 0
                     && userJson.get("data").getAsJsonObject().get("isLogin").getAsBoolean()) {
@@ -49,8 +52,6 @@ public class UserCheck implements Task {
             logger.info("用户名称: " + uname.substring(0, s2) + String.join("",
                     Collections.nCopies(s1, "*")) + uname.substring(s1 + s2));
             logger.info("硬币余额: " + userInfo.getMoney());
-        } else {
-            logger.info("用户信息请求失败，请结合日志上下文反馈问题，如果是412错误，请在config.json中更换UA");
         }
 
     }

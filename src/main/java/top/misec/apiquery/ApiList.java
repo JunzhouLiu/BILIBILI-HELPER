@@ -52,6 +52,9 @@ public class ApiList {
      */
     public static String chargeComment = "https://api.bilibili.com/x/ugcpay/trade/elec/message";
 
+
+    public static String chargeQuery = "https://api.bilibili.com/x/ugcpay/web/v2/trade/elec/panel";
+
     /**
      * 领取大会员福利
      */
