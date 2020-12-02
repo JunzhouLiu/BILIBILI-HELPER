@@ -42,6 +42,11 @@ public class Config {
      */
     private int coinAddPriority;
     private String userAgent;
+    private int skipDailyTask;
+
+    public int getSkipDailyTask() {
+        return skipDailyTask;
+    }
 
     public String getUserAgent() {
         return userAgent;
@@ -78,15 +83,16 @@ public class Config {
         return numberOfCoins;
     }
 
-
     @Override
     public String toString() {
-        return "Config{" +
-                "numberOfCoins=" + numberOfCoins +
-                ", selectLike=" + selectLike +
-                ", monthEndAutoCharge=" + monthEndAutoCharge +
-                ", devicePlatform='" + devicePlatform + '\'' +
-                ", coinAddPriority=" + coinAddPriority +
+        return "配置信息{" +
+                "每日投币数为：" + numberOfCoins +
+                "分享时是否点赞：" + selectLike +
+                "月底是否充电：" + monthEndAutoCharge +
+                "执行app客户端操作的系统是：" + devicePlatform +
+                "投币策略：" + coinAddPriority + "\n" +
+                "UA是：" + userAgent + "\n" +
+                "是否跳过每日任务：" + skipDailyTask +
                 '}';
     }
 
@@ -126,6 +132,6 @@ public class Config {
 
         Config.CONFIG = new Gson().fromJson(configJson, Config.class);
         HttpUtil.setUserAgent(Config.getInstance().getUserAgent());
-        logger.info(Config.getInstance().outputConfig());
+        logger.info(Config.getInstance().toString());
     }
 }

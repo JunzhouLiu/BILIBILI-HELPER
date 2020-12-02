@@ -62,12 +62,11 @@ BILIBILI-HELPER
   - [四、使用 Docker](#四使用-docker)
 - [微信订阅通知](#微信订阅通知)
   - [订阅执行结果](#订阅执行结果)
-  - [订阅版本更新](#订阅版本更新)
 - [快速更新](#快速更新)
   - [使用 Github Actions 自动同步源仓库代码](#使用-github-actions-自动同步源仓库代码)
   - [手动拉取最新代码](#手动拉取最新代码)
 - [常见问题解答](#常见问题解答)
-- [捐赠/赞赏](#捐赠赞赏)
+- [免责声明](#免责声明)
 - [致谢](#致谢)
 - [API 参考列表](#api-参考列表)
 - [基于本项目的衍生项目](#基于本项目的衍生项目)
@@ -100,7 +99,7 @@ BILIBILI-HELPER
 
 ![图示](docs/IMG/workflow_dispatch.png)
 
-**Fork 仓库后，GitHub 默认不自动执行 Actions 任务，请修改 `./github/trigger.json` 文件,将 `trigger` 的值改为 `1`，这样每天就会自动执行定时任务了。**
+**Fork 仓库后，GitHub 默认不自动执行 Actions 任务，请修改 `.github/trigger.json` 文件,将 `trigger` 的值改为 `1`，这样每天就会自动执行定时任务了。**
 
 ```patch
 {
@@ -141,6 +140,7 @@ BILIBILI-HELPER
 | devicePlatform     | [ios,android] | 手机端漫画签到时的平台，建议选择你设备的平台 ，默认 `ios`                                                     |
 | coinAddPriority    | [0,1]         | 0：优先给热榜视频投币，1：优先给关注的up投币                                                                  |
 | userAgent          | 浏览器UA      | 用户可根据部署平台配置，可根据userAgent参数列表自由选取，如果触发了HTTP/1.1 412 Precondition Failed也请修改UA |
+| skipDailyTask      | [0,1]         | 是否跳过每日任务，如果需要临时关闭每日任务，此项改为1即可，开启则改为0即可                                    |
 
 userAgent可选参数列表
 | 平台      | 浏览器         | userAgent                                                                                                                           |
@@ -240,11 +240,6 @@ config.json
 4. 推送效果展示
 ![图示](docs/IMG/wechatMsgPush.png)
 
-## 订阅版本更新
-
-微信扫描以下二维码进入用户反馈群（通道推送已移除）
-
-![图示](docs/IMG/wechatGroup.jpg)
 
 # 快速更新
 
@@ -260,12 +255,17 @@ config.json
 
 请参阅[常见问题解答](https://github.com/JunzhouLiu/BILIBILI-HELPER/issues/4)
 
-# 捐赠/赞赏
-如果您觉得该项目帮助到了您，并且您乐意给予开发者一些有限支持，可通过微信、支付宝进行捐赠赞赏。
+# 免责声明
 
-如果您对我进行了赞赏，我将视其为不构成雇佣、购买关系的赞赏，稍后我将会维护一个捐赠、赞赏页面，我会视情况拿出一部分对公益午餐计划进行支持。
+1. 本工具不会记录你的任何敏感信息，也不会上传到任何服务器上。（例如用户的cookies数据，cookies数据均存在Actions Secrets中或者用户自己的设备上）
+2. 本工具不会记录任何执行过程中来自b站的数据信息，也不会上传到任何服务器上。（例如av号，bv号，用户uid等）。
+3. 本工具执行过程中产生的日志，仅会在使用者自行配置推送渠道后进行推送。日志中不包含任何用户敏感信息。
+4. 如果有人修改了本项目（或者直接使用本项目）盈利恰饭，那和我肯定没关系，我开源的目的单纯是技术分享。
+5. 如果你使用了第三方修改的，打包的本工具代码，那你可得注意了，指不定人就把你的数据上传到他自己的服务器了，这可和我没关系。（**网络安全教育普及任重而道远**）
+6. 本工具源码仅在[JunzhouLiu/BILIBILI-HELPER](https://github.com/JunzhouLiu/BILIBILI-HELPER)开源，其余的地方的代码均不是我提交的，可能是抄我的，借鉴我的，但绝对不是我发布的，出问题和我也没关系。 
+7. 我开源本工具的代码仅仅是技术分享，没有任何丝毫的盈利赚钱目的，我连赞赏都移除了（因为挂半个月压根没人给我赞赏），如果你非要给我打赏，那我就是网络乞丐，咱俩可没任何py交易啊。
+8. 本项目遵守[MIT License](https://github.com/JunzhouLiu/BILIBILI-HELPER/blob/main/LICENSE) ，请各位知悉。
 
-![Reward](docs/IMG/reward.png)
 
 # 致谢
 感谢 JetBrains 对本项目的支持。
@@ -282,3 +282,5 @@ config.json
 - **基于本项目的docker封装项目：[SuperNG6/docker-bilbili-helper](https://github.com/SuperNG6/docker-bilbili-helper)**
 
 - **基于本项目的docker镜像：[superng6/bilbili-helper](https://hub.docker.com/r/superng6/bilbili-helper)**
+- 
+- **基于本项目的runer项目：[KurenaiRyu/bilibili-helper-runer](https://github.com/KurenaiRyu/bilibili-helper-runer)**

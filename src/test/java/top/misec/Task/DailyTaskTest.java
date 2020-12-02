@@ -19,9 +19,9 @@ public class DailyTaskTest {
         Verify.verifyInit(args[0], args[1], args[2]);
         ServerVerify.verifyInit(args[3]);
 
-//        logger.info(LoadFileResource.loadJsonFromAsset("config.json"));
-//        logger.info(LoadFileResource.loadJsonFromAsset("release.json"));
         logger.info("测试");
         logger.info(LoadFileResource.loadFile("logs/daily.log"));
+//        String te="为 英梨梨゙: 【江口拓也&岛崎信长】容易寂寞的人 feat.";
+//        logger.info(te.replace("&","-"));
     }
 }
