@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import static top.misec.task.TaskInfoHolder.calculateUpgradeDays;
 import static top.misec.task.TaskInfoHolder.statusCodeStr;
@@ -24,6 +25,8 @@ public class DailyTask {
     private final List<Task> dailyTasks =
             Arrays.asList(new UserCheck(), new VideoWatch(), new MangaSign(), new CoinAdd(), new Silver2coin(), new LiveCheckin(), new ChargeMe(), new GetMangaVipReward());
 
+    private final Random random = new Random();
+
     public void doDailyTask() {
         try {
             printTime();
@@ -31,6 +34,11 @@ public class DailyTask {
             for (Task task : dailyTasks) {
                 logger.info("-----{}开始-----", task.getName());
                 task.run();
+                try {
+                    Thread.sleep(random.nextInt(10) * 60 * 1000);
+                } catch (InterruptedException e) {
+                    logger.warn("任务等待失败！");
+                }
                 logger.info("-----任务结束-----\n");
             }
             logger.info("本日任务已全部执行完毕");
