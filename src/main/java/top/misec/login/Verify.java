@@ -20,9 +20,9 @@ public class Verify {
     /**
      * Cookies信息 从浏览器获取
      *
-     * @param userId
-     * @param sessData
-     * @param biliJct
+     * @param userId   uid
+     * @param sessData sessData
+     * @param biliJct  biliJct or CSRF
      */
     public static void verifyInit(String userId, String sessData, String biliJct) {
         Verify.userId = userId;
@@ -48,6 +48,6 @@ public class Verify {
     }
 
     public String getVerify() {
-        return "\"bili_jct=" + getBiliJct() + ";SESSDATA=" + getSessData() + ";DedeUserID=" + getUserId();
+        return "bili_jct=" + getBiliJct() + ";SESSDATA=" + getSessData() + ";DedeUserID=" + getUserId() + ";";
     }
 }
