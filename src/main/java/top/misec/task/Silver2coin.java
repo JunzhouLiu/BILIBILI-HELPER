@@ -42,7 +42,9 @@ public class Silver2coin implements Task {
         /*
         兑换银瓜子后，更新userInfo中的硬币值
          */
-        userInfo.setMoney(silver2coinMoney);
+        if (userInfo != null) {
+            userInfo.setMoney(silver2coinMoney);
+        }
     }
 
     @Override

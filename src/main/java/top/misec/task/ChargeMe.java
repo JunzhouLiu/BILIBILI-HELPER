@@ -33,13 +33,12 @@ public class ChargeMe implements Task {
     public void run() {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
         int day = cal.get(Calendar.DATE);
-
-        //B币券余额
-        int couponBalance = userInfo.getWallet().getCoupon_balance();
-        //大会员类型
-        int vipType = queryVipStatusType();
         //被充电用户的userID
         String userId = Verify.getInstance().getUserId();
+        //B币券余额
+        double couponBalance = 0;
+        //大会员类型
+        int vipType = queryVipStatusType();
 
         if (day == 1 && vipType == 2) {
             oftenAPI.vipPrivilege(1);
@@ -49,6 +48,12 @@ public class ChargeMe implements Task {
         if (vipType == 0 || vipType == 1) {
             logger.info("普通会员和月度大会员每月不赠送B币券，所以没法给自己充电哦");
             return;
+        }
+        if (userInfo != null) {
+            couponBalance = userInfo.getWallet().getCoupon_balance();
+        } else {
+            JsonObject queryJson = HttpUtil.doGet(ApiList.chargeQuery + "?mid=" + userId);
+            couponBalance = queryJson.getAsJsonObject("data").getAsJsonObject("bp_wallet").get("coupon_balance").getAsDouble();
         }
 
         /*

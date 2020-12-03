@@ -23,6 +23,10 @@ public class TaskInfoHolder {
     public static GetVideoId getVideoId = new GetVideoId();
 
     public static void calculateUpgradeDays() {
+        if (userInfo == null) {
+            logger.info("未请求到用户信息，暂无法计算等级相关数据");
+            return;
+        }
 
         int needExp = userInfo.getLevel_info().getNext_exp_asInt()
                 - userInfo.getLevel_info().getCurrent_exp();
@@ -50,7 +54,6 @@ public class TaskInfoHolder {
     }
 
 
-
     /**
      * @return 返回会员类型
      * 0:无会员（会员过期，当前不是会员）
@@ -58,7 +61,7 @@ public class TaskInfoHolder {
      * 2:年会员
      */
     public static int queryVipStatusType() {
-        if (userInfo.getVipStatus() == 1) {
+        if (userInfo != null && userInfo.getVipStatus() == 1) {
             //只有VipStatus为1的时候获取到VipType才是有效的。
             return userInfo.getVipType();
         } else {

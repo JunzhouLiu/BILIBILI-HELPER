@@ -21,13 +21,13 @@ BILIBILI-HELPER
 
 **仓库地址：[JunzhouLiu/BILIBILI-HELPER](https://github.com/JunzhouLiu/BILIBILI-HELPER)**
 
-## 功能列表
-
 **本项目不会增加类似于自动转发抽奖，秒杀，下载版权受限视频等侵犯UP主/B站权益的功能，开发这个应用的目的是单纯的技术分享。下游分支开发者/使用者也请不要滥用相关功能。**
 
 **本项目欢迎其他开发者参与贡献，基于本工具的二次开发，使用其他语言重写都没有什么问题，能在技术上给你带来帮助和收获就很好**
 
 **请不要滥用相关API，让我们一起爱护B站 ❤**
+
+## 功能列表
 
 * [x] 每天上午 9 点 10 分自动开始任务。*【运行时间可自定义】*
 * [x] 哔哩哔哩漫画每日自动签到 。
@@ -45,6 +45,8 @@ BILIBILI-HELPER
 
 [点击快速开始使用](#使用说明)
 
+[点击快速查看自定义功能配置](#自定义功能配置)
+
 # 目录
 
 - [工具简介](#工具简介)
@@ -52,20 +54,19 @@ BILIBILI-HELPER
 - [目录](#目录)
 - [使用说明](#使用说明)
   - [一、Actions 方式](#一actions-方式)
-    - [配置自定义功能](#配置自定义功能)
-    - [查看运行日志](#查看运行日志)
-  - [二、使用 Linux Crontab 方式](#二使用-linux-crontab-方式)
-    - [步骤](#步骤)
+    - [查看 Actions 运行日志](#查看-actions-运行日志)
+  - [二、使用 Docker](#二使用-docker)
+  - [三、使用 Linux Crontab 方式](#三使用-linux-crontab-方式)
     - [运行效果](#运行效果)
-  - [三、使用 Windows10](#三使用-windows10)
-    - [步骤](#步骤-1)
-  - [四、使用 Docker](#四使用-docker)
+  - [四、使用 Windows10](#四使用-windows10)
+  - [自定义功能配置](#自定义功能配置)
 - [微信订阅通知](#微信订阅通知)
   - [订阅执行结果](#订阅执行结果)
 - [快速更新](#快速更新)
   - [使用 Github Actions 自动同步源仓库代码](#使用-github-actions-自动同步源仓库代码)
   - [手动拉取最新代码](#手动拉取最新代码)
-- [常见问题解答](#常见问题解答)
+  - [使用pull app](#使用pull-app)
+  - [常见问题解答](#常见问题解答)
 - [免责声明](#免责声明)
 - [致谢](#致谢)
 - [API 参考列表](#api-参考列表)
@@ -99,7 +100,7 @@ BILIBILI-HELPER
 
 ![图示](docs/IMG/workflow_dispatch.png)
 
-**Fork 仓库后，GitHub 默认不自动执行 Actions 任务，请修改 `./github/trigger.json` 文件,将 `trigger` 的值改为 `1`，这样每天就会自动执行定时任务了。**
+**Fork 仓库后，GitHub 默认不自动执行 Actions 任务，请修改 `.github/trigger.json` 文件,将 `trigger` 的值改为 `1`，这样每天就会自动执行定时任务了。**
 
 ```patch
 {
@@ -119,42 +120,14 @@ BILIBILI-HELPER
 
 本工具的 Actions 自动构建配置了缓存，平均运行时间在 20s 左右。
 
-*如果收到了 GitHub Action 的错误邮件，请检查 Cookies 是不是失效了，用户主动清除浏览器缓存，会导致 `BILI_JCT` 和 `DEDEUSERID` 失效*
+*如果收到了 GitHub Action 的错误邮件，请检查 Cookies 是不是失效了，用户修改密码、踢除设备下线，会导致 `BILI_JCT` 和 `DEDEUSERID` 失效*
 
 **请各位使用 Actions 时务必遵守Github条款。不要滥用Actions服务。**
 
 **Please be sure to abide by the Github terms when using Actions. Do not abuse the Actions service.**
 
-### 配置自定义功能
 
-**配置文件位于 `src/main/resources/config.json`**
-
-参数示意
-
-| Key                | Value         | 说明                                                                                                          |
-| ------------------ | ------------- | ------------------------------------------------------------------------------------------------------------- |
-| numberOfCoins      | [0,5]         | 每日投币数量,默认 5                                                                                           |
-| selectLike         | [0,1]         | 投币时是否点赞，默认 0, 0：否 1：是                                                                           |
-| ~~watchAndShare~~  | ~~[0,1]~~     | ~~观看时是否分享~~                                                                                            |
-| monthEndAutoCharge | [false,true]  | 年度大会员月底是否用 B币券 给自己充电，默认 `true`                                                            |
-| devicePlatform     | [ios,android] | 手机端漫画签到时的平台，建议选择你设备的平台 ，默认 `ios`                                                     |
-| coinAddPriority    | [0,1]         | 0：优先给热榜视频投币，1：优先给关注的up投币                                                                  |
-| userAgent          | 浏览器UA      | 用户可根据部署平台配置，可根据userAgent参数列表自由选取，如果触发了HTTP/1.1 412 Precondition Failed也请修改UA |
-
-userAgent可选参数列表
-| 平台      | 浏览器         | userAgent                                                                                                                           |
-| --------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| Windows10 | EDGE(chromium) | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36 Edg/86.0.622.69 |
-| Windows10 | Chrome         | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36                 |
-| masOS     | safari         | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15               |
-| macOS     | Firefox        | Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:65.0) Gecko/20100101 Firefox/65.0                                                  |
-| macOS     | Chrome         | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36            |
-
-*ps：如果尝试给关注的 up 投币十次后（保不准你关注的是年更up主），还没完成每日投币任务，则切换成热榜模式，给热榜视频投币*
-
-*投币数量代码做了处理，如果本日投币不能获得经验了，则不会投币，每天只投能获得经验的硬币。假设你设置每日投币 3 个，早上 7 点你自己投了 2 个硬币，则十点半时，程序只会投 1 个）*
-
-### 查看运行日志
+### 查看 Actions 运行日志
 
 *展开 `Build With Maven` 通过 `DEBUG` 标签快速过滤日志，查看运行状态*  
 
@@ -165,23 +138,20 @@ userAgent可选参数列表
 ![图示](docs/IMG/debug1.png)
 ![图示](docs/IMG/debug2.png)
 
-## 二、使用 Linux Crontab 方式
+## 二、使用 Docker
 
-### 步骤
+请自行参阅 [Issues/75#issuecomment-731705657](https://github.com/JunzhouLiu/BILIBILI-HELPER/issues/75#issuecomment-731705657) 和[基于本项目的衍生项目](#基于本项目的衍生项目) 。
+
+
+## 三、使用 Linux Crontab 方式
+
 
 1. 在linux shell环境执行以下命令，并按照提示输入SESSDATA，DEDEUSERID，BILI_JCT，SCKEY四个参数
 ```
 wget https://raw.githubusercontent.com/JunzhouLiu/BILIBILI-HELPER/main/setup.sh && chmod +x ./setup.sh && sudo ./setup.sh
 ```
 
-**Linux用户使用jar包时如果需要自定义配置，请[点此下载](https://github.com/JunzhouLiu/BILIBILI-HELPER/blob/main/src/main/resources/config.json)配置文件，将其到和jar包同一目录即可，执行时优先加载外部配置文件**
-
-```
-BILIBILI-HELPER.jar
-config.json
-```
-
-除此之外，也可以通过点击 [BILIBILI-HELPER/release](https://github.com/JunzhouLiu/BILIBILI-HELPER/releases)，下载已发布的版本，解压后将jar包手动上传到Linux服务器，使用crontab完成定时执行。
+除此之外，也可以通过点击 [BILIBILI-HELPER/release](https://github.com/JunzhouLiu/BILIBILI-HELPER/releases/latest)，下载已发布的版本，解压后将jar包手动上传到Linux服务器，使用crontab完成定时执行。
 
 **命令格式解释：**
 
@@ -208,25 +178,49 @@ config.json
 
 ![图示](docs/IMG/liunxImg.png)
 
-## 三、使用 Windows10
+## 四、使用 Windows10
 
-### 步骤
 
-1. 点击 [BILIBILI-HELPER/release](https://github.com/JunzhouLiu/BILIBILI-HELPER/releases)，下载已发布的版本。解压，在解压后的目录打开 `Powershell` 需要装有 Java 运行环境。
+1. 点击 [BILIBILI-HELPER/release](https://github.com/JunzhouLiu/BILIBILI-HELPER/releases/latest)，下载已发布的版本。解压，在解压后的目录打开 `Powershell` 需要装有 Java 运行环境，添加到计划任务即可。
    
-**Windows用户使用jar包时如果需要自定义配置，请[点此下载](https://github.com/JunzhouLiu/BILIBILI-HELPER/blob/main/src/main/resources/config.json)配置文件，将其到和jar包同一目录即可，执行时优先加载外部配置文件**
-
-1. 执行 `java -jar /home/BILIBILI-HELP.jar DEDEUSERID SESSDATA BILI_JCT `
+2. 执行 `java -jar /home/BILIBILI-HELP.jar DEDEUSERID SESSDATA BILI_JCT `
 
 ![图示](docs/IMG/powershell.png)
 
-## 四、使用 Docker
 
-请自行参阅 [Issues/75#issuecomment-731705657](https://github.com/JunzhouLiu/BILIBILI-HELPER/issues/75#issuecomment-731705657) 和[基于本项目的衍生项目](#基于本项目的衍生项目) 。
+## 自定义功能配置
 
-- **基于本项目的docker封装项目：[SuperNG6/docker-bilbili-helper](https://github.com/SuperNG6/docker-bilbili-helper)**
 
-- **基于本项目的docker镜像：[superng6/bilbili-helper](https://hub.docker.com/r/superng6/bilbili-helper)**
+**Actions任务配置文件位于 `src/main/resources/config.json`**
+
+**Windows/Linux 用户使用jar包时，最新的release包中包含一份`config.json`配置文件，只需将其和`BILIBILI-HELP.jar`放在同一目录即可，执行时优先加载外部配置文件**
+
+
+参数示意
+
+| Key                | Value         | 说明                                                                                                          |
+| ------------------ | ------------- | ------------------------------------------------------------------------------------------------------------- |
+| numberOfCoins      | [0,5]         | 每日投币数量,默认 5 ,为0时则不投币                                                                            |
+| selectLike         | [0,1]         | 投币时是否点赞，默认 0, 0：否 1：是                                                                           |
+| monthEndAutoCharge | [false,true]  | 年度大会员月底是否用 B币券 给自己充电，默认 `true`                                                            |
+| devicePlatform     | [ios,android] | 手机端漫画签到时的平台，建议选择你设备的平台 ，默认 `ios`                                                     |
+| coinAddPriority    | [0,1]         | 0：优先给热榜视频投币，1：优先给关注的up投币                                                                  |
+| userAgent          | 浏览器UA      | 用户可根据部署平台配置，可根据userAgent参数列表自由选取，如果触发了HTTP/1.1 412 Precondition Failed也请修改UA |
+| skipDailyTask      | [0,1]         | 是否跳过每日任务，如果需要临时关闭每日任务，此项改为1即可，开启则改为0即可                                    |
+
+userAgent可选参数列表
+| 平台      | 浏览器         | userAgent                                                                                                                           |
+| --------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Windows10 | EDGE(chromium) | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36 Edg/86.0.622.69 |
+| Windows10 | Chrome         | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36                 |
+| masOS     | safari         | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15               |
+| macOS     | Firefox        | Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:65.0) Gecko/20100101 Firefox/65.0                                                  |
+| macOS     | Chrome         | Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36            |
+
+*ps：如果尝试给关注的 up 投币十次后（保不准你关注的是年更up主），还没完成每日投币任务，则切换成热榜模式，给热榜视频投币*
+
+*投币数量代码做了处理，如果本日投币不能获得经验了，则不会投币，每天只投能获得经验的硬币。假设你设置每日投币 3 个，早上 7 点你自己投了 2 个硬币，则十点半时，程序只会投 1 个）*
+
 
 # 微信订阅通知
 
@@ -250,7 +244,11 @@ config.json
 
 参阅[Issues4 手动拉取最新代码](https://github.com/JunzhouLiu/BILIBILI-HELPER/issues/4)
 
-# 常见问题解答
+## 使用pull app
+
+参阅 [Pull APP](https://github.com/apps/pull)
+
+## 常见问题解答
 
 请参阅[常见问题解答](https://github.com/JunzhouLiu/BILIBILI-HELPER/issues/4)
 
@@ -278,6 +276,10 @@ config.json
 
 # 基于本项目的衍生项目
 
-- **基于本项目的docker封装项目：[SuperNG6/docker-bilbili-helper](https://github.com/SuperNG6/docker-bilbili-helper)**
+- **基于本项目的docker封装项目：[SuperNG6/docker-bilibili-helper](https://github.com/SuperNG6/docker-bilibili-helper)**
 
-- **基于本项目的docker镜像：[superng6/bilbili-helper](https://hub.docker.com/r/superng6/bilbili-helper)**
+- **基于本项目的docker镜像：[superng6/bilibili-helper](https://hub.docker.com/r/superng6/bilibili-helper)**
+ 
+- **基于本项目的runer项目：[KurenaiRyu/bilibili-helper-runer](https://github.com/KurenaiRyu/bilibili-helper-runer)**
+
+- **基于本项目的k8s项目：[yangyang0507/k8s-bilibili-helper](https://github.com/yangyang0507/k8s-bilibili-helper)**
