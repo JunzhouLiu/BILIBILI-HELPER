@@ -12,7 +12,7 @@ function installUnzip(){
 }
 
 function download(){
-  wget -O "/tmp/BILIBILI-HELPER.zip" "https://glare.now.sh/JunzhouLiu/BILIBILI-HELPER/BILIBILI-HELPER-v${1}.zip"
+  wget -O "/tmp/BILIBILI-HELPER.zip" "https://xudaojie-generic.pkg.coding.net/bilibili-helper/releases/BILIBILI-HELPER-latest.zip"
   mkdir "${HOME}/BILIBILI-HELPER"
   command -v unzip >/dev/null 2>&1 || installUnzip
   unzip -o "/tmp/BILIBILI-HELPER.zip" -d "${HOME}/BILIBILI-HELPER"
