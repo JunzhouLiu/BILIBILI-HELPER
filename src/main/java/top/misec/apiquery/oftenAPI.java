@@ -62,7 +62,7 @@ public class oftenAPI {
      * @return title
      */
     public static String videoTitle(String bvid) {
-        String title = bvid;
+        String title;
         String urlParameter = "?bvid=" + bvid;
         JsonObject jsonObject = HttpUtil.doGet(ApiList.videoView + urlParameter);
 
@@ -70,11 +70,13 @@ public class oftenAPI {
             title = jsonObject.getAsJsonObject("data").getAsJsonObject("owner").get("name").getAsString() + ": ";
             title += jsonObject.getAsJsonObject("data").get("title").getAsString();
         } else {
-            logger.info("未能获取标题");
+            title = "未能获取标题";
+            logger.info(title);
             logger.debug(jsonObject.get("message").getAsString());
         }
 
-        return title;
+        return title.replace("&", "-");
     }
+
 
 }
