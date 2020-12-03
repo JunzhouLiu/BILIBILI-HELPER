@@ -3,9 +3,7 @@ package top.misec.utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -18,35 +16,63 @@ public class LoadFileResource {
     static Logger logger = (Logger) LogManager.getLogger(LoadFileResource.class.getName());
 
     /**
-     * 读取配置文件信息
+     * 从外部资源读取配置文件
      *
-     * @return configJson 返回配置文件json
+     * @return config
      */
-    public static String loadConfigJsonFromAsset() {
-        String configJson = null;
+    public static String loadConfigJsonFromFile() {
+        String config = null;
         try {
-            InputStream is = LoadFileResource.class.getClassLoader().getResourceAsStream("config.json");
+            String outPath = System.getProperty("user.dir") + File.separator + "config.json" + File.separator;
+            InputStream is = new FileInputStream(outPath);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
-            configJson = new String(buffer, StandardCharsets.UTF_8);
+            config = new String(buffer, StandardCharsets.UTF_8);
+        } catch (FileNotFoundException e) {
+            logger.info("未扫描到外部配置文件，即将加载默认配置文件【此提示仅针自行部署的Linux用户，普通用户请忽略】");
         } catch (IOException e) {
             e.printStackTrace();
             logger.debug(e);
         }
-        return configJson;
+        return config;
     }
 
+
     /**
-     * 加载日志
+     * 从resource读取版本文件
      *
-     * @return 返回String类型的日志信息
+     * @param fileName 文件名
+     * @return 返回读取到文件
      */
-    public static String loadLogFile() {
+    public static String loadJsonFromAsset(String fileName) {
+        String json = null;
+        try {
+            InputStream is = LoadFileResource.class.getClassLoader().getResourceAsStream(fileName);
+            assert is != null;
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, StandardCharsets.UTF_8);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            logger.debug(e);
+        }
+        return json;
+    }
+
+
+    /**
+     * @param filePath 读入的文件路径
+     * @return 返回str
+     */
+    public static String loadFile(String filePath) {
         String log = null;
         try {
-            InputStream is = new FileInputStream("logs/daily.log");
+            InputStream is = new FileInputStream(filePath);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
