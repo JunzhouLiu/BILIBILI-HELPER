@@ -35,7 +35,8 @@ public class ChargeMe implements Task {
         int day = cal.get(Calendar.DATE);
         //被充电用户的userID
         String userId = Verify.getInstance().getUserId();
-
+        //B币券余额
+        double couponBalance = 0;
         //大会员类型
         int vipType = queryVipStatusType();
 
@@ -48,8 +49,6 @@ public class ChargeMe implements Task {
             logger.info("普通会员和月度大会员每月不赠送B币券，所以没法给自己充电哦");
             return;
         }
-        //B币券余额
-        double couponBalance = 0;
         if (userInfo != null) {
             couponBalance = userInfo.getWallet().getCoupon_balance();
         } else {

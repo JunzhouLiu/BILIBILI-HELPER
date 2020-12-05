@@ -29,7 +29,6 @@ public class UserCheck implements Task {
 
     @Override
     public void run() {
-        Config.getInstance().configInit();
         String requestPram = "";
         JsonObject userJson = HttpUtil.doGet(ApiList.LOGIN + requestPram);
         if (userJson == null) {
