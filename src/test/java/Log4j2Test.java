@@ -1,15 +1,18 @@
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
+import top.misec.task.ServerPush;
 
 public class Log4j2Test {
 
     static Logger LOG = (Logger) LogManager.getLogger(Log4j2Test.class.getName());
 
     public static void main(String[] args) throws Exception {
-        // 一直打印日志，用于测试Log4j2功能
-        while (true) {
-            logAll();
-        }
+        logAll();
+        System.out.println();
+        ServerPush serverPush = new ServerPush();
+        serverPush.setPushToken(args[0]);
+        // String test = LoadFileResource.loadLogFile();
+        //serverPush.pushMsg("Test", test);
     }
 
     // 打印各种级别的日志用于测试
@@ -23,5 +26,3 @@ public class Log4j2Test {
         Thread.sleep(3);
     }
 }
-
-
