@@ -12,8 +12,8 @@ import org.apache.logging.log4j.core.Logger;
 public class VersionInfo {
     static Logger logger = (Logger) LogManager.getLogger(VersionInfo.class.getName());
     private static String releaseVersion = "";
-    private static String updateDate = "2020-11-21";
-    private static String projectRepo = "https://github.com/JunzhouLiu/BILIBILI-HELPER";
+    private static String updateDate = "2020-12-05";
+    private static String projectRepo = "https://github.com/shaisxx/BILIBILI-HELPER";
     private static String releaseInfo = "";
 
     public String getVersion() {
