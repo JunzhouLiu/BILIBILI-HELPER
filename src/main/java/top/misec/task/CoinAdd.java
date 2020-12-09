@@ -87,8 +87,8 @@ public class CoinAdd implements Task {
             if (flag) {
                 try {
                     Random random = new Random();
-                    int sleepTime = random.nextInt(1000) + 2000;
-                    logger.info("投币后随机暂停" + sleepTime + "毫秒");
+                    int sleepTime = (int) ((random.nextDouble() + 0.5) * 3000);
+                    logger.info("投币后随机暂停{}毫秒", sleepTime);
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

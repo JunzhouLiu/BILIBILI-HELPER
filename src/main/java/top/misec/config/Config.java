@@ -1,6 +1,7 @@
 package top.misec.config;
 
 import com.google.gson.Gson;
+import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import top.misec.utils.HttpUtil;
@@ -12,6 +13,8 @@ import top.misec.utils.LoadFileResource;
  * @author Junzhou Liu
  * @create 2020/10/13 17:11
  */
+
+@Data
 public class Config {
 
     static Logger logger = (Logger) LogManager.getLogger(Config.class.getName());
@@ -42,10 +45,12 @@ public class Config {
      */
     private int coinAddPriority;
     private String userAgent;
+    private int skipDailyTask;
 
-    public String getUserAgent() {
-        return userAgent;
+    public int getSkipDailyTask() {
+        return skipDailyTask;
     }
+
 
     private static Config CONFIG = new Config();
 
@@ -56,58 +61,20 @@ public class Config {
         return CONFIG;
     }
 
-    public String getDevicePlatform() {
-        return devicePlatform;
-    }
-
-    public int getSelectLike() {
-        return selectLike;
-    }
-
-
-    public int getCoinAddPriority() {
-        return coinAddPriority;
-    }
-
-
-    public boolean isMonthEndAutoCharge() {
-        return monthEndAutoCharge;
-    }
-
-    public int getNumberOfCoins() {
-        return numberOfCoins;
-    }
-
 
     @Override
     public String toString() {
-        return "Config{" +
-                "numberOfCoins=" + numberOfCoins +
-                ", selectLike=" + selectLike +
-                ", monthEndAutoCharge=" + monthEndAutoCharge +
-                ", devicePlatform='" + devicePlatform + '\'' +
-                ", coinAddPriority=" + coinAddPriority +
+        return "配置信息{" +
+                "每日投币数为：" + numberOfCoins +
+                "分享时是否点赞：" + selectLike +
+                "月底是否充电：" + monthEndAutoCharge +
+                "执行app客户端操作的系统是：" + devicePlatform +
+                "投币策略：" + coinAddPriority + "\n" +
+                "UA是：" + userAgent + "\n" +
+                "是否跳过每日任务：" + skipDailyTask +
                 '}';
     }
 
-    public String outputConfig() {
-        String outputConfig = "您设置的每日投币数量为: ";
-        outputConfig += numberOfCoins;
-
-        if (coinAddPriority == 1) {
-            outputConfig += " 优先给关注的up投币";
-        } else {
-            outputConfig += " 优先给热榜视频投币";
-        }
-
-        if (selectLike == 1) {
-            outputConfig += " 投币时是否点赞: " + "是";
-        } else {
-            outputConfig += " 投币时是否点赞: " + "否";
-        }
-
-        return outputConfig + " 执行app客户端操作的系统是: " + devicePlatform;
-    }
 
     /**
      * 优先从jar包同级目录读取
@@ -126,6 +93,6 @@ public class Config {
 
         Config.CONFIG = new Gson().fromJson(configJson, Config.class);
         HttpUtil.setUserAgent(Config.getInstance().getUserAgent());
-        logger.info(Config.getInstance().outputConfig());
+        logger.info(Config.getInstance().toString());
     }
 }

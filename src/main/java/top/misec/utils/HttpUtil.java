@@ -3,7 +3,6 @@ package top.misec.utils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -90,20 +89,21 @@ public class HttpUtil {
         try {
             // httpClient对象执行post请求,并返回响应参数对象
             httpPostResponse = httpClient.execute(httpPost);
-
-            if (httpPostResponse != null && httpPostResponse.getStatusLine().getStatusCode() == 200) {
-                // 从响应对象中获取响应内容
-                HttpEntity entity = httpPostResponse.getEntity();
-                String result = EntityUtils.toString(entity);
-                resultJson = new JsonParser().parse(result).getAsJsonObject();
-            } else if (httpPostResponse != null) {
-                logger.debug(httpPostResponse.getStatusLine().toString());
+            if (httpPostResponse != null) {
+                int responseStatusCode = httpPostResponse.getStatusLine().getStatusCode();
+                if (responseStatusCode == 200) {
+                    // 从响应对象中获取响应内容
+                    HttpEntity entity = httpPostResponse.getEntity();
+                    String result = EntityUtils.toString(entity);
+                    resultJson = new JsonParser().parse(result).getAsJsonObject();
+                } else {
+                    logger.debug(httpPostResponse.getStatusLine().toString());
+                }
+            } else {
+                logger.debug("httpPostResponse null");
             }
-
-        } catch (ClientProtocolException e) {
-            logger.error(e);
-            e.printStackTrace();
         } catch (Exception e) {
+            logger.error(e);
             e.printStackTrace();
         } finally {
             // 关闭资源
@@ -122,7 +122,6 @@ public class HttpUtil {
             // 创建httpGet远程连接实例
             HttpGet httpGet = new HttpGet(url);
             // 设置请求头信息，鉴权
-            httpGet.setHeader("Content-Type", "application/json");
             httpGet.setHeader("Referer", "https://www.bilibili.com/");
             httpGet.setHeader("Connection", "keep-alive");
             httpGet.setHeader("User-Agent", userAgent);
@@ -132,17 +131,20 @@ public class HttpUtil {
 
             // 执行get请求得到返回对象
             httpGetResponse = httpClient.execute(httpGet);
-            if (httpGetResponse != null && httpGetResponse.getStatusLine().getStatusCode() == 200) {
+            int responseStatusCode = httpGetResponse.getStatusLine().getStatusCode();
+
+            if (responseStatusCode == 200) {
                 // 从响应对象中获取响应内容
                 // 通过返回对象获取返回数据
                 HttpEntity entity = httpGetResponse.getEntity();
                 // 通过EntityUtils中的toString方法将结果转换为字符串
                 String result = EntityUtils.toString(entity);
                 resultJson = new JsonParser().parse(result).getAsJsonObject();
-            } else if (httpGetResponse != null) {
+            } else if (responseStatusCode == 412) {
+                logger.info("出了一些问题，请在自定义配置中更换UA");
+            } else {
                 logger.debug(httpGetResponse.getStatusLine().toString());
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
