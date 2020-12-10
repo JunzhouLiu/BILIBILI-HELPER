@@ -1,25 +1,28 @@
 package top.misec.login;
 
+import lombok.Getter;
+
 /**
  * @author Junzhou Liu
  * @create 2020/10/21 19:57
  */
 public class ServerVerify {
 
+    @Getter
     private static String FTKEY = null;
 
 
-    private final static ServerVerify SERVER_VERIFYVERIFY = new ServerVerify();
+    private final static ServerVerify SERVER_VERIFY = new ServerVerify();
 
     public static void verifyInit(String ftKey) {
         ServerVerify.FTKEY = ftKey;
     }
 
-    public static String getFTKEY() {
+    public static String getFtkey() {
         return FTKEY;
     }
 
     public static ServerVerify getInstance() {
-        return SERVER_VERIFYVERIFY;
+        return SERVER_VERIFY;
     }
 }
