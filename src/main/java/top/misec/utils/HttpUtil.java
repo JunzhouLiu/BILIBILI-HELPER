@@ -3,11 +3,15 @@ package top.misec.utils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.http.HttpEntity;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -42,9 +46,9 @@ public class HttpUtil {
      * 设置连接请求超时时间
      * 设置读取数据连接超时时间
      */
-    private static final RequestConfig REQUEST_CONFIG = RequestConfig.custom().setConnectTimeout(35000)
-            .setConnectionRequestTimeout(35000)
-            .setSocketTimeout(60000)
+    private static final RequestConfig REQUEST_CONFIG = RequestConfig.custom().setConnectTimeout(5000)
+            .setConnectionRequestTimeout(5000)
+            .setSocketTimeout(10000)
             .build();
 
     static Verify verify = Verify.getInstance();
@@ -56,6 +60,7 @@ public class HttpUtil {
     public static JsonObject doPost(String url, String requestBody) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse httpPostResponse = null;
+
 
         JsonObject resultJson = null;
         // 创建httpPost远程连接实例
