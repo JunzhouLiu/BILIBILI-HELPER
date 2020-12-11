@@ -8,6 +8,9 @@ import top.misec.login.ServerVerify;
 import top.misec.utils.HttpUtil;
 import top.misec.utils.LoadFileResource;
 
+import javax.net.ssl.SSLContext;
+import java.util.Arrays;
+
 /**
  * @author @JunzhouLiu @Kurenai
  * @create 2020/10/21 17:39
@@ -26,14 +29,19 @@ public class ServerPush {
 
         String pushBody = "text=" + text + "&desp=" + desp;
 
-        JsonObject jsonObject = HttpUtil.doPost(url, pushBody);
-
-        if (jsonObject != null && "success".equals(jsonObject.get("errmsg").getAsString())) {
-            logger.info("任务状态推送成功");
-        } else {
-            logger.info("任务状态推送失败");
-            logger.debug(jsonObject);
+        try {
+            JsonObject jsonObject = HttpUtil.doPost(url, pushBody);
+            if (jsonObject != null && "success".equals(jsonObject.get("errmsg").getAsString())) {
+                logger.info("任务状态推送成功");
+            } else {
+                logger.info(Arrays.toString(SSLContext.getDefault().getSupportedSSLParameters().getProtocols()));
+                logger.info(Arrays.toString(SSLContext.getDefault().createSSLEngine().getEnabledProtocols()));
+                logger.info("任务状态推送失败");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 
     public static void doServerPush() {
