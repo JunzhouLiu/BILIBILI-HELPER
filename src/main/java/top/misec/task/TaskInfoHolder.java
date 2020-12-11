@@ -28,15 +28,16 @@ public class TaskInfoHolder {
             return;
         }
 
-        int needExp = userInfo.getLevel_info().getNext_exp_asInt()
-                - userInfo.getLevel_info().getCurrent_exp();
         int todayExp = 15;
         todayExp += expConfirm() * 10;
         logger.info("今日获得的总经验值为: " + todayExp);
+        
+        int needExp = userInfo.getLevel_info().getNext_exp_asInt()
+                - userInfo.getLevel_info().getCurrent_exp();
 
         if (userInfo.getLevel_info().getCurrent_level() < 6) {
             logger.info("按照当前进度，升级到升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "还需要: " +
-                    needExp / todayExp + "天");
+                    (needExp / todayExp) + "天");
         } else {
             logger.info("当前等级Lv6，经验值为：" + userInfo.getLevel_info().getCurrent_exp());
         }
