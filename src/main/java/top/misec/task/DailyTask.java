@@ -1,8 +1,7 @@
 package top.misec.task;
 
 import com.google.gson.JsonObject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import lombok.extern.log4j.Log4j2;
 import top.misec.apiquery.ApiList;
 import top.misec.utils.HttpUtil;
 
@@ -19,8 +18,8 @@ import static top.misec.task.TaskInfoHolder.statusCodeStr;
  * @author @JunzhouLiu @Kurenai
  * @create 2020/10/11 20:44
  */
+@Log4j2
 public class DailyTask {
-    static Logger logger = (Logger) LogManager.getLogger(DailyTask.class.getName());
 
     private final List<Task> dailyTasks =
             Arrays.asList(new UserCheck(), new VideoWatch(), new MangaSign(), new CoinAdd(), new Silver2coin(), new LiveCheckin(), new ChargeMe(), new GetMangaVipReward());
@@ -29,17 +28,14 @@ public class DailyTask {
     public void doDailyTask() {
         try {
             printTime();
-            logger.debug("任务启动中");
+            log.debug("任务启动中");
             for (Task task : dailyTasks) {
-                logger.info("-----{}开始-----", task.getName());
+                log.info("-----{}开始-----", task.getName());
                 task.run();
-                logger.info("-----任务结束-----\n");
-                Random random = new Random();
-                int sleepTime = (int) ((random.nextDouble() + 0.5) * 3000);
-                logger.info("随机暂停{}ms", sleepTime);
-                Thread.sleep(sleepTime);
+                log.info("-----任务结束-----");
+                taskSuspend();
             }
-            logger.info("本日任务已全部执行完毕");
+            log.info("本日任务已全部执行完毕");
             calculateUpgradeDays();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -57,10 +53,10 @@ public class DailyTask {
         JsonObject jsonObject = HttpUtil.doGet(ApiList.reward);
         int responseCode = jsonObject.get(statusCodeStr).getAsInt();
         if (responseCode == 0) {
-            logger.info("请求本日任务完成状态成功");
+            log.info("请求本日任务完成状态成功");
             return jsonObject.get("data").getAsJsonObject();
         } else {
-            logger.debug(jsonObject.get("message").getAsString());
+            log.debug(jsonObject.get("message").getAsString());
             return HttpUtil.doGet(ApiList.reward).get("data").getAsJsonObject();
             //偶发性请求失败，再请求一次。
         }
@@ -70,7 +66,14 @@ public class DailyTask {
         Date d = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = sdf.format(d);
-        logger.info(time);
+        log.info(time);
+    }
+
+    private void taskSuspend() throws InterruptedException {
+        Random random = new Random();
+        int sleepTime = (int) ((random.nextDouble() + 0.5) * 3000);
+        log.info("-----随机暂停{}ms-----\n", sleepTime);
+        Thread.sleep(sleepTime);
     }
 
 }

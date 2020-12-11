@@ -1,8 +1,7 @@
 package top.misec.task;
 
 import com.google.gson.JsonObject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import lombok.extern.log4j.Log4j2;
 import top.misec.apiquery.ApiList;
 import top.misec.apiquery.oftenAPI;
 import top.misec.config.Config;
@@ -21,9 +20,8 @@ import static top.misec.task.TaskInfoHolder.statusCodeStr;
  * @since 2020-11-22 5:28
  */
 
+@Log4j2
 public class CoinAdd implements Task {
-
-    static Logger logger = (Logger) LogManager.getLogger(CoinAdd.class.getName());
 
     private final String taskName = "投币任务";
 
@@ -42,11 +40,11 @@ public class CoinAdd implements Task {
         int coinAddPriority = Config.getInstance().getCoinAddPriority();
 
         if (setCoin > maxNumberOfCoins) {
-            logger.info("自定义投币数为: " + setCoin + "枚," + "为保护你的资产，自定义投币数重置为: " + maxNumberOfCoins + "枚");
+            log.info("自定义投币数为: " + setCoin + "枚," + "为保护你的资产，自定义投币数重置为: " + maxNumberOfCoins + "枚");
             setCoin = maxNumberOfCoins;
         }
 
-        logger.info("自定义投币数为: " + setCoin + "枚," + "程序执行前已投: " + useCoin + "枚");
+        log.info("自定义投币数为: " + setCoin + "枚," + "程序执行前已投: " + useCoin + "枚");
 
         //调整投币数 设置投币数-已经投过的硬币数
         int needCoins = setCoin - useCoin;
@@ -56,18 +54,18 @@ public class CoinAdd implements Task {
         int coinBalance = (int) Math.floor(beforeAddCoinBalance);
 
         if (needCoins <= 0) {
-            logger.info("已完成设定的投币任务，今日无需再投币了");
+            log.info("已完成设定的投币任务，今日无需再投币了");
         } else {
-            logger.info("投币数调整为: " + needCoins + "枚");
+            log.info("投币数调整为: " + needCoins + "枚");
             //投币数大于余额时，按余额投
             if (needCoins > coinBalance) {
-                logger.info("完成今日设定投币任务还需要投: " + needCoins + "枚硬币，但是余额只有: " + beforeAddCoinBalance);
-                logger.info("投币数调整为: " + coinBalance);
+                log.info("完成今日设定投币任务还需要投: " + needCoins + "枚硬币，但是余额只有: " + beforeAddCoinBalance);
+                log.info("投币数调整为: " + coinBalance);
                 needCoins = coinBalance;
             }
         }
 
-        logger.info("投币前余额为 : " + beforeAddCoinBalance);
+        log.info("投币前余额为 : " + beforeAddCoinBalance);
         /*
          * 开始投币
          * 请勿修改 max_numberOfCoins 这里多判断一次保证投币数超过5时 不执行投币操作
@@ -88,7 +86,7 @@ public class CoinAdd implements Task {
                 try {
                     Random random = new Random();
                     int sleepTime = (int) ((random.nextDouble() + 0.5) * 3000);
-                    logger.info("投币后随机暂停{}毫秒", sleepTime);
+                    log.info("投币后随机暂停{}毫秒", sleepTime);
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -96,11 +94,11 @@ public class CoinAdd implements Task {
                 needCoins--;
             }
             if (addCoinOperateCount > 15) {
-                logger.info("尝试投币/投币失败次数太多");
+                log.info("尝试投币/投币失败次数太多");
                 break;
             }
         }
-        logger.info("投币任务完成后余额为: " + oftenAPI.getCoinBalance());
+        log.info("投币任务完成后余额为: " + oftenAPI.getCoinBalance());
     }
 
     /**
@@ -121,14 +119,14 @@ public class CoinAdd implements Task {
             JsonObject jsonObject = HttpUtil.doPost(ApiList.CoinAdd, requestBody);
             if (jsonObject.get(statusCodeStr).getAsInt() == 0) {
 
-                logger.info("为 " + videoTitle + " 投币成功");
+                log.info("为 " + videoTitle + " 投币成功");
                 return true;
             } else {
-                logger.info("投币失败" + jsonObject.get("message").getAsString());
+                log.info("投币失败" + jsonObject.get("message").getAsString());
                 return false;
             }
         } else {
-            logger.debug("已经为" + videoTitle + "投过币了");
+            log.debug("已经为" + videoTitle + "投过币了");
             return false;
         }
     }
@@ -145,7 +143,7 @@ public class CoinAdd implements Task {
 
         int multiply = result.getAsJsonObject("data").get("multiply").getAsInt();
         if (multiply > 0) {
-            logger.info("之前已经为av" + bvid + "投过" + multiply + "枚硬币啦");
+            log.info("之前已经为av" + bvid + "投过" + multiply + "枚硬币啦");
             return true;
         } else {
             return false;
