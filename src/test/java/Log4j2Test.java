@@ -1,7 +1,6 @@
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import top.misec.task.ServerPush;
-import top.misec.utils.LoadFileResource;
 
 public class Log4j2Test {
 
@@ -12,8 +11,8 @@ public class Log4j2Test {
         System.out.println();
         ServerPush serverPush = new ServerPush();
         serverPush.setPushToken(args[0]);
-        String test = LoadFileResource.loadLogFile();
-        serverPush.pushMsg("Test", test);
+        // String test = LoadFileResource.loadLogFile();
+        //serverPush.pushMsg("Test", test);
     }
 
     // 打印各种级别的日志用于测试
