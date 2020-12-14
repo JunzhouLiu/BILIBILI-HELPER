@@ -151,7 +151,10 @@ BILIBILI-HELPER
 wget https://raw.githubusercontent.com/JunzhouLiu/BILIBILI-HELPER/main/setup.sh && chmod +x ./setup.sh && sudo ./setup.sh
 ```
 
-除此之外，也可以通过点击 [BILIBILI-HELPER/release](https://github.com/JunzhouLiu/BILIBILI-HELPER/releases/latest)，下载已发布的版本，解压后将jar包手动上传到Linux服务器，使用crontab完成定时执行。
+**ps：注意，如果使用自定义配置，请将`config.json`和jar包放置在同一目录(使用setup.sh安装则需要将`config.json`放置到`{HOME}/BILIBILI-HELPER`)，`v1.2.2`之后的版本`release`中都会携带一份`config.json`。**
+
+2. 除此之外，也可以通过点击 [BILIBILI-HELPER/release](https://github.com/JunzhouLiu/BILIBILI-HELPER/releases/latest)，下载已发布的版本，解压后将jar包手动上传到Linux服务器，使用crontab完成定时执行。
+
 
 **命令格式解释：**
 
