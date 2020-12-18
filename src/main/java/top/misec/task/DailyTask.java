@@ -24,7 +24,6 @@ public class DailyTask {
     private final List<Task> dailyTasks =
             Arrays.asList(new UserCheck(), new VideoWatch(), new MangaSign(), new CoinAdd(), new Silver2coin(), new LiveCheckin(), new ChargeMe(), new GetMangaVipReward());
 
-
     public void doDailyTask() {
         try {
             printTime();
@@ -32,7 +31,7 @@ public class DailyTask {
             for (Task task : dailyTasks) {
                 log.info("-----{}开始-----", task.getName());
                 task.run();
-                log.info("-----任务结束-----");
+                log.info("-----任务结束-----\n");
                 taskSuspend();
             }
             log.info("本日任务已全部执行完毕");
