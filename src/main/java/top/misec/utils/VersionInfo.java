@@ -2,6 +2,7 @@ package top.misec.utils;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 
@@ -9,24 +10,14 @@ import org.apache.logging.log4j.core.Logger;
  * @author Junzhou Liu
  * @create 2020/11/21 15:22
  */
+
+@Data
 public class VersionInfo {
     static Logger logger = (Logger) LogManager.getLogger(VersionInfo.class.getName());
     private static String releaseVersion = "";
-    private static String updateDate = "2020-11-21";
+    private static String updateDate = "2020-12-09";
     private static String projectRepo = "https://github.com/JunzhouLiu/BILIBILI-HELPER";
     private static String releaseInfo = "";
-
-    public String getVersion() {
-        return releaseVersion;
-    }
-
-    public String getUpdateDate() {
-        return updateDate;
-    }
-
-    public String getProjectRepo() {
-        return projectRepo;
-    }
 
     public static void initInfo() {
         String release = LoadFileResource.loadJsonFromAsset("release.json");
