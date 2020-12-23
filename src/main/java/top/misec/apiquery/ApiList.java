@@ -52,6 +52,9 @@ public class ApiList {
      */
     public static String chargeComment = "https://api.bilibili.com/x/ugcpay/trade/elec/message";
 
+
+    public static String chargeQuery = "https://api.bilibili.com/x/ugcpay/web/v2/trade/elec/panel";
+
     /**
      * 领取大会员福利
      */
@@ -65,4 +68,8 @@ public class ApiList {
      * 直播签到
      */
     public static String liveCheckin = "https://api.live.bilibili.com/xlive/web-ucenter/v1/sign/DoSign";
+
+    public static String queryDynamicNew = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/dynamic_new";
+
+    public static String videoView = "https://api.bilibili.com/x/web-interface/view";
 }

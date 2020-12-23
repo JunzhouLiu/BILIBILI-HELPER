@@ -39,38 +39,40 @@ public class LoadFileResource {
         return config;
     }
 
+
     /**
-     * 从resource读取配置文件
+     * 从resource读取版本文件
      *
-     * @return configJson 返回配置文件json
+     * @param fileName 文件名
+     * @return 返回读取到文件
      */
-    public static String loadConfigJsonFromAsset() {
-        String configJson = null;
+    public static String loadJsonFromAsset(String fileName) {
+        String json = null;
         try {
-            InputStream is = LoadFileResource.class.getClassLoader().getResourceAsStream("config.json");
+            InputStream is = LoadFileResource.class.getClassLoader().getResourceAsStream(fileName);
             assert is != null;
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
-            configJson = new String(buffer, StandardCharsets.UTF_8);
+            json = new String(buffer, StandardCharsets.UTF_8);
 
         } catch (IOException e) {
             e.printStackTrace();
             logger.debug(e);
         }
-        return configJson;
+        return json;
     }
 
+
     /**
-     * 加载日志
-     *
-     * @return 返回String类型的日志信息
+     * @param filePath 读入的文件路径
+     * @return 返回str
      */
-    public static String loadLogFile() {
+    public static String loadFile(String filePath) {
         String log = null;
         try {
-            InputStream is = new FileInputStream("logs/daily.log");
+            InputStream is = new FileInputStream(filePath);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);

@@ -1,11 +1,14 @@
 package top.misec.login;
 
+import lombok.Getter;
+
 /**
  * @author Junzhou Liu
  * @create 2020/10/21 19:57
  */
 public class ServerVerify {
 
+    @Getter
     private static String FTKEY = null;
 
 
