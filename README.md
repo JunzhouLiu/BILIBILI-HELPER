@@ -67,6 +67,7 @@ BILIBILI-HELPER
   - [手动拉取最新代码](#手动拉取最新代码)
   - [使用pull app](#使用pull-app)
   - [常见问题解答](#常见问题解答)
+  - [Stargazers over time](#stargazers-over-time)
 - [免责声明](#免责声明)
 - [致谢](#致谢)
 - [API 参考列表](#api-参考列表)
@@ -254,6 +255,10 @@ userAgent可选参数列表
 ## 常见问题解答
 
 请参阅[常见问题解答](https://github.com/JunzhouLiu/BILIBILI-HELPER/issues/4)
+
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/JunzhouLiu/BILIBILI-HELPER.svg)](https://starchart.cc/JunzhouLiu/BILIBILI-HELPER)
 
 # 免责声明
 
