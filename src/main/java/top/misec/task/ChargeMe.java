@@ -36,7 +36,7 @@ public class ChargeMe implements Task {
         //被充电用户的userID
         String userId = Verify.getInstance().getUserId();
         //B币券余额
-        double couponBalance = 0;
+        double couponBalance;
         //大会员类型
         int vipType = queryVipStatusType();
 
@@ -47,6 +47,10 @@ public class ChargeMe implements Task {
 
         if (vipType == 0 || vipType == 1) {
             logger.info("普通会员和月度大会员每月不赠送B币券，所以没法给自己充电哦");
+            return;
+        }
+        if (!Config.getInstance().isMonthEndAutoCharge()) {
+            logger.info("未开启月底给自己充电功能");
             return;
         }
         if (userInfo != null) {
@@ -60,9 +64,9 @@ public class ChargeMe implements Task {
           判断条件 是月底&&是年大会员&&b币券余额大于2&&配置项允许自动充电
          */
         if (day == 28 && couponBalance >= 2 &&
-                Config.getInstance().isMonthEndAutoCharge() &&
-                vipType == 2) {
-            String requestBody = "elec_num=" + couponBalance * 10
+                Config.getInstance().isMonthEndAutoCharge()) {
+            String requestBody = "bp_num=" + couponBalance
+                    + "&is_bp_remains_prior=true"
                     + "&up_mid=" + userId
                     + "&otype=up"
                     + "&oid=" + userId
@@ -76,7 +80,7 @@ public class ChargeMe implements Task {
                 int statusCode = dataJson.get("status").getAsInt();
                 if (statusCode == 4) {
                     logger.info("月底了，给自己充电成功啦，送的B币券没有浪费哦");
-                    logger.info("本次给自己充值了: " + couponBalance * 10 + "个电池哦");
+                    logger.info("本次充值使用了: " + couponBalance + "个B币券");
                     //获取充电留言token
                     String orderNo = dataJson.get("order_no").getAsString();
                     chargeComments(orderNo);
@@ -88,7 +92,12 @@ public class ChargeMe implements Task {
                 logger.debug("充电失败了啊 原因: " + jsonObject);
             }
         } else {
-            logger.info("今天是本月的第: " + day + "天，还没到给自己充电日子呢");
+            if (day == 28) {
+                logger.info("B币券余额不足,充电至少需要2B币券");
+            } else {
+                logger.info("今天是本月的第: " + day + "天，还没到给自己充电日子呢");
+            }
+
         }
     }
 
