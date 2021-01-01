@@ -10,6 +10,7 @@ BILIBILI-HELPER
 [![GitHub All Releases](https://img.shields.io/github/downloads/JunzhouLiu/BILIBILI-HELPER/total?style=flat-square)](https://github.com/JunzhouLiu/BILIBILI-HELPER/releases)
 [![GitHub contributors](https://img.shields.io/github/contributors/JunzhouLiu/BILIBILI-HELPER?style=flat-square)](https://github.com/JunzhouLiu/BILIBILI-HELPER/graphs/contributors)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/JunzhouLiu/BILIBILI-HELPER?style=flat-square)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FJunzhouLiu%2FBILIBILI-HELPER.svg?type=flat-square)](https://app.fossa.com/projects/git%2Bgithub.com%2FJunzhouLiu%2FBILIBILI-HELPER?ref=badge_shield)
 
 </div>
 
@@ -72,6 +73,7 @@ BILIBILI-HELPER
 - [致谢](#致谢)
 - [API 参考列表](#api-参考列表)
 - [基于本项目的衍生项目](#基于本项目的衍生项目)
+- [License](#license)
 
 # 使用说明
 
@@ -139,6 +141,7 @@ BILIBILI-HELPER
 ![图示](docs/IMG/debug1.png)
 ![图示](docs/IMG/debug2.png)
 
+
 ## 二、使用 Docker
 
 请自行参阅 [Issues/75#issuecomment-731705657](https://github.com/JunzhouLiu/BILIBILI-HELPER/issues/75#issuecomment-731705657) 和[基于本项目的衍生项目](#基于本项目的衍生项目) 。
@@ -202,17 +205,34 @@ wget https://raw.githubusercontent.com/JunzhouLiu/BILIBILI-HELPER/main/setup.sh 
 
 参数示意
 
-| Key                | Value         | 说明                                                                                                          |
-| ------------------ | ------------- | ------------------------------------------------------------------------------------------------------------- |
-| numberOfCoins      | [0,5]         | 每日投币数量,默认 5 ,为0时则不投币                                                                            |
-| selectLike         | [0,1]         | 投币时是否点赞，默认 0, 0：否 1：是                                                                           |
-| monthEndAutoCharge | [false,true]  | 年度大会员月底是否用 B币券 给自己充电，默认 `true`                                                            |
-| devicePlatform     | [ios,android] | 手机端漫画签到时的平台，建议选择你设备的平台 ，默认 `ios`                                                     |
-| coinAddPriority    | [0,1]         | 0：优先给热榜视频投币，1：优先给关注的up投币                                                                  |
-| userAgent          | 浏览器UA      | 用户可根据部署平台配置，可根据userAgent参数列表自由选取，如果触发了HTTP/1.1 412 Precondition Failed也请修改UA |
-| skipDailyTask      | [0,1]         | 是否跳过每日任务，如果需要临时关闭每日任务，此项改为1即可，开启则改为0即可                                    |
+| Key                | Value             | 说明                                                                                                          |
+| ------------------ | ----------------- | ------------------------------------------------------------------------------------------------------------- |
+| numberOfCoins      | [0,5]             | 每日投币数量,默认 5 ,为0时则不投币                                                                            |
+| selectLike         | [0,1]             | 投币时是否点赞，默认 0, 0：否 1：是                                                                           |
+| monthEndAutoCharge | [false,true]      | 年度大会员月底是否用 B币券 给自己充电，默认 `true`                                                            |
+| chargeForLove      | [0,充电对象的uid] | 0是给自己充电，默认值为0。 如果想给指定up充电，改为up主的uid即可。</br> 欢迎给即将秃头的我充电 uid：14602398  |
+| devicePlatform     | [ios,android]     | 手机端漫画签到时的平台，建议选择你设备的平台 ，默认 `ios`                                                     |
+| coinAddPriority    | [0,1]             | 0：优先给热榜视频投币，1：优先给关注的up投币                                                                  |
+| userAgent          | 浏览器UA          | 用户可根据部署平台配置，可根据userAgent参数列表自由选取，如果触发了HTTP/1.1 412 Precondition Failed也请修改UA |
+| skipDailyTask      | [0,1]             | 是否跳过每日任务，如果需要临时关闭每日任务，此项改为1即可，开启则改为0即可                                    |
+
+参数示例：
+```json
+{
+  "numberOfCoins": 5,
+  "selectLike": 0,
+  "monthEndAutoCharge": true,
+  "chargeForLove": "0",
+  "devicePlatform": "ios",
+  "coinAddPriority": 1,
+  "skipDailyTask": 0,
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15"
+}
+
+```
 
 userAgent可选参数列表
+
 | 平台      | 浏览器         | userAgent                                                                                                                           |
 | --------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | Windows10 | EDGE(chromium) | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36 Edg/86.0.622.69 |
@@ -291,3 +311,7 @@ userAgent可选参数列表
 - **基于本项目的runer项目：[KurenaiRyu/bilibili-helper-runer](https://github.com/KurenaiRyu/bilibili-helper-runer)**
 
 - **基于本项目的k8s项目：[yangyang0507/k8s-bilibili-helper](https://github.com/yangyang0507/k8s-bilibili-helper)**
+
+
+# License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FJunzhouLiu%2FBILIBILI-HELPER.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FJunzhouLiu%2FBILIBILI-HELPER?ref=badge_large)

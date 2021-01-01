@@ -46,6 +46,7 @@ public class Config {
     private int coinAddPriority;
     private String userAgent;
     private int skipDailyTask;
+    private String chargeForLove;
 
     public int getSkipDailyTask() {
         return skipDailyTask;
