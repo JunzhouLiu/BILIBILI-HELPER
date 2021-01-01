@@ -55,6 +55,8 @@ public class ApiList {
 
     public static String chargeQuery = "https://api.bilibili.com/x/ugcpay/web/v2/trade/elec/panel";
 
+    public static String queryUserName = "https://api.bilibili.com/x/space/acc/info";
+
     /**
      * 领取大会员福利
      */

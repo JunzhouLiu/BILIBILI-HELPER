@@ -2,6 +2,7 @@
   "numberOfCoins": 5,
   "selectLike": 0,
   "monthEndAutoCharge": true,
+  "chargeForLove": "0",
   "devicePlatform": "ios",
   "coinAddPriority": 1,
   "skipDailyTask": 0,
