@@ -28,7 +28,7 @@ public class ChargeMe implements Task {
 
     static Logger logger = (Logger) LogManager.getLogger(HttpUtil.class.getName());
 
-    private final String taskName = "大会员月底B币券充电&大会员领取权益";
+    private final String taskName = "大会员月底B币券充电和月初大会员权益领取";
 
     @Override
     public void run() {
@@ -43,7 +43,7 @@ public class ChargeMe implements Task {
         //大会员类型
         int vipType = queryVipStatusType();
 
-        if (day % 3 == 0 && vipType == 2) {
+        if (day == 1 || day % 3 == 0 && vipType == 2) {
             oftenAPI.vipPrivilege(1);
             oftenAPI.vipPrivilege(2);
         }
@@ -94,7 +94,7 @@ public class ChargeMe implements Task {
 
             JsonObject jsonObject = HttpUtil.doPost(ApiList.autoCharge, requestBody);
 
-            int resultCode = jsonObject.get(statusCodeStr).getAsInt();
+            int resultCode = jsonObject.get(STATUS_CODE_STR).getAsInt();
             if (resultCode == 0) {
                 JsonObject dataJson = jsonObject.get("data").getAsJsonObject();
                 int statusCode = dataJson.get("status").getAsInt();
@@ -128,7 +128,7 @@ public class ChargeMe implements Task {
                 + "&csrf=" + Verify.getInstance().getBiliJct();
         JsonObject jsonObject = HttpUtil.doPost(ApiList.chargeComment, requestBody);
 
-        if (jsonObject.get(statusCodeStr).getAsInt() == 0) {
+        if (jsonObject.get(STATUS_CODE_STR).getAsInt() == 0) {
             logger.info("充电留言成功");
         } else {
             logger.debug(jsonObject.get("message").getAsString());
