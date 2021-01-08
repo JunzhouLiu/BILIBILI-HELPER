@@ -8,23 +8,20 @@ BILIBILI-HELPER
 [![GitHub issues](https://img.shields.io/github/issues/JunzhouLiu/BILIBILI-HELPER?style=flat-square)](https://github.com/JunzhouLiu/BILIBILI-HELPER/issues)
 [![GitHub license](https://img.shields.io/github/license/JunzhouLiu/BILIBILI-HELPER?style=flat-square)](https://github.com/JunzhouLiu/BILIBILI-HELPER/blob/main/LICENSE) 
 [![GitHub All Releases](https://img.shields.io/github/downloads/JunzhouLiu/BILIBILI-HELPER/total?style=flat-square)](https://github.com/JunzhouLiu/BILIBILI-HELPER/releases)
+[![Docker Pulls](https://img.shields.io/docker/pulls/superng6/bilibili-helper?style=flat-square)](https://hub.docker.com/r/superng6/bilibili-helper)
 [![GitHub contributors](https://img.shields.io/github/contributors/JunzhouLiu/BILIBILI-HELPER?style=flat-square)](https://github.com/JunzhouLiu/BILIBILI-HELPER/graphs/contributors)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/JunzhouLiu/BILIBILI-HELPER?style=flat-square)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FJunzhouLiu%2FBILIBILI-HELPER.svg?type=flat-square)](https://app.fossa.com/projects/git%2Bgithub.com%2FJunzhouLiu%2FBILIBILI-HELPER?ref=badge_shield)
 
 </div>
 
-# 工具简介
+## 工具简介
 
 这是一个利用 Linux Crontab , GitHub Action 等方式实现哔哩哔哩（Bilibili）每日任务投币，点赞，分享视频，直播签到，银瓜子兑换硬币，漫画每日签到，简单配置即可每日轻松获取 65 经验值，快来和我一起成为 Lv6 吧~~~~
 
 **如果觉得好用，顺手点个 Star 吧 ❤**
 
 **仓库地址：[JunzhouLiu/BILIBILI-HELPER](https://github.com/JunzhouLiu/BILIBILI-HELPER)**
-
-**本项目不会增加类似于自动转发抽奖，秒杀，下载版权受限视频等侵犯UP主/B站权益的功能，开发这个应用的目的是单纯的技术分享。下游分支开发者/使用者也请不要滥用相关功能。**
-
-**本项目欢迎其他开发者参与贡献，基于本工具的二次开发，使用其他语言重写都没有什么问题，能在技术上给你带来帮助和收获就很好**
 
 **请不要滥用相关API，让我们一起爱护B站 ❤**
 
@@ -33,10 +30,10 @@ BILIBILI-HELPER
 * [x] 每天上午 9 点 10 分自动开始任务。*【运行时间可自定义】*
 * [x] 哔哩哔哩漫画每日自动签到 。
 * [x] 每日自动从热门视频中随机观看 1 个视频，分享一个视频。
-* [x] 每日从热门视频中选取 5 个进行智能投币 *【如果投币不能获得经验，默认不投币】*
+* [x] 每日从热门视频中选取 5 个进行智能投币 *【如果投币不能获得经验了，则不会投币】*
 * [x] 投币支持下次一定啦，可自定义每日投币数量。*【如果检测到你已经投过币了，则不会投币】*
-* [x] 大会员月底使用快到期的 B币券，给自己充电，一点也不会浪费哦，默认开启。*【可配置】*
-* [x] 大会员月初 1 号自动领取每月 5 张 B币券 和福利。
+* [x] 大会员月底使用快到期的 B币券，给自己充电，一点也不会浪费哦，默认开启。*【已支持给指定UP充电】*
+* [x] 大会员月初 1 号自动领取每月 5 张 B 币券和福利。
 * [x] 每日哔哩哔哩直播自动签到，领取签到奖励。*【直播你可以不看，但是奖励咱们一定要领】*
 * [x] 通过server酱推送执行结果到微信。
 * [x] Linux用户支持自定义配置了。
@@ -50,34 +47,29 @@ BILIBILI-HELPER
 
 # 目录
 
-- [工具简介](#工具简介)
-  - [功能列表](#功能列表)
 - [目录](#目录)
-- [使用说明](#使用说明)
-  - [一、Actions 方式](#一actions-方式)
-    - [查看 Actions 运行日志](#查看-actions-运行日志)
-  - [二、使用 Docker](#二使用-docker)
-  - [三、使用 Linux Crontab 方式](#三使用-linux-crontab-方式)
-    - [运行效果](#运行效果)
-  - [四、使用 Windows10](#四使用-windows10)
-  - [自定义功能配置](#自定义功能配置)
-- [微信订阅通知](#微信订阅通知)
-  - [订阅执行结果](#订阅执行结果)
-- [快速更新](#快速更新)
-  - [使用 Github Actions 自动同步源仓库代码](#使用-github-actions-自动同步源仓库代码)
-  - [手动拉取最新代码](#手动拉取最新代码)
-  - [使用pull app](#使用pull-app)
-  - [常见问题解答](#常见问题解答)
+  - [使用说明](#使用说明)
+    - [一、Actions 方式](#一actions-方式)
+    - [二、使用 Docker](#二使用-docker)
+    - [三、使用 Linux Crontab 方式](#三使用-linux-crontab-方式)
+    - [自定义功能配置](#自定义功能配置)
+  - [微信订阅通知](#微信订阅通知)
+    - [订阅执行结果](#订阅执行结果)
+  - [更新和帮助](#更新和帮助)
+    - [使用 Github Actions 自动同步源仓库代码](#使用-github-actions-自动同步源仓库代码)
+    - [手动拉取最新代码](#手动拉取最新代码)
+    - [使用Pull APP［推荐］](#使用pull-app推荐)
+    - [常见问题解答](#常见问题解答)
+  - [免责声明](#免责声明)
+  - [API 参考列表](#api-参考列表)
+  - [基于本项目的衍生项目](#基于本项目的衍生项目)
+  - [致谢](#致谢)
+  - [License](#license)
   - [Stargazers over time](#stargazers-over-time)
-- [免责声明](#免责声明)
-- [致谢](#致谢)
-- [API 参考列表](#api-参考列表)
-- [基于本项目的衍生项目](#基于本项目的衍生项目)
-- [License](#license)
 
-# 使用说明
+## 使用说明
 
-## 一、Actions 方式
+### 一、Actions 方式
 
 1. **Fork 本项目**
 2. **获取 Bilibili Cookies**
@@ -117,7 +109,7 @@ BILIBILI-HELPER
 ```yml
   schedule:
     - cron: '30 10 * * *'
-    # cron表达式，Actions时区是UTC时间，所以下午18点要往前推8个小时。
+    # cron表达式，Actions时区是国际时间，国际时间10点的时候，国内时间是18点。
     # 示例： 每天晚上22点30执行 '30 14 * * *'
 ```
 
@@ -129,26 +121,19 @@ BILIBILI-HELPER
 
 **Please be sure to abide by the Github terms when using Actions. Do not abuse the Actions service.**
 
-
-### 查看 Actions 运行日志
-
-*展开 `Build With Maven` 通过 `DEBUG` 标签快速过滤日志，查看运行状态*  
+**查看 Actions 运行日志**
 
 [Actions 运行日志详细查看教程](https://github.com/JunzhouLiu/BILIBILI-HELPER/issues/21)
 
 [日志示例](https://github.com/JunzhouLiu/BILIBILI-HELPER/runs/1256484004?check_suite_focus=true#step:4:5069)
 
-![图示](docs/IMG/debug1.png)
-![图示](docs/IMG/debug2.png)
 
-
-## 二、使用 Docker
+### 二、使用 Docker
 
 请自行参阅 [Issues/75#issuecomment-731705657](https://github.com/JunzhouLiu/BILIBILI-HELPER/issues/75#issuecomment-731705657) 和[基于本项目的衍生项目](#基于本项目的衍生项目) 。
 
 
-## 三、使用 Linux Crontab 方式
-
+### 三、使用 Linux Crontab 方式
 
 1. 在linux shell环境执行以下命令，并按照提示输入SESSDATA，DEDEUSERID，BILI_JCT，SCKEY四个参数
 ```
@@ -157,66 +142,58 @@ wget https://raw.githubusercontent.com/JunzhouLiu/BILIBILI-HELPER/main/setup.sh 
 
 **ps：注意，如果使用自定义配置，请将`config.json`和jar包放置在同一目录(使用setup.sh安装则需要将`config.json`放置到`{HOME}/BILIBILI-HELPER`)，`v1.2.2`之后的版本`release`中都会携带一份`config.json`。**
 
-2. 除此之外，也可以通过点击 [BILIBILI-HELPER/release](https://github.com/JunzhouLiu/BILIBILI-HELPER/releases/latest)，下载已发布的版本，解压后将jar包手动上传到Linux服务器，使用crontab完成定时执行。
+2. 除此之外，也可以通过点击 [BILIBILI-HELPER/release](https://github.com/JunzhouLiu/BILIBILI-HELPER/releases/latest)，下载已发布的版本，解压后将jar包手动上传到Linux服务器，使用crontab完成定时执行，如果使用`crontab`请记得`source /etc/profile`和`source ~/.bashrc`,建议直接使用仓库提供的[`start.sh`](https://github.com/JunzhouLiu/BILIBILI-HELPER/blob/main/start.sh)脚本,注意修改脚本的jar包路径和cookies参数。
 
 
-**命令格式解释：**
+**crontab命令示例**
 
-`30 10 * * * java -jar /home/BILIBILI-HELP.jar DEDEUSERID SESSDATA BILI_JCT SCKEY>/var/log/cron.log &`
+`30 10 * * * sh /home/start.sh` 
 
-| args                               | 说明                                                                                                       |
-| ---------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| 30 10 * * *                        | cron 定时时间                                                                                              |
-| java -jar                          | 执行jar包                                                                                                  |
-| /home/BILIBILI-HELP.jar            | jar包路径                                                                                                  |
-| DEDEUSERID SESSDATA BILI_JCT SCKEY | 传入参数的顺序，参数含义请见上文,SCKEY可为空（用于server酱推送日志，等同actions任务配置中的SERVERPUSHKEY） |
-| >/var/log/cron.log &               | 日志写入的路径                                                                                             |
+| args              | 说明               |
+| ----------------- | ------------------ |
+| 30 10 * * *       | `crontab` 定时时间 |
+| sh /home/start.sh | `start.sh`的路径   |
+
+```shell
+#!/bin/bash
+source /etc/profile 
+source ~/.bashrc 
+source ~/.zshrc #其他终端请自行引入环境变量
+echo $PATH
+java -jar /home/BILIBILI-HELPER.jar DEDEUSERID SESSDATA BILI_JCT SCKEY >> /var/log/bilibili-help.log
+# 注意将jar包路径替换为实际路径。将参数修改该你自己的参数，cookies中含有等特殊字符需要转义。
+```
 
 
 **命令示例：**
 
 ```shell
-# *如果Cookies参数中包含特殊字符，例如`%`请使用`\`转义*
+# *如果Cookies参数中包含特殊字符，例如`%`请使用`\`转义*,如果不执行可在命令前增加 source /etc/profile
 # m h  dom mon dow   command
 30 10 * * * java -jar /home/BILIBILI-HELP.jar DEDEUSERID SESSDATA BILI_JCT >/var/log/cron.log &
 ```
 
-### 运行效果
-
-![图示](docs/IMG/liunxImg.png)
-
-## 四、使用 Windows10
-
-
-1. 点击 [BILIBILI-HELPER/release](https://github.com/JunzhouLiu/BILIBILI-HELPER/releases/latest)，下载已发布的版本。解压，在解压后的目录打开 `Powershell` 需要装有 Java 运行环境，添加到计划任务即可。
-   
-2. 执行 `java -jar /home/BILIBILI-HELP.jar DEDEUSERID SESSDATA BILI_JCT `
-
-![图示](docs/IMG/powershell.png)
-
-
-## 自定义功能配置
-
+### 自定义功能配置
 
 **Actions任务配置文件位于 `src/main/resources/config.json`**
 
-**Windows/Linux 用户使用jar包时，最新的release包中包含一份`config.json`配置文件，只需将其和`BILIBILI-HELP.jar`放在同一目录即可，执行时优先加载外部配置文件**
+**Windows/Linux 用户使用jar包时，`release`包中会包含一份`config.json`配置文件，只需将其和`BILIBILI-HELP.jar`放在同一目录即可，执行时优先加载外部配置文件**
 
 
 参数示意
 
-| Key                | Value             | 说明                                                                                                          |
-| ------------------ | ----------------- | ------------------------------------------------------------------------------------------------------------- |
-| numberOfCoins      | [0,5]             | 每日投币数量,默认 5 ,为0时则不投币                                                                            |
-| selectLike         | [0,1]             | 投币时是否点赞，默认 0, 0：否 1：是                                                                           |
-| monthEndAutoCharge | [false,true]      | 年度大会员月底是否用 B币券 给自己充电，默认 `true`                                                            |
-| chargeForLove      | [0,充电对象的uid] | 0是给自己充电，默认值为0。 如果想给指定up充电，改为up主的uid即可。</br> 欢迎给即将秃头的我充电 uid：14602398  |
-| devicePlatform     | [ios,android]     | 手机端漫画签到时的平台，建议选择你设备的平台 ，默认 `ios`                                                     |
-| coinAddPriority    | [0,1]             | 0：优先给热榜视频投币，1：优先给关注的up投币                                                                  |
-| userAgent          | 浏览器UA          | 用户可根据部署平台配置，可根据userAgent参数列表自由选取，如果触发了HTTP/1.1 412 Precondition Failed也请修改UA |
-| skipDailyTask      | [0,1]             | 是否跳过每日任务，如果需要临时关闭每日任务，此项改为1即可，开启则改为0即可                                    |
+| Key                | Value             | 说明                                                                                                                                                                                                                                               |
+| ------------------ | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| numberOfCoins      | [0,5]             | 每日投币数量,默认 5 ,为0时则不投币                                                                                                                                                                                                                 |
+| selectLike         | [0,1]             | 投币时是否点赞，默认 0, 0：否 1：是                                                                                                                                                                                                                |
+| monthEndAutoCharge | [false,true]      | 年度大会员月底是否用 B币券给自己充电，默认 `true`，即充电对象是你本人。                                                                                                                                                                            |
+| chargeForLove      | [0,充电对象的uid] | 给指定up主充电，值为0或者充电对象的uid，默认为0，即给自己充电。</br>如果你没有上传过视频并开启充电计划，充电会失败，B币券会浪费。此时建议配置为给指定的up主充电。</br> 欢迎给即将秃头的我充电 uid：[14602398](https://space.bilibili.com/14602398) |
+| devicePlatform     | [ios,android]     | 手机端漫画签到时的平台，建议选择你设备的平台 ，默认 `ios`                                                                                                                                                                                          |
+| coinAddPriority    | [0,1]             | 0：优先给热榜视频投币，1：优先给关注的up投币                                                                                                                                                                                                       |
+| userAgent          | 浏览器UA          | 用户可根据部署平台配置，可根据userAgent参数列表自由选取，如果触发了HTTP/1.1 412 Precondition Failed也请修改UA                                                                                                                                      |
+| skipDailyTask      | [false,true]      | 是否跳过每日任务，默认`false`,如果需要跳过每日任务，请改为true                                                                                                                                                                                     |
 
-参数示例：
+配置文件示例：
 ```json
 {
   "numberOfCoins": 5,
@@ -246,9 +223,9 @@ userAgent可选参数列表
 *投币数量代码做了处理，如果本日投币不能获得经验了，则不会投币，每天只投能获得经验的硬币。假设你设置每日投币 3 个，早上 7 点你自己投了 2 个硬币，则十点半时，程序只会投 1 个）*
 
 
-# 微信订阅通知
+## 微信订阅通知
 
-## 订阅执行结果
+### 订阅执行结果
 
 1. 前往 [sc.ftqq.com](http://sc.ftqq.com/3.version) 点击登入，创建账号（建议使用 GitHub 登录）。
 2. 点击点[发送消息](http://sc.ftqq.com/?c=code) ，生成一个 Key。将其增加到 Github Secrets 中，变量名为 `SERVERPUSHKEY`
@@ -258,29 +235,25 @@ userAgent可选参数列表
 ![图示](docs/IMG/wechatMsgPush.png)
 
 
-# 快速更新
+## 更新和帮助
 
-## 使用 Github Actions 自动同步源仓库代码
+### 使用 Github Actions 自动同步源仓库代码
 
 参阅[Issue8 使用GitHub Actions任务自动同步源仓库代码](https://github.com/JunzhouLiu/BILIBILI-HELPER/issues/8)
 
-## 手动拉取最新代码
+### 手动拉取最新代码
 
 参阅[Issues4 手动拉取最新代码](https://github.com/JunzhouLiu/BILIBILI-HELPER/issues/4)
 
-## 使用pull app
+### 使用Pull APP［推荐］
 
 参阅 [Pull APP](https://github.com/apps/pull)
 
-## 常见问题解答
+### 常见问题解答
 
 请参阅[常见问题解答](https://github.com/JunzhouLiu/BILIBILI-HELPER/issues/4)
 
-## Stargazers over time
-
-[![Stargazers over time](https://starchart.cc/JunzhouLiu/BILIBILI-HELPER.svg)](https://starchart.cc/JunzhouLiu/BILIBILI-HELPER)
-
-# 免责声明
+## 免责声明
 
 1. 本工具不会记录你的任何敏感信息，也不会上传到任何服务器上。（例如用户的cookies数据，cookies数据均存在Actions Secrets中或者用户自己的设备上）
 2. 本工具不会记录任何执行过程中来自b站的数据信息，也不会上传到任何服务器上。（例如av号，bv号，用户uid等）。
@@ -288,21 +261,18 @@ userAgent可选参数列表
 4. 如果有人修改了本项目（或者直接使用本项目）盈利恰饭，那和我肯定没关系，我开源的目的单纯是技术分享。
 5. 如果你使用了第三方修改的，打包的本工具代码，那你可得注意了，指不定人就把你的数据上传到他自己的服务器了，这可和我没关系。（**网络安全教育普及任重而道远**）
 6. 本工具源码仅在[JunzhouLiu/BILIBILI-HELPER](https://github.com/JunzhouLiu/BILIBILI-HELPER)开源，其余的地方的代码均不是我提交的，可能是抄我的，借鉴我的，但绝对不是我发布的，出问题和我也没关系。 
-7. 我开源本工具的代码仅仅是技术分享，没有任何丝毫的盈利赚钱目的，我连赞赏都移除了（因为挂半个月压根没人给我赞赏），如果你非要给我打赏，那我就是网络乞丐，咱俩可没任何py交易啊。
-8. 本项目遵守[MIT License](https://github.com/JunzhouLiu/BILIBILI-HELPER/blob/main/LICENSE) ，请各位知悉。
+7. 我开源本工具的代码仅仅是技术分享，没有任何丝毫的盈利赚钱目的，如果你非要给我打赏/充电，那我就是网络乞丐，咱们不构成任何雇佣，购买关系的交易。
+8. 本项目不会增加类似于自动转发抽奖，秒杀，下载版权受限视频等侵犯UP主/B站权益的功能，开发这个应用的目的是单纯的技术分享。下游分支开发者/使用者也请不要滥用相关功能。
+9. 本项目欢迎其他开发者参与贡献，基于本工具的二次开发，使用其他语言重写都没有什么问题，能在技术上给你带来帮助和收获就很好.
+10. 本项目遵守[MIT License](https://github.com/JunzhouLiu/BILIBILI-HELPER/blob/main/LICENSE) ，请各位知悉。
 
 
-# 致谢
-感谢 JetBrains 对本项目的支持。
-
-[![JetBrains](docs/IMG/jetbrains.svg)](https://www.jetbrains.com/?from=BILIBILI-HELPER)
-
-# API 参考列表
+## API 参考列表
 
 - [SocialSisterYi/bilibili-API-collect](https://github.com/SocialSisterYi/bilibili-API-collect)
 - [happy888888/BiliExp](https://github.com/happy888888/BiliExp)
 
-# 基于本项目的衍生项目
+## 基于本项目的衍生项目
 
 - **基于本项目的docker封装项目：[SuperNG6/docker-bilibili-helper](https://github.com/SuperNG6/docker-bilibili-helper)**
 
@@ -312,6 +282,14 @@ userAgent可选参数列表
 
 - **基于本项目的k8s项目：[yangyang0507/k8s-bilibili-helper](https://github.com/yangyang0507/k8s-bilibili-helper)**
 
+## 致谢
+感谢 JetBrains 对本项目的支持。
 
-# License
+[![JetBrains](docs/IMG/jetbrains.svg)](https://www.jetbrains.com/?from=BILIBILI-HELPER) 
+
+## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FJunzhouLiu%2FBILIBILI-HELPER.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FJunzhouLiu%2FBILIBILI-HELPER?ref=badge_large)
+
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/JunzhouLiu/BILIBILI-HELPER.svg)](https://starchart.cc/JunzhouLiu/BILIBILI-HELPER)

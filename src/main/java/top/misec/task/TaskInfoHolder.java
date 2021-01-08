@@ -18,7 +18,7 @@ public class TaskInfoHolder {
 
     static Logger logger = (Logger) LogManager.getLogger(TaskInfoHolder.class.getName());
 
-    public static final String statusCodeStr = "code";
+    public static final String STATUS_CODE_STR = "code";
     public static Data userInfo = null;
     public static GetVideoId getVideoId = new GetVideoId();
 
