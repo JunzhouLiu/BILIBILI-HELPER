@@ -11,7 +11,7 @@ import top.misec.utils.HttpUtil;
 import java.util.Random;
 
 import static top.misec.task.TaskInfoHolder.getVideoId;
-import static top.misec.task.TaskInfoHolder.statusCodeStr;
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
 
 /**
  * 投币任务
@@ -117,7 +117,7 @@ public class CoinAdd implements Task {
         //判断曾经是否对此av投币过
         if (!isCoin(bvid)) {
             JsonObject jsonObject = HttpUtil.doPost(ApiList.CoinAdd, requestBody);
-            if (jsonObject.get(statusCodeStr).getAsInt() == 0) {
+            if (jsonObject.get(STATUS_CODE_STR).getAsInt() == 0) {
 
                 log.info("为 " + videoTitle + " 投币成功");
                 return true;
