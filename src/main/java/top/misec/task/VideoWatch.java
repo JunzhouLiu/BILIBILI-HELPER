@@ -12,7 +12,7 @@ import java.util.Random;
 
 import static top.misec.task.DailyTask.getDailyTaskStatus;
 import static top.misec.task.TaskInfoHolder.getVideoId;
-import static top.misec.task.TaskInfoHolder.statusCodeStr;
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
 
 /**
  * 观看分享视频
@@ -38,7 +38,7 @@ public class VideoWatch implements Task{
                     + "&played_time=" + playedTime;
             JsonObject resultJson = HttpUtil.doPost(ApiList.videoHeartbeat, postBody);
             String videoTitle = oftenAPI.videoTitle(bvid);
-            int responseCode = resultJson.get(statusCodeStr).getAsInt();
+            int responseCode = resultJson.get(STATUS_CODE_STR).getAsInt();
             if (responseCode == 0) {
                 logger.info("视频: " + videoTitle + "播放成功,已观看到第" + playedTime + "秒");
             } else {
@@ -69,7 +69,7 @@ public class VideoWatch implements Task{
 
         String videoTitle = oftenAPI.videoTitle(bvid);
 
-        if (result.get(statusCodeStr).getAsInt() == 0) {
+        if (result.get(STATUS_CODE_STR).getAsInt() == 0) {
             logger.info("视频: " + videoTitle + " 分享成功");
         } else {
             logger.debug("视频分享失败，原因: " + result.get("message").getAsString());
