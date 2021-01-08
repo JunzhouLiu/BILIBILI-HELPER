@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import static top.misec.task.TaskInfoHolder.queryVipStatusType;
-import static top.misec.task.TaskInfoHolder.statusCodeStr;
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
 
 /**
  * 漫画权益领取
@@ -56,7 +56,7 @@ public class GetMangaVipReward implements Task {
         String requestBody = "{\"reason_id\":" + reasonId + "}";
         //注意参数构造格式为json，不知道需不需要重载下面的Post函数改请求头
         JsonObject jsonObject = HttpUtil.doPost(ApiList.mangaGetVipReward, requestBody);
-        if (jsonObject.get(statusCodeStr).getAsInt() == 0) {
+        if (jsonObject.get(STATUS_CODE_STR).getAsInt() == 0) {
             //@happy888888:好像也可以getAsString或,getAsShort
             //@JunzhouLiu:Int比较好判断
             logger.info("大会员成功领取" + jsonObject.get("data").getAsJsonObject().get("amount").getAsInt() + "张漫读劵");

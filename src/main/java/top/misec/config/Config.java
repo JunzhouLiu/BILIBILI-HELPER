@@ -45,12 +45,8 @@ public class Config {
      */
     private int coinAddPriority;
     private String userAgent;
-    private int skipDailyTask;
+    private boolean skipDailyTask;
     private String chargeForLove;
-
-    public int getSkipDailyTask() {
-        return skipDailyTask;
-    }
 
 
     private static Config CONFIG = new Config();
