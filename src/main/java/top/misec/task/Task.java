@@ -12,6 +12,8 @@ public interface Task {
     void run();
 
     /**
+     * 任务名
+     *
      * @return taskName
      */
     String getName();
