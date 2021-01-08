@@ -94,7 +94,7 @@ public class ChargeMe implements Task {
 
             JsonObject jsonObject = HttpUtil.doPost(ApiList.autoCharge, requestBody);
 
-            int resultCode = jsonObject.get(statusCodeStr).getAsInt();
+            int resultCode = jsonObject.get(STATUS_CODE_STR).getAsInt();
             if (resultCode == 0) {
                 JsonObject dataJson = jsonObject.get("data").getAsJsonObject();
                 int statusCode = dataJson.get("status").getAsInt();
@@ -128,7 +128,7 @@ public class ChargeMe implements Task {
                 + "&csrf=" + Verify.getInstance().getBiliJct();
         JsonObject jsonObject = HttpUtil.doPost(ApiList.chargeComment, requestBody);
 
-        if (jsonObject.get(statusCodeStr).getAsInt() == 0) {
+        if (jsonObject.get(STATUS_CODE_STR).getAsInt() == 0) {
             logger.info("充电留言成功");
         } else {
             logger.debug(jsonObject.get("message").getAsString());
