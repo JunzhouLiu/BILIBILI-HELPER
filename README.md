@@ -79,17 +79,19 @@ BILIBILI-HELPER
 
 ![图示](docs/IMG/20201012001307.png)
 
-3. **点击项目 Settings -> Secrets -> New Secrets 添加以下 3 个 Secrets。**
+3. **点击项目 Settings -> Secrets -> New Secrets 添加以下 3 个 Secrets，其中server酱微信推送的sckey可参阅[微信订阅通知](#微信订阅通知)**
 
-| Name       | Value            |
-| ---------- | ---------------- |
-| DEDEUSERID | 从 Cookie 中获取 |
-| SESSDATA   | 从 Cookie 中获取 |
-| BILI_JCT   | 从 Cookie 中获取 |
+| Name          | Value               |
+| ------------- | ------------------- |
+| DEDEUSERID    | 从 Cookie 中获取    |
+| SESSDATA      | 从 Cookie 中获取    |
+| BILI_JCT      | 从 Cookie 中获取    |
+| SERVERPUSHKEY | server酱推送的sckey |
+
 
 ![图示](docs/IMG/20201013210000.png)
 
-4. **开启 Actions 并触发每日自动执行**
+1. **开启 Actions 并触发每日自动执行**
 
 **Github Actions 默认处于关闭状态，还大家请手动开启 Actions ，执行一次工作流，验证是否可以正常工作。**
 
