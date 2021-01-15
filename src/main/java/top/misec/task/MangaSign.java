@@ -1,6 +1,7 @@
 package top.misec.task;
 
 import com.google.gson.JsonObject;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import top.misec.apiquery.ApiList;
@@ -14,9 +15,9 @@ import top.misec.utils.HttpUtil;
  * @since 2020-11-22 5:22
  */
 
+@Log4j2
 public class MangaSign implements Task {
 
-    static Logger logger = (Logger) LogManager.getLogger(MangaSign.class.getName());
 
     private final String taskName = "漫画签到";
 
@@ -28,9 +29,9 @@ public class MangaSign implements Task {
         JsonObject result = HttpUtil.doPost(ApiList.Manga, requestBody);
 
         if (result == null) {
-            logger.info("哔哩哔哩漫画已经签到过了");
+            log.info("哔哩哔哩漫画已经签到过了");
         } else {
-            logger.info("完成漫画签到");
+            log.info("完成漫画签到");
         }
     }
 

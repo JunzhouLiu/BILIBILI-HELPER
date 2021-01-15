@@ -2,6 +2,9 @@ package top.misec.utils;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -25,9 +28,9 @@ import java.io.IOException;
  * @author Junzhou Liu
  * @create 2020/10/11 4:03
  */
-public class HttpUtil {
 
-    static Logger logger = (Logger) LogManager.getLogger(HttpUtil.class.getName());
+@Log4j2
+public class HttpUtil {
 
     private static String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
             "(KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36 Edg/85.0.564.70";
@@ -102,13 +105,13 @@ public class HttpUtil {
                     String result = EntityUtils.toString(entity);
                     resultJson = new JsonParser().parse(result).getAsJsonObject();
                 } else {
-                    logger.debug(httpPostResponse.getStatusLine().toString());
+                    log.debug(httpPostResponse.getStatusLine().toString());
                 }
             } else {
-                logger.debug("httpPostResponse null");
+                log.debug("httpPostResponse null");
             }
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e);
             e.printStackTrace();
         } finally {
             // 关闭资源
@@ -146,9 +149,9 @@ public class HttpUtil {
                 String result = EntityUtils.toString(entity);
                 resultJson = new JsonParser().parse(result).getAsJsonObject();
             } else if (responseStatusCode == 412) {
-                logger.info("出了一些问题，请在自定义配置中更换UA");
+                log.info("出了一些问题，请在自定义配置中更换UA");
             } else {
-                logger.debug(httpGetResponse.getStatusLine().toString());
+                log.debug(httpGetResponse.getStatusLine().toString());
             }
         } catch (Exception e) {
             e.printStackTrace();
