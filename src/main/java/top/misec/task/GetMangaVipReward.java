@@ -51,8 +51,6 @@ public class GetMangaVipReward implements Task {
             return;
         }
 
-
-
         String requestBody = "{\"reason_id\":" + reasonId + "}";
         //注意参数构造格式为json，不知道需不需要重载下面的Post函数改请求头
         JsonObject jsonObject = HttpUtil.doPost(ApiList.mangaGetVipReward, requestBody);
