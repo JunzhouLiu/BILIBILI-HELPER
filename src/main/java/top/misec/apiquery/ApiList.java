@@ -74,4 +74,9 @@ public class ApiList {
     public static String queryDynamicNew = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/dynamic_new";
 
     public static String videoView = "https://api.bilibili.com/x/web-interface/view";
+
+    /**
+     *
+     */
+    public static String mangaRead = "https://manga.bilibili.com/twirp/bookshelf.v1.Bookshelf/AddHistory";
 }

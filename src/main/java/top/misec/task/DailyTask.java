@@ -22,7 +22,7 @@ import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
 public class DailyTask {
 
     private final List<Task> dailyTasks =
-            Arrays.asList(new UserCheck(), new VideoWatch(), new MangaSign(), new CoinAdd(), new Silver2coin(), new LiveCheckin(), new ChargeMe(), new GetMangaVipReward());
+            Arrays.asList(new UserCheck(), new VideoWatch(), new MangaSign(), new MangaRead(), new CoinAdd(), new Silver2coin(), new LiveCheckin(), new ChargeMe(), new GetMangaVipReward());
 
     public void doDailyTask() {
         try {
