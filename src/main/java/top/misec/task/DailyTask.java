@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Random;
 
 import static top.misec.task.TaskInfoHolder.calculateUpgradeDays;
-import static top.misec.task.TaskInfoHolder.statusCodeStr;
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
 
 /**
  * @author @JunzhouLiu @Kurenai
@@ -22,7 +22,7 @@ import static top.misec.task.TaskInfoHolder.statusCodeStr;
 public class DailyTask {
 
     private final List<Task> dailyTasks =
-            Arrays.asList(new UserCheck(), new VideoWatch(), new MangaSign(), new CoinAdd(), new Silver2coin(), new LiveCheckin(), new ChargeMe(), new GetMangaVipReward());
+            Arrays.asList(new UserCheck(), new VideoWatch(), new MangaSign(), new MangaRead(), new CoinAdd(), new Silver2coin(), new LiveCheckin(), new ChargeMe(), new GetMangaVipReward());
 
     public void doDailyTask() {
         try {
@@ -31,7 +31,7 @@ public class DailyTask {
             for (Task task : dailyTasks) {
                 log.info("-----{}开始-----", task.getName());
                 task.run();
-                log.info("-----任务结束-----\n");
+                log.info("-----{}结束-----\n", task.getName());
                 taskSuspend();
             }
             log.info("本日任务已全部执行完毕");
@@ -50,7 +50,7 @@ public class DailyTask {
      */
     public static JsonObject getDailyTaskStatus() {
         JsonObject jsonObject = HttpUtil.doGet(ApiList.reward);
-        int responseCode = jsonObject.get(statusCodeStr).getAsInt();
+        int responseCode = jsonObject.get(STATUS_CODE_STR).getAsInt();
         if (responseCode == 0) {
             log.info("请求本日任务完成状态成功");
             return jsonObject.get("data").getAsJsonObject();
