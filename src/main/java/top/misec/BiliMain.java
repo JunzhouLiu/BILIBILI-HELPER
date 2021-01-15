@@ -32,7 +32,7 @@ public class BiliMain {
         VersionInfo.printVersionInfo();
         //每日任务65经验
         Config.getInstance().configInit();
-        if (!Config.getInstance().isSkipDailyTask()) {
+        if (Config.getInstance().getSkipDailyTask() == 0) {
             DailyTask dailyTask = new DailyTask();
             dailyTask.doDailyTask();
         } else {
