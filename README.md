@@ -28,7 +28,7 @@ BILIBILI-HELPER
 ## 功能列表
 
 * [x] 每天上午 9 点 10 分自动开始任务。*【运行时间可自定义】*
-* [x] 哔哩哔哩漫画每日自动签到 。
+* [x] 哔哩哔哩漫画每日自动签到，自动阅读1章节 。
 * [x] 每日自动从热门视频中随机观看 1 个视频，分享一个视频。
 * [x] 每日从热门视频中选取 5 个进行智能投币 *【如果投币不能获得经验了，则不会投币】*
 * [x] 投币支持下次一定啦，可自定义每日投币数量。*【如果检测到你已经投过币了，则不会投币】*
@@ -179,10 +179,25 @@ java -jar /home/BILIBILI-HELPER.jar DEDEUSERID SESSDATA BILI_JCT SCKEY >> /var/l
 
 **Actions任务配置文件位于 `src/main/resources/config.json`**
 
+配置文件示例：
+```json
+{
+  "numberOfCoins": 5,
+  "selectLike": 0,
+  "monthEndAutoCharge": true,
+  "chargeForLove": "0",
+  "devicePlatform": "ios",
+  "coinAddPriority": 1,
+  "skipDailyTask": false,
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15"
+}
+
+```
+
 **Windows/Linux 用户使用jar包时，`release`包中会包含一份`config.json`配置文件，只需将其和`BILIBILI-HELP.jar`放在同一目录即可，执行时优先加载外部配置文件**
 
 
-参数示意
+配置文件参数示意
 
 | Key                | Value             | 说明                                                                                                                                                                                                                                               |
 | ------------------ | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -195,20 +210,6 @@ java -jar /home/BILIBILI-HELPER.jar DEDEUSERID SESSDATA BILI_JCT SCKEY >> /var/l
 | userAgent          | 浏览器UA          | 用户可根据部署平台配置，可根据userAgent参数列表自由选取，如果触发了HTTP/1.1 412 Precondition Failed也请修改UA                                                                                                                                      |
 | skipDailyTask      | [false,true]      | 是否跳过每日任务，默认`false`,如果需要跳过每日任务，请改为true                                                                                                                                                                                     |
 
-配置文件示例：
-```json
-{
-  "numberOfCoins": 5,
-  "selectLike": 0,
-  "monthEndAutoCharge": true,
-  "chargeForLove": "0",
-  "devicePlatform": "ios",
-  "coinAddPriority": 1,
-  "skipDailyTask": 0,
-  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15"
-}
-
-```
 
 userAgent可选参数列表
 
