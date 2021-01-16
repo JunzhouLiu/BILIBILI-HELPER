@@ -34,6 +34,16 @@ public class Config {
     private boolean monthEndAutoCharge;
 
     /**
+     * 自动打赏快过期礼物[false,true]
+     */
+    private boolean gift;
+
+    /**
+     * 打赏快过期礼物对象
+     */
+    private String uplive;
+
+    /**
      * 执行客户端操作时的平台 [ios,android]
      */
     private String devicePlatform;
