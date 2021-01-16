@@ -1,28 +1,29 @@
 package top.misec.utils;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import top.misec.login.Verify;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Junzhou Liu
@@ -74,12 +75,14 @@ public class HttpUtil {
           setHeader：设置一个请求头字段，有则覆盖，无则添加。
           有什么好的方式判断key1=value和{"key1":"value"}
          */
-        if (requestBody.startsWith("{")) {
-            //java的正则表达式咋写......
-            httpPost.setHeader("Content-Type", "application/json");
-        } else {
-            httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
-        }
+//        if (requestBody.startsWith("{")) {
+//            //java的正则表达式咋写......
+//            httpPost.setHeader("Content-Type", "application/json");
+//        } else {
+//            httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+//        }
+        httpPost.setHeader("accept", "application/json, text/plain, */*");
+        httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
         httpPost.setHeader("Referer", "https://www.bilibili.com/");
         httpPost.setHeader("Connection", "keep-alive");
         httpPost.setHeader("User-Agent", userAgent);
@@ -118,6 +121,15 @@ public class HttpUtil {
     }
 
     public static JsonObject doGet(String url) {
+        return doGet(url, new JsonObject());
+    }
+    private static NameValuePair getNameValuePair(Map.Entry<String, JsonElement> entry) {
+        return new BasicNameValuePair(entry.getKey(), Optional.ofNullable(entry.getValue()).map(Object::toString).orElse(null));
+    }
+    public static NameValuePair[] getPairList(JsonObject pJson) {
+        return pJson.entrySet().parallelStream().map(HttpUtil::getNameValuePair).toArray(NameValuePair[]::new);
+    }
+    public static JsonObject doGet(String url, JsonObject pJson) {
         CloseableHttpClient httpClient = null;
         CloseableHttpResponse httpGetResponse = null;
         JsonObject resultJson = null;
@@ -131,6 +143,9 @@ public class HttpUtil {
             httpGet.setHeader("Connection", "keep-alive");
             httpGet.setHeader("User-Agent", userAgent);
             httpGet.setHeader("Cookie", verify.getVerify());
+            for(NameValuePair pair : getPairList(pJson)) {
+                httpGet.setHeader(pair.getName(), pair.getValue());
+            }
             // 为httpGet实例设置配置
             httpGet.setConfig(REQUEST_CONFIG);
 

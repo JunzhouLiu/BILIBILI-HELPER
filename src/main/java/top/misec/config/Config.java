@@ -34,6 +34,17 @@ public class Config {
     private boolean monthEndAutoCharge;
 
     /**
+     * 自动打赏快过期礼物[false,true]
+     */
+    private boolean giveGift;
+
+    /**
+     * 打赏快过期礼物对象，为http://live.bilibili.com/后的数字
+     * 填0表示随机打赏。
+     */
+    private String upLive;
+
+    /**
      * 执行客户端操作时的平台 [ios,android]
      */
     private String devicePlatform;
