@@ -1,6 +1,7 @@
 package top.misec.task;
 
 import com.google.gson.JsonObject;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import top.misec.apiquery.ApiList;
@@ -10,7 +11,7 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import static top.misec.task.TaskInfoHolder.queryVipStatusType;
-import static top.misec.task.TaskInfoHolder.statusCodeStr;
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
 
 /**
  * 漫画权益领取
@@ -18,10 +19,8 @@ import static top.misec.task.TaskInfoHolder.statusCodeStr;
  * @author @JunzhouLiu @Kurenai @happy888888
  * @since 2020-11-22 5:48
  */
-
+@Log4j2
 public class GetMangaVipReward implements Task {
-
-    static Logger logger = (Logger) LogManager.getLogger(GetMangaVipReward.class.getName());
 
     private final String taskName = "漫画权益领取";
     /**
@@ -47,21 +46,19 @@ public class GetMangaVipReward implements Task {
         //@JunzhouLiu: fixed query_vipStatusType()现在可以查询会员状态，以及会员类型了 2020-10-15
         if (day != 1 || queryVipStatusType() == 0) {
             //一个月执行一次就行，跟几号没关系，由B站策略决定(有可能改领取时间)
-            logger.info("本日非执行日期");
+            log.info("本日非执行日期");
             return;
         }
-
-
 
         String requestBody = "{\"reason_id\":" + reasonId + "}";
         //注意参数构造格式为json，不知道需不需要重载下面的Post函数改请求头
         JsonObject jsonObject = HttpUtil.doPost(ApiList.mangaGetVipReward, requestBody);
-        if (jsonObject.get(statusCodeStr).getAsInt() == 0) {
+        if (jsonObject.get(STATUS_CODE_STR).getAsInt() == 0) {
             //@happy888888:好像也可以getAsString或,getAsShort
             //@JunzhouLiu:Int比较好判断
-            logger.info("大会员成功领取" + jsonObject.get("data").getAsJsonObject().get("amount").getAsInt() + "张漫读劵");
+            log.info("大会员成功领取" + jsonObject.get("data").getAsJsonObject().get("amount").getAsInt() + "张漫读劵");
         } else {
-            logger.info("大会员领取漫读劵失败，原因为:" + jsonObject.get("msg").getAsString());
+            log.info("大会员领取漫读劵失败，原因为:" + jsonObject.get("msg").getAsString());
         }
     }
 
