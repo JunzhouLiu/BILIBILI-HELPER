@@ -19,7 +19,6 @@ import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
  * @author @JunzhouLiu @Kurenai
  * @since 2020-11-22 5:28
  */
-
 @Log4j2
 public class CoinAdd implements Task {
 

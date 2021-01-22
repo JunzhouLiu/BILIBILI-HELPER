@@ -1,5 +1,5 @@
 #!/bin/bash
-version="1.3.1"
+version="1.3.3"
 
 function installJava(){
   command -v apt >/dev/null 2>&1 && (apt-get update; apt-get install openjdk-8-jdk -y; return;)
