@@ -32,6 +32,7 @@ public class UnitTest {
         //初始化配置
         Config.getInstance().configInit();
         new GiveGift().run();
+        ServerPush.doServerPush();
 
     }
 }
