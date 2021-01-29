@@ -53,8 +53,11 @@ public class GetVideoId {
     }
 
     /**
-     * 从阻塞队列中获取bv号
+     * 暂未启用的方法
+     *
+     * @return 从阻塞队列中获取bv号
      */
+    @ExtensionMethod
     public String getFollowUpRecentVideoBvid() {
         return followUpVideoQueue.peek() == null ? getRegionRankingVideoBvid() : followUpVideoQueue.poll();
     }
