@@ -253,10 +253,15 @@ userAgent可选参数列表
 ### Telegram订阅执行结果
 
 1.在Telegram中添加BotFather这个账号，然后依次发送/start /newbot 按照提示即可创建一个新的机器人。记下来给你生成的token。
+
 2.搜索刚刚创建的机器人的名字，并给它发送一条消息。
+
 *特别注意：需要先与机器人之间创建会话，机器人才能下发消息，否则机器人无法主动发送消息，切记！
+
 3.在Telegram中搜索userinfobot，并给它发送一条消息，它会返回给你chatid。
+
 4.在Github Secrets中删除SERVERPUSHKEY，添加TELEGRAMBOTTOKEN，TELEGRAMCHATID。
+
 
 
 ## 更新和帮助
