@@ -2,12 +2,11 @@ package top.misec.task;
 
 import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
 import top.misec.apiquery.ApiList;
 import top.misec.apiquery.oftenAPI;
 import top.misec.config.Config;
 import top.misec.login.Verify;
+import top.misec.utils.HelpUtil;
 import top.misec.utils.HttpUtil;
 
 import java.util.Calendar;
@@ -42,11 +41,6 @@ public class ChargeMe implements Task {
         //大会员类型
         int vipType = queryVipStatusType();
 
-        if (day == 1 || day % 3 == 0 && vipType == 2) {
-            oftenAPI.vipPrivilege(1);
-            oftenAPI.vipPrivilege(2);
-        }
-
         if (vipType == 0 || vipType == 1) {
             log.info("普通会员和月度大会员每月不赠送B币券，所以没法给自己充电哦");
             return;
@@ -61,12 +55,10 @@ public class ChargeMe implements Task {
             String userName = oftenAPI.queryUserName(configChargeUserId);
             if ("1".equals(userName)) {
                 userId = Verify.getInstance().getUserId();
+                log.info("充电对象已置为你本人");
             } else {
                 userId = Config.getInstance().getChargeForLove();
-                int s1 = userName.length() / 2, s2 = (s1 + 1) / 2;
-                userName = userName.substring(0, s2) + String.join("", Collections.nCopies(s1, "*")) +
-                        userName.substring(s1 + s2);
-                log.info("你配置的充电对象非本人而是: {}", userName);
+                log.info("你配置的充电对象非本人而是: {}", HelpUtil.userNameEncode(userName));
             }
         } else {
             log.info("你配置的充电对象是你本人没错了！");

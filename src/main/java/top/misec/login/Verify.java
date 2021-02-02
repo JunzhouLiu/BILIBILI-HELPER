@@ -1,6 +1,5 @@
 package top.misec.login;
 
-import lombok.extern.log4j.Log4j2;
 
 /**
  * @author Junzhou Liu

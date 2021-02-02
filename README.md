@@ -40,7 +40,7 @@ BILIBILI-HELPER
 * [x] 投币策略更新可配置投币喜好。*【可配置优先给关注的up投币】*
 * [x] 自动送出即将过期的礼物。 *【默认开启，未更新到新版本的用户默认关闭】*
   
-[点此查看更新日志](https://github.com/JunzhouLiu/BILIBILI-HELPER/blob/main/SECURITY.md)
+[点此查看更新日志](https://github.com/JunzhouLiu/BILIBILI-HELPER/releases)
 
 [点击快速开始使用](#使用说明)
 
@@ -185,6 +185,7 @@ java -jar /home/BILIBILI-HELPER.jar DEDEUSERID SESSDATA BILI_JCT SCKEY >> /var/l
 ```json
 {
   "numberOfCoins": 5,
+  "reserveCoins": 50,
   "selectLike": 0,
   "monthEndAutoCharge": true,
   "giveGift": true,
@@ -202,19 +203,22 @@ java -jar /home/BILIBILI-HELPER.jar DEDEUSERID SESSDATA BILI_JCT SCKEY >> /var/l
 
 配置文件参数示意
 
-| Key                | Value             | 说明                                                                                                                                                                                                                                               |
-| ------------------ | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| numberOfCoins      | [0,5]             | 每日投币数量,默认 5 ,为0时则不投币                                                                                                                                                                                                                 |
-| selectLike         | [0,1]             | 投币时是否点赞，默认 0, 0：否 1：是                                                                                                                                                                                                                |
-| monthEndAutoCharge | [false,true]      | 年度大会员月底是否用 B币券给自己充电，默认 `true`，即充电对象是你本人。                                                                                                                                                                            |
-| giveGift           | [false,true]      | 直播送出即将过期的礼物，默认开启，如需关闭请改为false                                                                                                                                                                                              |
-| upLive             | [0,送礼up主的uid] | 直播送出即将过期的礼物，指定up主，为0时则随随机选取一个up主                                                                                                                                                                                        |
-| chargeForLove      | [0,充电对象的uid] | 给指定up主充电，值为0或者充电对象的uid，默认为0，即给自己充电。</br>如果你没有上传过视频并开启充电计划，充电会失败，B币券会浪费。此时建议配置为给指定的up主充电。</br> 欢迎给即将秃头的我充电 uid：[14602398](https://space.bilibili.com/14602398) |
-| devicePlatform     | [ios,android]     | 手机端漫画签到时的平台，建议选择你设备的平台 ，默认 `ios`                                                                                                                                                                                          |
-| coinAddPriority    | [0,1]             | 0：优先给热榜视频投币，1：优先给关注的up投币                                                                                                                                                                                                       |
-| userAgent          | 浏览器UA          | 用户可根据部署平台配置，可根据userAgent参数列表自由选取，如果触发了HTTP/1.1 412 Precondition Failed也请修改UA                                                                                                                                      |
-| skipDailyTask      | [false,true]      | 是否跳过每日任务，默认`false`,如果需要跳过每日任务，请改为true                                                                                                                                                                                     |
+| Key                | Value             | 说明                                                                    |
+| ------------------ | ----------------- | ----------------------------------------------------------------------- |
+| numberOfCoins      | [0,5]             | 每日投币数量,默认 5 ,为0时则不投币                                      |
+| reserveCoins       | [0,4000]          | 预留的硬币数，当硬币余额小于这个值时，不会进行投币任务，默认值为50      |
+| selectLike         | [0,1]             | 投币时是否点赞，默认 0, 0：否 1：是                                     |
+| monthEndAutoCharge | [false,true]      | 年度大会员月底是否用 B币券给自己充电，默认 `true`，即充电对象是你本人。 |
+| giveGift           | [false,true]      | 直播送出即将过期的礼物，默认开启，如需关闭请改为false                   |
+| upLive             | [0,送礼up主的uid] | 直播送出即将过期的礼物，指定up主，为0时则随随机选取一个up主             |
+| chargeForLove      | [0,充电对象的uid] | 给指定up主充电，值为0或者充电对象的uid，默认为0，即给自己充电。         |
+| devicePlatform     | [ios,android]     | 手机端漫画签到时的平台，建议选择你设备的平台 ，默认 `ios`               |
+| coinAddPriority    | [0,1]             | 0：优先给热榜视频投币，1：优先给关注的up投币                            |
+| userAgent          | 浏览器UA          | 用户可根据部署平台配置，可根据userAgent参数列表自由选取                 |
+| skipDailyTask      | [false,true]      | 是否跳过每日任务，默认`false`,如果需要跳过每日任务，请改为true          |
 
+**tips:如果你没有上传过视频并开启充电计划，充电会失败，B币券会浪费。此时建议配置为给指定的up主充电。欢迎给即将秃头的我充电
+uid：[14602398](https://space.bilibili.com/14602398) **
 
 userAgent可选参数列表
 

@@ -2,15 +2,10 @@ package top.misec.task;
 
 import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
 import top.misec.apiquery.ApiList;
 import top.misec.login.ServerVerify;
 import top.misec.utils.HttpUtil;
 import top.misec.utils.LoadFileResource;
-
-import javax.net.ssl.SSLContext;
-import java.util.Arrays;
 
 /**
  * @author @JunzhouLiu @Kurenai
@@ -30,19 +25,22 @@ public class ServerPush {
         String url = ApiList.ServerPush + pushToken + ".send";
 
         String pushBody = "text=" + text + "&desp=" + desp;
-
-        try {
-            JsonObject jsonObject = HttpUtil.doPost(url, pushBody);
-            if (jsonObject != null && "success".equals(jsonObject.get("errmsg").getAsString())) {
-                log.info("任务状态推送成功");
-            } else {
-                log.info(Arrays.toString(SSLContext.getDefault().getSupportedSSLParameters().getProtocols()));
-                log.info(Arrays.toString(SSLContext.getDefault().createSSLEngine().getEnabledProtocols()));
-                log.info("任务状态推送失败");
+        int retryTimes = 3;
+        while (retryTimes > 0) {
+            retryTimes--;
+            try {
+                JsonObject jsonObject = HttpUtil.doPost(url, pushBody);
+                if (jsonObject != null && "success".equals(jsonObject.get("errmsg").getAsString())) {
+                    log.info("任务状态推送成功");
+                    break;
+                } else {
+                    log.info("任务状态推送失败，开始第{}次重试", 3 - retryTimes);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+
 
     }
 

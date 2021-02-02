@@ -33,6 +33,9 @@ public class CoinAdd implements Task {
         final int maxNumberOfCoins = 5;
         //获取自定义配置投币数 配置写在src/main/resources/config.json中
         int setCoin = Config.getInstance().getNumberOfCoins();
+        // 预留硬币数
+        int reserveCoins = Config.getInstance().getReserveCoins();
+
         //已投的硬币
         int useCoin = TaskInfoHolder.expConfirm();
         //投币策略
@@ -52,8 +55,10 @@ public class CoinAdd implements Task {
         Double beforeAddCoinBalance = oftenAPI.getCoinBalance();
         int coinBalance = (int) Math.floor(beforeAddCoinBalance);
 
+
         if (needCoins <= 0) {
             log.info("已完成设定的投币任务，今日无需再投币了");
+            // return;
         } else {
             log.info("投币数调整为: " + needCoins + "枚");
             //投币数大于余额时，按余额投
@@ -62,6 +67,12 @@ public class CoinAdd implements Task {
                 log.info("投币数调整为: " + coinBalance);
                 needCoins = coinBalance;
             }
+        }
+
+        if (coinBalance < reserveCoins) {
+            log.info("剩余硬币数为{},低于预留硬币数{},今日不再投币", beforeAddCoinBalance, reserveCoins);
+            log.info("tips: 当硬币余额少于你配置的预留硬币数时，则会暂停当日投币任务");
+            return;
         }
 
         log.info("投币前余额为 : " + beforeAddCoinBalance);

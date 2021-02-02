@@ -3,7 +3,6 @@ package top.misec.task;
 import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
 import top.misec.apiquery.ApiList;
 import top.misec.pojo.userinfobean.Data;
 import top.misec.utils.HttpUtil;
@@ -30,7 +29,7 @@ public class TaskInfoHolder {
         int todayExp = 15;
         todayExp += expConfirm() * 10;
         log.info("今日获得的总经验值为: " + todayExp);
-        
+
         int needExp = userInfo.getLevel_info().getNext_exp_asInt()
                 - userInfo.getLevel_info().getCurrent_exp();
 
@@ -55,12 +54,17 @@ public class TaskInfoHolder {
 
 
     /**
+     * 此功能依赖UserCheck
+     *
      * @return 返回会员类型
      * 0:无会员（会员过期，当前不是会员）
      * 1:月会员
      * 2:年会员
      */
     public static int queryVipStatusType() {
+        if (userInfo == null) {
+            log.info("暂时无法查询会员状态，默认非大会员");
+        }
         if (userInfo != null && userInfo.getVipStatus() == 1) {
             //只有VipStatus为1的时候获取到VipType才是有效的。
             return userInfo.getVipType();

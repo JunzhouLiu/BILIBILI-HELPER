@@ -2,8 +2,6 @@ package top.misec.task;
 
 import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
 import top.misec.apiquery.ApiList;
 import top.misec.config.Config;
 import top.misec.utils.HttpUtil;
