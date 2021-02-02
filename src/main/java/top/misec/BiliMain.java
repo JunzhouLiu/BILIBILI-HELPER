@@ -24,9 +24,12 @@ public class BiliMain {
         //读取环境变量
         Verify.verifyInit(args[0], args[1], args[2]);
 
-        if (args.length > 3) {
+        if(args.length > 4){
+            ServerVerify.verifyInit(args[3], args[4]);
+        }else if (args.length > 3) {
             ServerVerify.verifyInit(args[3]);
         }
+
 
         VersionInfo.printVersionInfo();
         //每日任务65经验
