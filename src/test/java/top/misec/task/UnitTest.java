@@ -22,7 +22,9 @@ public class UnitTest {
         //读取环境变量
         Verify.verifyInit(args[0], args[1], args[2]);
 
-        if (args.length > 3) {
+        if(args.length > 4){
+            ServerVerify.verifyInit(args[3], args[4]);
+        }else if (args.length > 3) {
             ServerVerify.verifyInit(args[3]);
         }
 
@@ -31,7 +33,9 @@ public class UnitTest {
 
         //初始化配置
         Config.getInstance().configInit();
-        new GiveGift().run();
+
+        new UserCheck().run();
+        new CoinAdd().run();
 
     }
 }
