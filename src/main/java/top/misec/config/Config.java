@@ -2,8 +2,7 @@ package top.misec.config;
 
 import com.google.gson.Gson;
 import lombok.Data;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import lombok.extern.log4j.Log4j2;
 import top.misec.utils.HttpUtil;
 import top.misec.utils.LoadFileResource;
 
@@ -13,11 +12,9 @@ import top.misec.utils.LoadFileResource;
  * @author Junzhou Liu
  * @create 2020/10/13 17:11
  */
-
+@Log4j2
 @Data
 public class Config {
-
-    static Logger logger = (Logger) LogManager.getLogger(Config.class.getName());
 
     /**
      * 每日设定的投币数 [0,5]
@@ -35,6 +32,17 @@ public class Config {
     private boolean monthEndAutoCharge;
 
     /**
+     * 自动打赏快过期礼物[false,true]
+     */
+    private boolean giveGift;
+
+    /**
+     * 打赏快过期礼物对象，为http://live.bilibili.com/后的数字
+     * 填0表示随机打赏。
+     */
+    private String upLive;
+
+    /**
      * 执行客户端操作时的平台 [ios,android]
      */
     private String devicePlatform;
@@ -45,12 +53,9 @@ public class Config {
      */
     private int coinAddPriority;
     private String userAgent;
-    private int skipDailyTask;
+    private boolean skipDailyTask;
     private String chargeForLove;
-
-    public int getSkipDailyTask() {
-        return skipDailyTask;
-    }
+    private int reserveCoins;
 
 
     private static Config CONFIG = new Config();
@@ -86,14 +91,32 @@ public class Config {
         String outConfig = LoadFileResource.loadConfigJsonFromFile();
         if (outConfig != null) {
             configJson = outConfig;
-            logger.info("读取外部配置文件成功");
+            log.info("读取外部配置文件成功");
         } else {
-            configJson = LoadFileResource.loadJsonFromAsset("config.json");
-            logger.info("读取配置文件成功");
+            String temp = LoadFileResource.loadJsonFromAsset("config.json");
+            /**
+             *兼容旧配置文件
+             * "skipDailyTask": 0 -> "skipDailyTask": false
+             * "skipDailyTask": 1 -> "skipDailyTask": true
+             */
+            String target0 = "\"skipDailyTask\": 0";
+            String target1 = "\"skipDailyTask\": 1";
+            if (temp.contains(target0)) {
+                log.debug("兼容旧配置文件，skipDailyTask的值由0变更为false");
+                configJson = temp.replaceAll(target0, "\"skipDailyTask\": false");
+            } else if (temp.contains(target1)) {
+                log.debug("兼容旧配置文件，skipDailyTask的值由1变更为true");
+                configJson = temp.replaceAll(target1, "\"skipDailyTask\": true");
+            } else {
+                log.debug("使用的是最新格式的配置文件，无需执行兼容性转换");
+                configJson = temp;
+            }
+
+            log.info("读取配置文件成功");
         }
 
         Config.CONFIG = new Gson().fromJson(configJson, Config.class);
         HttpUtil.setUserAgent(Config.getInstance().getUserAgent());
-        logger.info(Config.getInstance().toString());
+        log.info(Config.getInstance().toString());
     }
 }
