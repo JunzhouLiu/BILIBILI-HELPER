@@ -1,12 +1,13 @@
 package top.misec.utils;
 
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
  * @author Junzhou Liu
  * @create 2020/10/11 20:49
  */
-public class AvBvConvert {
+public class HelpUtil {
     private static final String TABLE = "fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF";
     private static final HashMap<String, Integer> MP = new HashMap<>();
     private static final HashMap<Integer, String> MP2 = new HashMap<>();
@@ -54,4 +55,11 @@ public class AvBvConvert {
         }
         return sb.toString();
     }
+
+    public static String userNameEncode(String userName) {
+        int s1 = userName.length() / 2, s2 = (s1 + 1) / 2;
+        return userName.substring(0, s2) + String.join("", Collections.nCopies(s1, "*")) +
+                userName.substring(s1 + s2);
+    }
+
 }
