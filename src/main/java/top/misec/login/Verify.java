@@ -7,33 +7,23 @@ package top.misec.login;
  */
 public class Verify {
 
-    private static String userId = "";
-    private static String sessData = "";
-    private static String biliJct = "";
+    private String userId;
+    private String sessData;
+    private String biliJct;
+    // 单例
+    private volatile static Verify instance;
 
-
-    private final static Verify VERIFY = new Verify();
-
-    public Verify() {
-
-    }
-
-    /**
-     * Cookies信息 从浏览器获取
-     *
-     * @param userId   uid
-     * @param sessData sessData
-     * @param biliJct  biliJct or CSRF
-     */
-    public static void verifyInit(String userId, String sessData, String biliJct) {
-        Verify.userId = userId;
-        Verify.sessData = sessData;
-        Verify.biliJct = biliJct;
-    }
-
+    private Verify() {}
 
     public static Verify getInstance() {
-        return VERIFY;
+        if (instance == null) {
+            synchronized (Verify.class) {
+                if (instance == null) {
+                    instance = new Verify();
+                }
+            }
+        }
+        return instance;
     }
 
     public String getUserId() {
@@ -48,7 +38,19 @@ public class Verify {
         return biliJct;
     }
 
-    public String getVerify() {
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setSessData(String sessData) {
+        this.sessData = sessData;
+    }
+
+    public void setBiliJct(String biliJct) {
+        this.biliJct = biliJct;
+    }
+
+    public String toCookieVal() {
         return "bili_jct=" + getBiliJct() + ";SESSDATA=" + getSessData() + ";DedeUserID=" + getUserId() + ";";
     }
 }

@@ -11,14 +11,9 @@ public class HelpUtil {
     private static final String TABLE = "fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF";
     private static final HashMap<String, Integer> MP = new HashMap<>();
     private static final HashMap<Integer, String> MP2 = new HashMap<>();
-    static int[] ss = {11, 10, 3, 8, 4, 6, 2, 9, 5, 7};
-    static long xor = 177451812;
-    static long add = 8728348608L;
-
-    public static void main(String[] args) {
-
-    }
-
+    static final int[] ss = {11, 10, 3, 8, 4, 6, 2, 9, 5, 7};
+    static final long xor = 177451812;
+    static final long add = 8728348608L;
 
     public static long power(int a, int b) {
         long power = 1;
@@ -55,6 +50,7 @@ public class HelpUtil {
         }
         return sb.toString();
     }
+
 
     public static String userNameEncode(String userName) {
         int s1 = userName.length() / 2, s2 = (s1 + 1) / 2;

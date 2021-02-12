@@ -1,17 +1,17 @@
 package top.misec.task;
 
 import com.google.gson.JsonObject;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
 import top.misec.utils.HttpUtil;
 
-import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
+import static top.misec.task.TaskInfoHolder.CODE;
 
 /**
  * @author Junzhou Liu
  * @create 2021/1/13 17:50
  */
-@Log4j2
+@Slf4j
 public class MangaRead implements Task {
 
     @Override
@@ -26,7 +26,7 @@ public class MangaRead implements Task {
         jsonObject.addProperty("ep_id", "381662");
 
         JsonObject result = HttpUtil.doPost(ApiList.mangaRead + urlParam, jsonObject);
-        int code = result.get(STATUS_CODE_STR).getAsInt();
+        int code = result.get(CODE).getAsInt();
         if (code == 0) {
             log.info("本日漫画自动阅读1章节成功！，阅读漫画为：堀与宫村");
         } else {

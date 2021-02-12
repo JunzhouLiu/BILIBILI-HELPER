@@ -1,7 +1,7 @@
 package top.misec.task;
 
 import com.google.gson.JsonObject;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
 import top.misec.config.Config;
 import top.misec.utils.HttpUtil;
@@ -13,7 +13,7 @@ import top.misec.utils.HttpUtil;
  * @since 2020-11-22 5:22
  */
 
-@Log4j2
+@Slf4j
 public class MangaSign implements Task {
 
 

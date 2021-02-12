@@ -1,8 +1,7 @@
 package top.misec.task;
 
 import com.google.gson.JsonObject;
-import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
 import top.misec.pojo.userinfobean.Data;
 import top.misec.utils.HttpUtil;
@@ -13,31 +12,29 @@ import top.misec.utils.HttpUtil;
  * @author @JunzhouLiu @Kurenai
  * @since 2020-11-22 5:02
  */
-@Log4j2
+@Slf4j
 public class TaskInfoHolder {
 
-    public static final String STATUS_CODE_STR = "code";
-    public static Data userInfo = null;
-    public static GetVideoId getVideoId = new GetVideoId();
+    public static final String CODE = "code";
+    public static Data USER_INFO = null;
+    public static final GetVideoId getVideoId = new GetVideoId();
 
     public static void calculateUpgradeDays() {
-        if (userInfo == null) {
-            log.info("未请求到用户信息，暂无法计算等级相关数据");
+        if (USER_INFO == null) {
+            log.warn("未请求到用户信息，暂无法计算等级相关数据");
             return;
         }
-
         int todayExp = 15;
-        todayExp += expConfirm() * 10;
+        todayExp += (expConfirm() * 10);
         log.info("今日获得的总经验值为: " + todayExp);
 
-        int needExp = userInfo.getLevel_info().getNext_exp_asInt()
-                - userInfo.getLevel_info().getCurrent_exp();
+        int needExp = USER_INFO.getLevel_info().getNext_exp_asInt() - USER_INFO.getLevel_info().getCurrent_exp();
 
-        if (userInfo.getLevel_info().getCurrent_level() < 6) {
-            log.info("按照当前进度，升级到升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "还需要: " +
+        if (USER_INFO.getLevel_info().getCurrent_level() < 6) {
+            log.info("按照当前进度，升级到升级到Lv" + (USER_INFO.getLevel_info().getCurrent_level() + 1) + "还需要: " +
                     (needExp / todayExp) + "天");
         } else {
-            log.info("当前等级Lv6，经验值为：" + userInfo.getLevel_info().getCurrent_exp());
+            log.info("当前等级Lv6，经验值为：" + USER_INFO.getLevel_info().getCurrent_exp());
         }
     }
 
@@ -62,12 +59,12 @@ public class TaskInfoHolder {
      * 2:年会员
      */
     public static int queryVipStatusType() {
-        if (userInfo == null) {
-            log.info("暂时无法查询会员状态，默认非大会员");
+        if (USER_INFO == null) {
+            log.warn("暂时无法查询会员状态，默认非大会员");
         }
-        if (userInfo != null && userInfo.getVipStatus() == 1) {
+        if (USER_INFO != null && USER_INFO.getVipStatus() == 1) {
             //只有VipStatus为1的时候获取到VipType才是有效的。
-            return userInfo.getVipType();
+            return USER_INFO.getVipType();
         } else {
             return 0;
         }

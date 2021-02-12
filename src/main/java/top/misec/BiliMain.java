@@ -1,6 +1,6 @@
 package top.misec;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.config.Config;
 import top.misec.login.ServerVerify;
 import top.misec.login.Verify;
@@ -13,27 +13,26 @@ import top.misec.utils.VersionInfo;
  * @create 2020/10/11 2:29
  */
 
-@Log4j2
+@Slf4j
 public class BiliMain {
     public static void main(String[] args) {
 
         if (args.length < 3) {
-            log.info("任务启动失败");
-            log.warn("Cookies参数缺失，请检查是否在Github Secrets中配置Cookies参数");
+            log.error("任务启动失败: Cookies参数缺失，请检查是否在Github Secrets中配置Cookies参数");
         }
         //读取环境变量
-        Verify.verifyInit(args[0], args[1], args[2]);
+        Verify verify = Verify.getInstance();
+        verify.setUserId(args[0]);
+        verify.setSessData(args[1]);
+        verify.setBiliJct(args[2]);
 
-        if(args.length > 4){
-            ServerVerify.verifyInit(args[3], args[4]);
-        }else if (args.length > 3) {
+        if (args.length > 3) {
             ServerVerify.verifyInit(args[3]);
         }
 
-
         VersionInfo.printVersionInfo();
         //每日任务65经验
-        Config.getInstance().configInit();
+        Config.init();
         if (!Config.getInstance().isSkipDailyTask()) {
             DailyTask dailyTask = new DailyTask();
             dailyTask.doDailyTask();

@@ -1,0 +1,18 @@
+# 登录检查
+top.misec.task.UserCheck
+# 大会员月底B币券充电和月初大会员权益领取
+top.misec.task.ChargeMe
+# 投币任务
+top.misec.task.CoinAdd
+# 漫画权益领取
+top.misec.task.GetVipPrivilege
+# B站直播送出即将过期的礼物
+top.misec.task.GiveGift
+# 直播签到
+top.misec.task.LiveCheckin
+# 漫画签到
+top.misec.task.MangaSign
+# 银瓜子换硬币
+top.misec.task.Silver2coin
+# 观看分享视频
+#top.misec.task.VideoWatch

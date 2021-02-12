@@ -2,7 +2,7 @@ package top.misec.config;
 
 import com.google.gson.Gson;
 import lombok.Data;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.utils.HttpUtil;
 import top.misec.utils.LoadFileResource;
 
@@ -12,7 +12,7 @@ import top.misec.utils.LoadFileResource;
  * @author Junzhou Liu
  * @create 2020/10/13 17:11
  */
-@Log4j2
+@Slf4j
 @Data
 public class Config {
 
@@ -58,7 +58,7 @@ public class Config {
     private int reserveCoins;
 
 
-    private static Config CONFIG = new Config();
+    public static Config CONFIG = new Config();
 
     private Config() {
     }
@@ -86,7 +86,7 @@ public class Config {
      * 优先从jar包同级目录读取
      * 读取配置文件 src/main/resources/config.json
      */
-    public void configInit() {
+    public static void init() {
         String configJson;
         String outConfig = LoadFileResource.loadConfigJsonFromFile();
         if (outConfig != null) {
@@ -94,11 +94,6 @@ public class Config {
             log.info("读取外部配置文件成功");
         } else {
             String temp = LoadFileResource.loadJsonFromAsset("config.json");
-            /**
-             *兼容旧配置文件
-             * "skipDailyTask": 0 -> "skipDailyTask": false
-             * "skipDailyTask": 1 -> "skipDailyTask": true
-             */
             String target0 = "\"skipDailyTask\": 0";
             String target1 = "\"skipDailyTask\": 1";
             if (temp.contains(target0)) {
@@ -111,7 +106,6 @@ public class Config {
                 log.debug("使用的是最新格式的配置文件，无需执行兼容性转换");
                 configJson = temp;
             }
-
             log.info("读取配置文件成功");
         }
 

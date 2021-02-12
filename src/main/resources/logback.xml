@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration debug="false">
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 输出的格式 -->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%-5level] %logger{50}: - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SYS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 配置滚动的策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志名称的格式 -->
+            <fileNamePattern>logs/daily_%d{yyyy-MM-dd_HH}h.log</fileNamePattern>
+            <!-- 保存的最长时间：2天 -->
+            <MaxHistory>48</MaxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        <append>true</append>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%-5level] %logger{50}: - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="SYS"/>
+    </root>
+</Configuration>

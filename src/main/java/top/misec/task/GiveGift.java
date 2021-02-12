@@ -2,7 +2,7 @@ package top.misec.task;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.config.Config;
 import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
@@ -14,7 +14,7 @@ import top.misec.utils.HttpUtil;
  * @Time 2020-10-13
  */
 
-@Log4j2
+@Slf4j
 public class GiveGift implements Task {
 
     private final String taskName = "B站直播送出即将过期的礼物";
@@ -46,7 +46,7 @@ public class GiveGift implements Task {
                 long expireAt = Long.parseLong(json.get("expire_at").getAsString());
                 /* 礼物还剩 1 天送出 */
                 /* 永久礼物到期时间为 0 */
-                if ((expireAt - nowTime) < 60 * 60 * 25 * 1 && expireAt != 0) {
+                if (expireAt != 0 && (expireAt - nowTime) < 60 * 60 * 25) {
                     /* 如果有未送出的礼物，则获取一个直播间 */
                     if ("".equals(roomId)) {
                         JsonObject uidAndRid = getuidAndRid();
@@ -68,7 +68,7 @@ public class GiveGift implements Task {
                         log.info("给直播间 - {} - {} - 数量: {}✔", roomId, giftName, giftNum);
                         flag = false;
                     } else {
-                        log.debug("送礼失败, 原因 : {}❌", jsonObject3);
+                        log.error("送礼失败, 原因 : {}❌", jsonObject3);
                     }
                 }
             }

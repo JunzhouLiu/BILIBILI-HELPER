@@ -1,17 +1,17 @@
 package top.misec.task;
 
 import com.google.gson.JsonObject;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
 import top.misec.apiquery.oftenAPI;
 import top.misec.config.Config;
 import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
+import static top.misec.task.TaskInfoHolder.CODE;
 import static top.misec.task.TaskInfoHolder.getVideoId;
-import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
 
 /**
  * 投币任务
@@ -19,10 +19,8 @@ import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
  * @author @JunzhouLiu @Kurenai
  * @since 2020-11-22 5:28
  */
-@Log4j2
+@Slf4j
 public class CoinAdd implements Task {
-
-    private final String taskName = "投币任务";
 
     @Override
     public void run() {
@@ -94,8 +92,7 @@ public class CoinAdd implements Task {
             boolean flag = coinAdd(bvid, 1, Config.getInstance().getSelectLike());
             if (flag) {
                 try {
-                    Random random = new Random();
-                    int sleepTime = (int) ((random.nextDouble() + 0.5) * 3000);
+                    long sleepTime = ThreadLocalRandom.current().nextLong(1500, 4500);
                     log.info("投币后随机暂停{}毫秒", sleepTime);
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
@@ -127,8 +124,7 @@ public class CoinAdd implements Task {
         //判断曾经是否对此av投币过
         if (!isCoin(bvid)) {
             JsonObject jsonObject = HttpUtil.doPost(ApiList.CoinAdd, requestBody);
-            if (jsonObject.get(STATUS_CODE_STR).getAsInt() == 0) {
-
+            if (jsonObject.get(CODE).getAsInt() == 0) {
                 log.info("为 " + videoTitle + " 投币成功");
                 return true;
             } else {
@@ -162,6 +158,6 @@ public class CoinAdd implements Task {
 
     @Override
     public String getName() {
-        return taskName;
+        return "投币任务";
     }
 }

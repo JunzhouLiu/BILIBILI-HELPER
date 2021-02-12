@@ -1,13 +1,9 @@
 package top.misec.apiquery;
 
 import com.google.gson.JsonObject;
-import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import top.misec.config.Config;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
-
-import java.util.Collections;
 
 /**
  * 部分API简单封装。
@@ -15,7 +11,7 @@ import java.util.Collections;
  * @author Junzhou Liu
  * @create 2020/10/14 14:27
  */
-@Log4j2
+@Slf4j
 public class oftenAPI {
 
     /**
@@ -26,7 +22,6 @@ public class oftenAPI {
         int responseCode = responseJson.get("code").getAsInt();
 
         JsonObject dataObject = responseJson.get("data").getAsJsonObject();
-
         if (responseCode == 0) {
             if (dataObject.get("money").isJsonNull()) {
                 return 0.0;
@@ -34,7 +29,7 @@ public class oftenAPI {
                 return dataObject.get("money").getAsDouble();
             }
         } else {
-            log.debug("请求硬币余额接口错误，请稍后重试。错误请求信息：" + responseJson);
+            log.error("请求硬币余额接口错误，请稍后重试。错误请求信息：" + responseJson);
             return 0.0;
         }
     }
@@ -43,8 +38,7 @@ public class oftenAPI {
      * @param type 1大会员B币券  2 大会员福利
      */
     public static void vipPrivilege(int type) {
-        String requestBody = "type=" + type
-                + "&csrf=" + Verify.getInstance().getBiliJct();
+        String requestBody = "type=" + type + "&csrf=" + Verify.getInstance().getBiliJct();
         JsonObject jsonObject = HttpUtil.doPost(ApiList.vipPrivilegeReceive, requestBody);
         int responseCode = jsonObject.get("code").getAsInt();
         if (responseCode == 0) {
@@ -55,7 +49,7 @@ public class oftenAPI {
             }
 
         } else {
-            log.debug("领取年度大会员每月赠送的B币券/大会员福利失败，原因: " + jsonObject.get("message").getAsString());
+            log.error("领取年度大会员每月赠送的B币券/大会员福利失败，原因: " + jsonObject.get("message").getAsString());
         }
     }
 
@@ -74,8 +68,7 @@ public class oftenAPI {
             title += jsonObject.getAsJsonObject("data").get("title").getAsString();
         } else {
             title = "未能获取标题";
-            log.info(title);
-            log.debug(jsonObject.get("message").getAsString());
+            log.error("未能获取标题: {}" + jsonObject.get("message").getAsString());
         }
 
         return title.replace("&", "-");
@@ -87,12 +80,12 @@ public class oftenAPI {
      */
     public static String queryUserName(String uid) {
         String urlParameter = "?mid=" + uid + "&jsonp=jsonp";
-        String userName = "1";
+        String userName = null;
         JsonObject jsonObject = HttpUtil.doGet(ApiList.queryUserName + urlParameter);
         if (jsonObject.get("code").getAsInt() == 0) {
             userName = jsonObject.getAsJsonObject("data").get("name").getAsString();
         } else {
-            log.info("查询充电对象的用户名失败，原因：{}", jsonObject);
+            log.error("查询充电对象的用户名失败，原因：{}", jsonObject);
         }
         return userName;
     }

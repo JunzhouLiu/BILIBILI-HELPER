@@ -3,29 +3,29 @@ package top.misec.task;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
 import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author @JunzhouLiu
  * @create 2020/11/12 13:17
  */
 
-@Log4j2
+@Slf4j
 public class GetVideoId {
     private ArrayList<String> followUpVideoList;
     private ArrayList<String> rankVideoList;
     private ArrayBlockingQueue<String> followUpVideoQueue;
 
     public GetVideoId() {
-        this.followUpVideoList = queryDynamicNew();
         this.rankVideoList = regionRanking();
+        this.followUpVideoList = queryDynamicNew();
         if (this.followUpVideoList.size() > 0) {
             this.followUpVideoQueue = new ArrayBlockingQueue<>(followUpVideoList.size());
             this.followUpVideoQueue.addAll(followUpVideoList);
@@ -48,26 +48,14 @@ public class GetVideoId {
         if (followUpVideoList.size() == 0) {
             return getRegionRankingVideoBvid();
         }
-        Random random = new Random();
-        return followUpVideoList.get(random.nextInt(followUpVideoList.size()));
-    }
-
-    /**
-     * 暂未启用的方法
-     *
-     * @return 从阻塞队列中获取bv号
-     */
-    @ExtensionMethod
-    public String getFollowUpRecentVideoBvid() {
-        return followUpVideoQueue.peek() == null ? getRegionRankingVideoBvid() : followUpVideoQueue.poll();
+        return followUpVideoList.get(ThreadLocalRandom.current().nextInt(followUpVideoList.size()));
     }
 
     /**
      * 排行榜获取随机bv号
      */
     public String getRegionRankingVideoBvid() {
-        Random random = new Random();
-        return rankVideoList.get(random.nextInt(rankVideoList.size()));
+        return rankVideoList.get(ThreadLocalRandom.current().nextInt(rankVideoList.size()));
     }
 
     public ArrayList<String> queryDynamicNew() {
@@ -88,6 +76,8 @@ public class GetVideoId {
         return arrayList;
     }
 
+    private final int[] validRegion = {1, 3, 4, 5, 160, 22, 119};
+
     /**
      * 从有限分区中随机返回一个分区rid
      * 后续会更新请求分区
@@ -95,8 +85,8 @@ public class GetVideoId {
      * @return regionId 分区id
      */
     public int randomRegion() {
-        int[] arr = {1, 3, 4, 5, 160, 22, 119};
-        return arr[(int) (Math.random() * arr.length)];
+        int randomIndex = ThreadLocalRandom.current().nextInt(validRegion.length);
+        return validRegion[randomIndex];
     }
 
     /**
@@ -118,9 +108,7 @@ public class GetVideoId {
         ArrayList<String> videoList = new ArrayList<>();
         String urlParam = "?rid=" + rid + "&day=" + day;
         JsonObject resultJson = HttpUtil.doGet(ApiList.getRegionRanking + urlParam);
-
         JsonArray jsonArray = resultJson.getAsJsonArray("data");
-
         if (jsonArray != null) {
             for (JsonElement videoInfo : jsonArray) {
                 JsonObject tempObject = videoInfo.getAsJsonObject();

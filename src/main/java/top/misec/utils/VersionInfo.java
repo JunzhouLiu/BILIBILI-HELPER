@@ -2,15 +2,13 @@ package top.misec.utils;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import lombok.Data;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Junzhou Liu
  * @create 2020/11/21 15:22
  */
-@Log4j2
-@Data
+@Slf4j
 public class VersionInfo {
     private static String releaseVersion = "";
     private static String updateDate = "2021-01-16";
@@ -22,7 +20,6 @@ public class VersionInfo {
         JsonObject jsonObject = new JsonParser().parse(release).getAsJsonObject();
         releaseVersion = jsonObject.get("tag_main").getAsString();
         releaseInfo = LoadFileResource.loadJsonFromAsset("release.info");
-
     }
 
     public static void printVersionInfo() {
