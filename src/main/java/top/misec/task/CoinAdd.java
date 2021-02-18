@@ -8,6 +8,8 @@ import top.misec.config.Config;
 import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import static top.misec.task.TaskInfoHolder.getVideoId;
@@ -126,7 +128,10 @@ public class CoinAdd implements Task {
         String videoTitle = oftenAPI.videoTitle(bvid);
         //判断曾经是否对此av投币过
         if (!isCoin(bvid)) {
-            JsonObject jsonObject = HttpUtil.doPost(ApiList.CoinAdd, requestBody);
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Referer", "https://www.bilibili.com/video/" + bvid);
+            headers.put("Origin", "https://www.bilibili.com");
+            JsonObject jsonObject = HttpUtil.doPost(ApiList.CoinAdd, requestBody, headers);
             if (jsonObject.get(STATUS_CODE_STR).getAsInt() == 0) {
 
                 log.info("为 " + videoTitle + " 投币成功");

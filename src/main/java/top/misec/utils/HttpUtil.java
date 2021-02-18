@@ -55,6 +55,10 @@ public class HttpUtil {
     }
 
     public static JsonObject doPost(String url, String requestBody) {
+        return doPost(url, requestBody, null);
+    }
+
+    public static JsonObject doPost(String url, String requestBody, Map<String, String> headers) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse httpPostResponse = null;
 
@@ -78,10 +82,16 @@ public class HttpUtil {
             httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
         }
         httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
-        httpPost.setHeader("Referer", "https://www.bilibili.com/");
+        //httpPost.setHeader("Referer", "https://www.bilibili.com/");
         httpPost.setHeader("Connection", "keep-alive");
         httpPost.setHeader("User-Agent", userAgent);
         httpPost.setHeader("Cookie", verify.getVerify());
+
+        if (null != headers && !headers.isEmpty()) {
+            for (String key : headers.keySet()) {
+                httpPost.setHeader(key, headers.get(key));
+            }
+        }
 
         // 封装post请求参数
 
@@ -135,7 +145,7 @@ public class HttpUtil {
             // 创建httpGet远程连接实例
             HttpGet httpGet = new HttpGet(url);
             // 设置请求头信息，鉴权
-            httpGet.setHeader("Referer", "https://www.bilibili.com/");
+            //httpGet.setHeader("Referer", "https://www.bilibili.com/");
             httpGet.setHeader("Connection", "keep-alive");
             httpGet.setHeader("User-Agent", userAgent);
             httpGet.setHeader("Cookie", verify.getVerify());
