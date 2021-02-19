@@ -53,16 +53,10 @@ jobs:
         run: |
           mv -f ./target/BILIBILI-HELPER-${{steps.tag_main.outputs.value}}-jar-with-dependencies.jar BILIBILI-HELPER-v${{steps.tag_latest.outputs.value}}.jar
           zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip BILIBILI-HELPER-v${{steps.tag_latest.outputs.value}}.jar
-<<<<<<< HEAD
-          zip -m BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip ./src/main/resources/config.json
-          zip -m BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip LICENSE
-          zip -m BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip README.md
-=======
           cp ./src/main/resources/config.json ./
           zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip config.json
           zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip LICENSE
           zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip README.md
->>>>>>> 9a7af532efa12afed353537cacc3a59c47817069
 
       - name: Create Release
         id: create_release
