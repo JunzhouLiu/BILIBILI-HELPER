@@ -1,5 +1,6 @@
 package top.misec.login;
 
+
 /**
  * @author Junzhou Liu
  * @create 2020/10/11 16:49
@@ -48,6 +49,6 @@ public class Verify {
     }
 
     public String getVerify() {
-        return "\"bili_jct=" + getBiliJct() + ";SESSDATA=" + getSessData() + ";DedeUserID=" + getUserId();
+        return "bili_jct=" + getBiliJct() + ";SESSDATA=" + getSessData() + ";DedeUserID=" + getUserId() + ";";
     }
 }

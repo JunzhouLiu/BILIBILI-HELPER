@@ -6,8 +6,16 @@ package top.misec.task;
  */
 public interface Task {
 
+    /**
+     *任务实现
+     */
     void run();
 
+    /**
+     * 任务名
+     *
+     * @return taskName
+     */
     String getName();
 
 }
