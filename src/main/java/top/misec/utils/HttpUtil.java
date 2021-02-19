@@ -91,8 +91,9 @@ public class HttpUtil {
             for (String key : headers.keySet()) {
                 httpPost.setHeader(key, headers.get(key));
             }
+        }else{
+            httpPost.setHeader("Referer", "https://www.bilibili.com/");   
         }
-
         // 封装post请求参数
 
         StringEntity stringEntity = new StringEntity(requestBody, "utf-8");
