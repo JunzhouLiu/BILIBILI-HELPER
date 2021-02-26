@@ -5,6 +5,7 @@ import top.misec.config.Config;
 import top.misec.login.ServerVerify;
 import top.misec.login.Verify;
 import top.misec.task.DailyTask;
+import top.misec.task.ServerPush;
 import top.misec.utils.VersionInfo;
 
 
@@ -24,9 +25,12 @@ public class BiliMain {
         //读取环境变量
         Verify.verifyInit(args[0], args[1], args[2]);
 
-        if (args.length > 3) {
+        if (args.length > 4) {
+            ServerVerify.verifyInit(args[3], args[4]);
+        } else if (args.length > 3) {
             ServerVerify.verifyInit(args[3]);
         }
+
 
         VersionInfo.printVersionInfo();
         //每日任务65经验
@@ -35,7 +39,8 @@ public class BiliMain {
             DailyTask dailyTask = new DailyTask();
             dailyTask.doDailyTask();
         } else {
-            log.info("自定义配置中开启了跳过本日任务，本日任务跳过，如果需要取消跳过，请将skipDailyTask值改为false");
+            log.info("已开启了跳过本日任务，本日任务跳过（不会发起任何网络请求），如果需要取消跳过，请将skipDailyTask值改为false");
+            ServerPush.doServerPush();
         }
     }
 

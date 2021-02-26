@@ -1,8 +1,6 @@
 package top.misec.utils;
 
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

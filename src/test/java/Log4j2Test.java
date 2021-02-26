@@ -1,5 +1,6 @@
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
+import org.junit.Test;
 import top.misec.task.ServerPush;
 
 public class Log4j2Test {
@@ -7,7 +8,6 @@ public class Log4j2Test {
     static Logger LOG = (Logger) LogManager.getLogger(Log4j2Test.class.getName());
 
     public static void main(String[] args) throws Exception {
-        logAll();
         System.out.println();
         ServerPush serverPush = new ServerPush();
         serverPush.setPushToken(args[0]);
@@ -16,7 +16,8 @@ public class Log4j2Test {
     }
 
     // 打印各种级别的日志用于测试
-    public static void logAll() throws Exception {
+    @Test
+    public void logAll() throws Exception {
         LOG.trace("trace level log");
         LOG.debug("debug level log");
         LOG.info("info level log");
