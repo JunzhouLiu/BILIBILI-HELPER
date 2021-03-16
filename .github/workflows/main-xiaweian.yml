@@ -30,15 +30,15 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-      - name: Build with Maven
+      - name: 任务运行
         env:
-          BILI_JCT: ${{ secrets.BILI_JCT }}
-          DEDEUSERID: ${{ secrets.DEDEUSERID }}
-          SESSDATA: ${{ secrets.SESSDATA }}
+          BILI_JCT: ${{ secrets.BILI_JCT_1 }}
+          DEDEUSERID: ${{ secrets.DEDEUSERID_1 }}
+          SESSDATA: ${{ secrets.SESSDATA_1 }}
           SERVERPUSHKEY: ${{ secrets.SERVERPUSHKEY }}
           TELEGRAMBOTTOKEN: ${{ secrets.TELEGRAMBOTTOKEN }}
           TELEGRAMCHATID: ${{ secrets.TELEGRAMCHATID }}
           TZ: Asia/Shanghai
           # 时区配置为Asia/Shanghai
         run:
-          mvn compile exec:java -Dexec.mainClass="top.misec.BiliMain" -Dexec.args="${DEDEUSERID-1} ${SESSDATA-1} ${BILI_JCT-1} ${SERVERPUSHKEY} ${TELEGRAMBOTTOKEN} ${TELEGRAMCHATID}"
+          mvn compile exec:java -Dexec.mainClass="top.misec.BiliMain" -Dexec.args="${DEDEUSERID} ${SESSDATA} ${BILI_JCT} ${SERVERPUSHKEY} ${TELEGRAMBOTTOKEN} ${TELEGRAMCHATID}"
