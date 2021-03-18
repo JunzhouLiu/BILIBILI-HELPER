@@ -1,40 +1,36 @@
 package top.misec.utils;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.extern.log4j.Log4j2;
 import org.apache.http.HttpEntity;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
 import top.misec.login.Verify;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Junzhou Liu
  * @create 2020/10/11 4:03
  */
-public class HttpUtil {
 
-    static Logger logger = (Logger) LogManager.getLogger(HttpUtil.class.getName());
+@Log4j2
+public class HttpUtil {
 
     private static String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
             "(KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36 Edg/85.0.564.70";
-
-    public static String getUserAgent() {
-        return userAgent;
-    }
 
     public static void setUserAgent(String userAgent) {
         HttpUtil.userAgent = userAgent;
@@ -53,11 +49,16 @@ public class HttpUtil {
 
     static Verify verify = Verify.getInstance();
 
-    HttpUtil() {
+    public static JsonObject doPost(String url, JsonObject jsonObject) {
+        return doPost(url, jsonObject.toString());
 
     }
 
     public static JsonObject doPost(String url, String requestBody) {
+        return doPost(url, requestBody, null);
+    }
+
+    public static JsonObject doPost(String url, String requestBody, Map<String, String> headers) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse httpPostResponse = null;
 
@@ -80,11 +81,19 @@ public class HttpUtil {
         } else {
             httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
         }
-        httpPost.setHeader("Referer", "https://www.bilibili.com/");
+        httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+        //httpPost.setHeader("Referer", "https://www.bilibili.com/");
         httpPost.setHeader("Connection", "keep-alive");
         httpPost.setHeader("User-Agent", userAgent);
         httpPost.setHeader("Cookie", verify.getVerify());
 
+        if (null != headers && !headers.isEmpty()) {
+            for (String key : headers.keySet()) {
+                httpPost.setHeader(key, headers.get(key));
+            }
+        }else{
+            httpPost.setHeader("Referer", "https://www.bilibili.com/");   
+        }
         // 封装post请求参数
 
         StringEntity stringEntity = new StringEntity(requestBody, "utf-8");
@@ -101,14 +110,12 @@ public class HttpUtil {
                     HttpEntity entity = httpPostResponse.getEntity();
                     String result = EntityUtils.toString(entity);
                     resultJson = new JsonParser().parse(result).getAsJsonObject();
-                } else {
-                    logger.debug(httpPostResponse.getStatusLine().toString());
                 }
             } else {
-                logger.debug("httpPostResponse null");
+                log.debug("httpPostResponse null");
             }
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e);
             e.printStackTrace();
         } finally {
             // 关闭资源
@@ -118,6 +125,18 @@ public class HttpUtil {
     }
 
     public static JsonObject doGet(String url) {
+        return doGet(url, new JsonObject());
+    }
+
+    private static NameValuePair getNameValuePair(Map.Entry<String, JsonElement> entry) {
+        return new BasicNameValuePair(entry.getKey(), Optional.ofNullable(entry.getValue()).map(Object::toString).orElse(null));
+    }
+
+    public static NameValuePair[] getPairList(JsonObject pJson) {
+        return pJson.entrySet().parallelStream().map(HttpUtil::getNameValuePair).toArray(NameValuePair[]::new);
+    }
+
+    public static JsonObject doGet(String url, JsonObject pJson) {
         CloseableHttpClient httpClient = null;
         CloseableHttpResponse httpGetResponse = null;
         JsonObject resultJson = null;
@@ -127,10 +146,13 @@ public class HttpUtil {
             // 创建httpGet远程连接实例
             HttpGet httpGet = new HttpGet(url);
             // 设置请求头信息，鉴权
-            httpGet.setHeader("Referer", "https://www.bilibili.com/");
+            //httpGet.setHeader("Referer", "https://www.bilibili.com/");
             httpGet.setHeader("Connection", "keep-alive");
             httpGet.setHeader("User-Agent", userAgent);
             httpGet.setHeader("Cookie", verify.getVerify());
+            for (NameValuePair pair : getPairList(pJson)) {
+                httpGet.setHeader(pair.getName(), pair.getValue());
+            }
             // 为httpGet实例设置配置
             httpGet.setConfig(REQUEST_CONFIG);
 
@@ -146,9 +168,9 @@ public class HttpUtil {
                 String result = EntityUtils.toString(entity);
                 resultJson = new JsonParser().parse(result).getAsJsonObject();
             } else if (responseStatusCode == 412) {
-                logger.info("出了一些问题，请在自定义配置中更换UA");
+                log.info("出了一些问题，可能是账号状态异常，如果是账号状态异常，建议先停止使用本工具");
             } else {
-                logger.debug(httpGetResponse.getStatusLine().toString());
+                log.debug(httpGetResponse.getStatusLine().toString());
             }
         } catch (Exception e) {
             e.printStackTrace();

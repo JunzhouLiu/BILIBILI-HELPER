@@ -8,10 +8,12 @@ import top.misec.config.Config;
 import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import static top.misec.task.TaskInfoHolder.getVideoId;
-import static top.misec.task.TaskInfoHolder.statusCodeStr;
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
 
 /**
  * 投币任务
@@ -19,7 +21,6 @@ import static top.misec.task.TaskInfoHolder.statusCodeStr;
  * @author @JunzhouLiu @Kurenai
  * @since 2020-11-22 5:28
  */
-
 @Log4j2
 public class CoinAdd implements Task {
 
@@ -34,6 +35,9 @@ public class CoinAdd implements Task {
         final int maxNumberOfCoins = 5;
         //获取自定义配置投币数 配置写在src/main/resources/config.json中
         int setCoin = Config.getInstance().getNumberOfCoins();
+        // 预留硬币数
+        int reserveCoins = Config.getInstance().getReserveCoins();
+
         //已投的硬币
         int useCoin = TaskInfoHolder.expConfirm();
         //投币策略
@@ -53,8 +57,10 @@ public class CoinAdd implements Task {
         Double beforeAddCoinBalance = oftenAPI.getCoinBalance();
         int coinBalance = (int) Math.floor(beforeAddCoinBalance);
 
+
         if (needCoins <= 0) {
             log.info("已完成设定的投币任务，今日无需再投币了");
+            // return;
         } else {
             log.info("投币数调整为: " + needCoins + "枚");
             //投币数大于余额时，按余额投
@@ -63,6 +69,12 @@ public class CoinAdd implements Task {
                 log.info("投币数调整为: " + coinBalance);
                 needCoins = coinBalance;
             }
+        }
+
+        if (coinBalance < reserveCoins) {
+            log.info("剩余硬币数为{},低于预留硬币数{},今日不再投币", beforeAddCoinBalance, reserveCoins);
+            log.info("tips: 当硬币余额少于你配置的预留硬币数时，则会暂停当日投币任务");
+            return;
         }
 
         log.info("投币前余额为 : " + beforeAddCoinBalance);
@@ -116,8 +128,11 @@ public class CoinAdd implements Task {
         String videoTitle = oftenAPI.videoTitle(bvid);
         //判断曾经是否对此av投币过
         if (!isCoin(bvid)) {
-            JsonObject jsonObject = HttpUtil.doPost(ApiList.CoinAdd, requestBody);
-            if (jsonObject.get(statusCodeStr).getAsInt() == 0) {
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Referer", "https://www.bilibili.com/video/" + bvid);
+            headers.put("Origin", "https://www.bilibili.com");
+            JsonObject jsonObject = HttpUtil.doPost(ApiList.CoinAdd, requestBody, headers);
+            if (jsonObject.get(STATUS_CODE_STR).getAsInt() == 0) {
 
                 log.info("为 " + videoTitle + " 投币成功");
                 return true;
