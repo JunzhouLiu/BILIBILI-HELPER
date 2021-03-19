@@ -23,6 +23,10 @@ BILIBILI-HELPER
 
 **仓库地址：[JunzhouLiu/BILIBILI-HELPER](https://github.com/JunzhouLiu/BILIBILI-HELPER)**
 
+**B站赛事预测助手已发布，每天自动参与KPL，LPL赛事预测，赚取硬币。**
+
+**仓库地址：[JunzhouLiu/bilibili-match-prediction](https://github.com/JunzhouLiu/bilibili-match-prediction)**
+
 **请不要滥用相关API，让我们一起爱护B站 ❤**
 
 ## 功能列表
