@@ -13,7 +13,7 @@ import lombok.extern.log4j.Log4j2;
 @Data
 public class VersionInfo {
     private static String releaseVersion = "";
-    private static String updateDate = "2021-01-16";
+    private static String updateDate = "2021-03-16";
     private static String projectRepo = "https://github.com/JunzhouLiu/BILIBILI-HELPER";
     private static String releaseInfo = "";
 
