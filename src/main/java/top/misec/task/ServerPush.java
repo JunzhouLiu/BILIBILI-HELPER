@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j2;
 import top.misec.apiquery.ApiList;
 import top.misec.login.ServerVerify;
+import top.misec.push.PushHelper;
+import top.misec.push.model.PushMetaInfo;
 import top.misec.utils.HttpUtil;
 import top.misec.utils.LoadFileResource;
 
@@ -55,20 +57,32 @@ public class ServerPush {
     }
 
     public static void doServerPush() {
+        PushMetaInfo.PushMetaInfoBuilder builder = PushMetaInfo.builder().numberOfRetries(3);
+        PushHelper.Target target = null;
         if (ServerVerify.getFtkey() != null && ServerVerify.getChatId() == null) {
-            ServerPush serverPush = new ServerPush();
-            log.info("Server酱旧版推送渠道即将下线，请前往[sct.ftqq.com](http://sct.ftqq.com/)使用Turbo版本的推送Key");
-            serverPush.pushServerChan("BILIBILI-HELPER任务简报", LoadFileResource.loadFile("logs/daily.log"));
-            log.info("本次执行推送日志到微信");
-        } else if (ServerVerify.getFtkey() != null && ServerVerify.getChatId() != null) {
-            ServerPush serverPush = new ServerPush();
-            serverPush.pushTelegramMsg("BILIBILI-HELPER任务简报\n" + LoadFileResource.loadFile("logs/daily.log"));
+            builder = builder.token(ServerVerify.getFtkey());
+            // 临时解决方案
+            if (ServerVerify.getFtkey().startsWith("https://oapi.dingtalk.com")) {
+                target = PushHelper.Target.DING_TALK;
+                log.info("本次执行推送日志到钉钉");
+            } else {
+                target = ServerVerify.getFtkey().contains("SCU") ? PushHelper.Target.SERVER_CHAN : PushHelper.Target.SERVER_CHAN_TURBO;
+                log.info("本次执行推送日志到微信");
+            }
+            if (target == PushHelper.Target.SERVER_CHAN) {
+                log.info("Server酱旧版推送渠道即将下线，请前往[sct.ftqq.com](http://sct.ftqq.com/)使用Turbo版本的推送Key");
+            }
+
+        } else if (ServerVerify.getFtkey() != null) {
+            builder = builder.token(ServerVerify.getFtkey()).chatId(ServerVerify.getChatId());
             log.info("本次执行推送日志到Telegram");
         } else {
             log.info("未配置server酱,本次执行不推送日志到微信");
             log.info("未配置Telegram,本次执行不推送日志到Telegram");
         }
-
+        if (null != target) {
+            PushHelper.push(target, builder.build(), LoadFileResource.loadFile("logs/daily.log"));
+        }
     }
 
     private void pushTelegramMsg(String text) {
