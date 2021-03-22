@@ -3,6 +3,7 @@ package top.misec.utils;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import lombok.extern.log4j.Log4j2;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -75,13 +76,21 @@ public class HttpUtil {
           setHeader：设置一个请求头字段，有则覆盖，无则添加。
           有什么好的方式判断key1=value和{"key1":"value"}
          */
-        if (requestBody.startsWith("{")) {
+        boolean isJson = true;
+        try {
+            new JsonParser().parse(requestBody);
+        } catch (JsonSyntaxException e) {
+            // 非JSON
+            isJson = false;
+        }
+        if (isJson) {
             //java的正则表达式咋写......
             httpPost.setHeader("Content-Type", "application/json");
         } else {
             httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
         }
-        httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+        // maybe bug ?
+        //httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
         //httpPost.setHeader("Referer", "https://www.bilibili.com/");
         httpPost.setHeader("Connection", "keep-alive");
         httpPost.setHeader("User-Agent", userAgent);
@@ -92,7 +101,7 @@ public class HttpUtil {
                 httpPost.setHeader(key, headers.get(key));
             }
         }else{
-            httpPost.setHeader("Referer", "https://www.bilibili.com/");   
+            httpPost.setHeader("Referer", "https://www.bilibili.com/");
         }
         // 封装post请求参数
 
