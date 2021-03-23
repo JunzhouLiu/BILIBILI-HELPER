@@ -1,6 +1,7 @@
 package top.misec.push.impl;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import lombok.Getter;
 import top.misec.push.AbstractPush;
@@ -21,7 +22,15 @@ public class DingTalkPush extends AbstractPush {
 
     @Override
     protected boolean checkPushStatus(JsonObject jsonObject) {
-        return jsonObject != null && jsonObject.get("errcode").getAsInt() == 0 && "ok".equals(jsonObject.get("errmsg").getAsString());
+        if (jsonObject == null) {
+            return false;
+        }
+        JsonElement errcode = jsonObject.get("errcode");
+        JsonElement errmsg = jsonObject.get("errmsg");
+        if (null == errcode || null == errmsg) {
+            return false;
+        }
+        return errcode.getAsInt() == 0 && "ok".equals(errmsg.getAsString());
     }
 
     @Override

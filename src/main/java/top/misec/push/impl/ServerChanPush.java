@@ -1,5 +1,6 @@
 package top.misec.push.impl;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import top.misec.apiquery.ApiList;
 import top.misec.push.AbstractPush;
@@ -26,7 +27,13 @@ public class ServerChanPush extends AbstractPush {
             return false;
         }
 
-        return jsonObject.get("code").getAsInt() == 0 || "success".equals(jsonObject.get("errmsg").getAsString());
+        JsonElement code = jsonObject.get("code");
+        JsonElement errmsg = jsonObject.get("errmsg");
+        if (null == code || null == errmsg) {
+            return false;
+        }
+
+        return code.getAsInt() == 0 || "success".equals(errmsg.getAsString());
     }
 
     @Override

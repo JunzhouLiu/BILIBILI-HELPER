@@ -1,5 +1,6 @@
 package top.misec.push.impl;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import top.misec.apiquery.ApiList;
 import top.misec.push.AbstractPush;
@@ -20,7 +21,16 @@ public class TelegramPush extends AbstractPush {
 
     @Override
     protected boolean checkPushStatus(JsonObject jsonObject) {
-        return jsonObject != null && "true".equals(jsonObject.get("ok").getAsString());
+        if (null == jsonObject) {
+            return false;
+        }
+
+        JsonElement ok = jsonObject.get("ok");
+        if (null == ok) {
+            return false;
+        }
+
+        return "true".equals(ok.getAsString());
     }
 
     @Override
