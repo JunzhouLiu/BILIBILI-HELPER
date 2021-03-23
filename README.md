@@ -59,6 +59,7 @@ BILIBILI-HELPER
     - [订阅执行结果](#订阅执行结果)
         - [Server酱Turbo版](#server酱turbo版)
         - [Telegram订阅执行结果](#telegram订阅执行结果)
+        - [钉钉机器人](#钉钉机器人)
     - [更新和帮助](#更新和帮助)
         - [使用 Github Actions 自动同步源仓库代码](#使用-github-actions-自动同步源仓库代码)
         - [手动拉取最新代码](#手动拉取最新代码)
@@ -299,7 +300,19 @@ userAgent可选参数列表
 
 4.在Github Secrets中删除SERVERPUSHKEY，添加TELEGRAMBOTTOKEN，TELEGRAMCHATID。
 
+### 钉钉机器人
 
+1.首先你得有个钉钉企业 [快速注册](https://oa.dingtalk.com/register.html)
+
+2.[进入钉钉开放平台添加机器人](https://open-dev.dingtalk.com/#/corprobot)
+
+3.添加自定义关键词：BILIBILI
+
+4.在Github Secrets中的SERVERPUSHKEY中更新成机器人的Webhook
+
+例如:`https://oapi.dingtalk.com/robot/send?access_token=XXX`
+
+5.完成
 
 ## 更新和帮助
 
