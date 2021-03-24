@@ -6,5 +6,5 @@
   "devicePlatform": "ios",
   "coinAddPriority": 1,
   "skipDailyTask": false,
-  "userAgent": "Mozilla/5.0 (Windows; U; Windows NT 6.1; ) AppleWebKit/534.12 (KHTML, like Gecko) Maxthon/3.0 Safari/534.12"
+  "userAgent": "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; 360SE)"
 }
