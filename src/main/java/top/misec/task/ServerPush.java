@@ -75,6 +75,7 @@ public class ServerPush {
 
         } else if (ServerVerify.getFtkey() != null) {
             builder = builder.token(ServerVerify.getFtkey()).chatId(ServerVerify.getChatId());
+            target = PushHelper.Target.TELEGRAM;
             log.info("本次执行推送日志到Telegram");
         } else {
             log.info("未配置server酱,本次执行不推送日志到微信");
