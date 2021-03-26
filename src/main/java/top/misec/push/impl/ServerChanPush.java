@@ -28,12 +28,12 @@ public class ServerChanPush extends AbstractPush {
         }
 
         JsonElement code = jsonObject.get("code");
-        JsonElement errmsg = jsonObject.get("errmsg");
-        if (null == code || null == errmsg) {
+
+        if (null == code) {
             return false;
         }
 
-        return code.getAsInt() == 0 || "success".equals(errmsg.getAsString());
+        return code.getAsInt() == 0;
     }
 
     @Override

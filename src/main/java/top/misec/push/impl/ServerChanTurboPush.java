@@ -24,14 +24,14 @@ public class ServerChanTurboPush extends AbstractPush {
         if (null == jsonObject) {
             return false;
         }
-
+        // {"code":0,"message":"","data":{"pushid":"XXX","readkey":"XXX","error":"SUCCESS","errno":0}}
         JsonElement code = jsonObject.get("code");
-        JsonElement errmsg = jsonObject.get("errmsg");
-        if (null == code || null == errmsg) {
+
+        if (null == code) {
             return false;
         }
 
-        return code.getAsInt() == 0 || "success".equals(errmsg.getAsString());
+        return code.getAsInt() == 0;
     }
 
     @Override
