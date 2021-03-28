@@ -31,7 +31,8 @@ public class ServerChanTurboPush extends AbstractPush {
             return false;
         }
 
-        return code.getAsInt() == 0;
+        // FIX #380
+        return code.getAsInt() == 0 || code.getAsInt() == 40001;
     }
 
     @Override
