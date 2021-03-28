@@ -100,7 +100,7 @@ public class HttpUtil {
             for (String key : headers.keySet()) {
                 httpPost.setHeader(key, headers.get(key));
             }
-        }else{
+        } else {
             httpPost.setHeader("Referer", "https://www.bilibili.com/");
         }
         // 封装post请求参数
@@ -114,11 +114,15 @@ public class HttpUtil {
             httpPostResponse = httpClient.execute(httpPost);
             if (httpPostResponse != null) {
                 int responseStatusCode = httpPostResponse.getStatusLine().getStatusCode();
-                if (responseStatusCode == 200) {
-                    // 从响应对象中获取响应内容
-                    HttpEntity entity = httpPostResponse.getEntity();
-                    String result = EntityUtils.toString(entity);
-                    resultJson = new JsonParser().parse(result).getAsJsonObject();
+                HttpEntity entity = httpPostResponse.getEntity();
+                String result = EntityUtils.toString(entity);
+                switch (responseStatusCode) {
+                    case 200:
+                    case 500:
+                        // 从响应对象中获取响应内容
+                        resultJson = new JsonParser().parse(result).getAsJsonObject();
+                        break;
+                    default:
                 }
             } else {
                 log.debug("httpPostResponse null");
@@ -168,19 +172,21 @@ public class HttpUtil {
             // 执行get请求得到返回对象
             httpGetResponse = httpClient.execute(httpGet);
             int responseStatusCode = httpGetResponse.getStatusLine().getStatusCode();
-
-            if (responseStatusCode == 200) {
-                // 从响应对象中获取响应内容
-                // 通过返回对象获取返回数据
-                HttpEntity entity = httpGetResponse.getEntity();
-                // 通过EntityUtils中的toString方法将结果转换为字符串
-                String result = EntityUtils.toString(entity);
-                resultJson = new JsonParser().parse(result).getAsJsonObject();
-            } else if (responseStatusCode == 412) {
-                log.info("出了一些问题，可能是账号状态异常，如果是账号状态异常，建议先停止使用本工具");
-            } else {
-                log.debug(httpGetResponse.getStatusLine().toString());
+            switch (responseStatusCode){
+                case 200:
+                    // 从响应对象中获取响应内容
+                    // 通过返回对象获取返回数据
+                    HttpEntity entity = httpGetResponse.getEntity();
+                    // 通过EntityUtils中的toString方法将结果转换为字符串
+                    String result = EntityUtils.toString(entity);
+                    resultJson = new JsonParser().parse(result).getAsJsonObject();
+                    break;
+                case 412:
+                    log.info("出了一些问题，可能是账号状态异常，如果是账号状态异常，建议先停止使用本工具");
+                    break;
+                default:
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
