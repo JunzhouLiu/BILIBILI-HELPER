@@ -60,6 +60,7 @@ BILIBILI-HELPER
         - [Server酱Turbo版](#server酱turbo版)
         - [Telegram订阅执行结果](#telegram订阅执行结果)
         - [钉钉机器人](#钉钉机器人)
+        - [PushPlus(Push+)](#PushPlus(Push+))
     - [更新和帮助](#更新和帮助)
         - [使用 Github Actions 自动同步源仓库代码](#使用-github-actions-自动同步源仓库代码)
         - [手动拉取最新代码](#手动拉取最新代码)
@@ -313,6 +314,14 @@ userAgent可选参数列表
 例如:`https://oapi.dingtalk.com/robot/send?access_token=XXX`
 
 5.完成
+
+### PushPlus(Push+)
+
+1.[前往PushPlus获取Token](https://www.pushplus.plus/push1.html)
+
+2.在Github Secrets中的SERVERPUSHKEY中更新成获取到的Token
+
+3.完成
 
 ## 更新和帮助
 

@@ -1,9 +1,6 @@
 package top.misec.push;
 
-import top.misec.push.impl.DingTalkPush;
-import top.misec.push.impl.ServerChanPush;
-import top.misec.push.impl.ServerChanTurboPush;
-import top.misec.push.impl.TelegramPush;
+import top.misec.push.impl.*;
 import top.misec.push.model.PushMetaInfo;
 
 /**
@@ -37,6 +34,9 @@ public final class PushHelper {
             case DING_TALK: {
                 return new DingTalkPush().doPush(metaInfo, content).isSuccess();
             }
+            case PUSH_PLUS: {
+                return new PushPlusPush().doPush(metaInfo, content).isSuccess();
+            }
             default:
                 return false;
         }
@@ -61,6 +61,11 @@ public final class PushHelper {
         /**
          * 钉钉
          */
-        DING_TALK
+        DING_TALK,
+
+        /**
+         * Push Plus
+         */
+        PUSH_PLUS
     }
 }

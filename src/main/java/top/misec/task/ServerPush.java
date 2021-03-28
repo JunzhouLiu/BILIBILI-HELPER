@@ -1,12 +1,10 @@
 package top.misec.task;
 
-import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j2;
-import top.misec.apiquery.ApiList;
 import top.misec.login.ServerVerify;
 import top.misec.push.PushHelper;
+import top.misec.push.impl.PushPlusPush;
 import top.misec.push.model.PushMetaInfo;
-import top.misec.utils.HttpUtil;
 import top.misec.utils.LoadFileResource;
 
 /**
@@ -26,12 +24,16 @@ public class ServerPush {
             if (ServerVerify.getFtkey().startsWith("https://oapi.dingtalk.com")) {
                 target = PushHelper.Target.DING_TALK;
                 log.info("本次执行推送日志到钉钉");
-            } else {
-                target = ServerVerify.getFtkey().contains("SCU") ? PushHelper.Target.SERVER_CHAN : PushHelper.Target.SERVER_CHAN_TURBO;
-                log.info("本次执行推送日志到微信");
-            }
-            if (target == PushHelper.Target.SERVER_CHAN) {
+            } else if (ServerVerify.getFtkey().startsWith("SCU")) {
+                target = PushHelper.Target.SERVER_CHAN;
+                log.info("本次执行推送日志到Server酱");
                 log.info("Server酱旧版推送渠道即将下线，请前往[sct.ftqq.com](http://sct.ftqq.com/)使用Turbo版本的推送Key");
+            } else if (ServerVerify.getFtkey().startsWith("SCT")) {
+                target = PushHelper.Target.SERVER_CHAN_TURBO;
+                log.info("本次执行推送日志到Server酱Turbo版本");
+            } else if (ServerVerify.getFtkey().length() == PushPlusPush.PUSH_PLUS_CHANNEL_TOKEN_DEFAULT_LENGTH) {
+                target = PushHelper.Target.PUSH_PLUS;
+                log.info("本次执行推送日志到Push Plus");
             }
 
         } else if (ServerVerify.getFtkey() != null) {
