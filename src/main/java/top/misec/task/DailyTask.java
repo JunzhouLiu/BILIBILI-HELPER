@@ -6,10 +6,7 @@ import top.misec.apiquery.ApiList;
 import top.misec.utils.HttpUtil;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static top.misec.task.TaskInfoHolder.calculateUpgradeDays;
 import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
@@ -21,17 +18,21 @@ import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
 @Log4j2
 public class DailyTask {
 
-    private final List<Task> dailyTasks = Arrays.asList(
-            new UserCheck(),
-            new VideoWatch(),
-            new MangaSign(),
-            new CoinAdd(),
-            new Silver2coin(),
-            new LiveCheckin(),
-            new GiveGift(),
-            new ChargeMe(),
-            new GetVipPrivilege()
-    );
+    private final List<Task> dailyTasks;
+
+    public DailyTask() {
+        dailyTasks = new ArrayList<>();
+        dailyTasks.add(new VideoWatch());
+        dailyTasks.add(new MangaSign());
+        dailyTasks.add(new CoinAdd());
+        dailyTasks.add(new Silver2coin());
+        dailyTasks.add(new LiveCheckin());
+        dailyTasks.add(new GiveGift());
+        dailyTasks.add(new ChargeMe());
+        dailyTasks.add(new GetVipPrivilege());
+        Collections.shuffle(dailyTasks);
+        dailyTasks.add(0, new UserCheck());
+    }
 
     public void doDailyTask() {
         try {
