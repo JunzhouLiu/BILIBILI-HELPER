@@ -1,5 +1,6 @@
 package top.misec.config;
 
+import java.util.*;
 import com.google.gson.Gson;
 import lombok.Data;
 import org.apache.logging.log4j.LogManager;
@@ -89,7 +90,7 @@ public class Config {
         }
 
         Config.CONFIG = new Gson().fromJson(configJson, Config.class);
-        HttpUtil.setUserAgent(Config.getInstance().getUserAgent());
+        HttpUtil.setUserAgent(Config.getInstance().getUserAgent().get(new Random().nextInt(list.size())));
         logger.info(Config.getInstance().toString());
     }
 }
