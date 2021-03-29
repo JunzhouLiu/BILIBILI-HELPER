@@ -44,7 +44,7 @@ public class Config {
      * 0：优先给热榜视频投币，1：优先给关注的up投币
      */
     private int coinAddPriority;
-    private String userAgent;
+    private List<String> userAgent;
     private boolean skipDailyTask;
     private String chargeForLove;
 
