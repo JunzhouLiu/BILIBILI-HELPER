@@ -91,7 +91,9 @@ public class Config {
 
         Config.CONFIG = new Gson().fromJson(configJson, Config.class);
         List<String> uas = Config.getInstance().getUserAgent();
-        HttpUtil.setUserAgent(uas.get(new Random().nextInt(uas.size())));
+        String ua = uas.get(new Random().nextInt(uas.size()));
+        HttpUtil.setUserAgent(ua);
         logger.info(Config.getInstance().toString());
+        logger.info("选择的UA: {}", ua);
     }
 }
