@@ -90,7 +90,8 @@ public class Config {
         }
 
         Config.CONFIG = new Gson().fromJson(configJson, Config.class);
-        HttpUtil.setUserAgent(Config.getInstance().getUserAgent().get(new Random().nextInt(list.size())));
+        List<String> uas = Config.getInstance().getUserAgent()
+        HttpUtil.setUserAgent(usa.get(new Random().nextInt(uas.size())));
         logger.info(Config.getInstance().toString());
     }
 }
