@@ -1,9 +1,9 @@
 {
-  "numberOfCoins": 5,
+  "numberOfCoins": 0,
   "reserveCoins": 50,
   "selectLike": 0,
   "monthEndAutoCharge": true,
-  "giveGift": true,
+  "giveGift": false,
   "upLive": "0",
   "chargeForLove": "0",
   "devicePlatform": "ios",
