@@ -4,8 +4,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
 
 /**
  * @author Junzhou Liu
@@ -15,7 +13,7 @@ import org.apache.logging.log4j.core.Logger;
 @Data
 public class VersionInfo {
     private static String releaseVersion = "";
-    private static String updateDate = "2021-01-16";
+    private static String updateDate = "2021-03-16";
     private static String projectRepo = "https://github.com/JunzhouLiu/BILIBILI-HELPER";
     private static String releaseInfo = "";
 

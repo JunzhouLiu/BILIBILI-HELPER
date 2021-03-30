@@ -2,8 +2,6 @@ package top.misec.task;
 
 import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
 import top.misec.apiquery.ApiList;
 import top.misec.apiquery.oftenAPI;
 import top.misec.login.Verify;
@@ -12,8 +10,8 @@ import top.misec.utils.HttpUtil;
 import java.util.Random;
 
 import static top.misec.task.DailyTask.getDailyTaskStatus;
-import static top.misec.task.TaskInfoHolder.getVideoId;
 import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
+import static top.misec.task.TaskInfoHolder.getVideoId;
 
 /**
  * 观看分享视频
@@ -22,7 +20,7 @@ import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
  * @since 2020-11-22 5:13
  */
 @Log4j2
-public class VideoWatch implements Task{
+public class VideoWatch implements Task {
 
     private final String taskName = "观看分享视频";
 

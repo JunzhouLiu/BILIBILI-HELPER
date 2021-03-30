@@ -2,13 +2,8 @@ package top.misec.apiquery;
 
 import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
-import top.misec.config.Config;
 import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
-
-import java.util.Collections;
 
 /**
  * 部分API简单封装。
@@ -82,6 +77,10 @@ public class oftenAPI {
         return title.replace("&", "-");
     }
 
+    /**
+     * @param uid 用户uid
+     * @return userName 查询到的用户名，为1则未查询到用户
+     */
     public static String queryUserName(String uid) {
         String urlParameter = "?mid=" + uid + "&jsonp=jsonp";
         String userName = "1";
@@ -89,7 +88,7 @@ public class oftenAPI {
         if (jsonObject.get("code").getAsInt() == 0) {
             userName = jsonObject.getAsJsonObject("data").get("name").getAsString();
         } else {
-            log.info("查询充电对象的用户名失败,充电对象已置为你本人" + jsonObject);
+            log.info("查询充电对象的用户名失败，原因：{}", jsonObject);
         }
         return userName;
     }

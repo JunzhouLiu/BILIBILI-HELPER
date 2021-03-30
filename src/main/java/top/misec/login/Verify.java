@@ -1,6 +1,5 @@
 package top.misec.login;
 
-import lombok.extern.log4j.Log4j2;
 
 /**
  * @author Junzhou Liu
@@ -8,12 +7,10 @@ import lombok.extern.log4j.Log4j2;
  */
 public class Verify {
 
+    private final static Verify VERIFY = new Verify();
     private static String userId = "";
     private static String sessData = "";
     private static String biliJct = "";
-
-
-    private final static Verify VERIFY = new Verify();
 
     public Verify() {
 
