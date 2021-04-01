@@ -22,7 +22,6 @@ public abstract class AbstractPush implements Push {
         assert null != url : "推送URL不能为空";
         String pushContent = generatePushBody(metaInfo, content);
         JsonObject jsonObject = HttpUtil.doPost(url, pushContent);
-        log.debug(jsonObject);
         boolean pushStatus = checkPushStatus(jsonObject);
         if (pushStatus) {
             log.info("任务状态推送成功");

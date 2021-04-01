@@ -6,7 +6,7 @@ BILIBILI-HELPER
 [![GitHub stars](https://img.shields.io/github/stars/JunzhouLiu/BILIBILI-HELPER?style=flat-square)](https://github.com/JunzhouLiu/BILIBILI-HELPER/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/JunzhouLiu/BILIBILI-HELPER?style=flat-square)](https://github.com/JunzhouLiu/BILIBILI-HELPER/network)
 [![GitHub issues](https://img.shields.io/github/issues/JunzhouLiu/BILIBILI-HELPER?style=flat-square)](https://github.com/JunzhouLiu/BILIBILI-HELPER/issues)
-[![GitHub license](https://img.shields.io/github/license/JunzhouLiu/BILIBILI-HELPER?style=flat-square)](https://github.com/JunzhouLiu/BILIBILI-HELPER/blob/main/LICENSE) 
+[![GitHub license](https://img.shields.io/github/license/JunzhouLiu/BILIBILI-HELPER?style=flat-square)](https://github.com/JunzhouLiu/BILIBILI-HELPER/blob/main/LICENSE)
 [![GitHub All Releases](https://img.shields.io/github/downloads/JunzhouLiu/BILIBILI-HELPER/total?style=flat-square)](https://github.com/JunzhouLiu/BILIBILI-HELPER/releases)
 [![Docker Pulls](https://img.shields.io/docker/pulls/superng6/bilibili-helper?style=flat-square)](https://hub.docker.com/r/superng6/bilibili-helper)
 [![GitHub contributors](https://img.shields.io/github/contributors/JunzhouLiu/BILIBILI-HELPER?style=flat-square)](https://github.com/JunzhouLiu/BILIBILI-HELPER/graphs/contributors)
@@ -17,7 +17,8 @@ BILIBILI-HELPER
 
 ## 工具简介
 
-这是一个利用 Linux Crontab , GitHub Action 等方式实现哔哩哔哩（Bilibili）每日任务投币，点赞，分享视频，直播签到，银瓜子兑换硬币，漫画每日签到，简单配置即可每日轻松获取 65 经验值，快来和我一起成为 Lv6 吧\~\~\~\~
+这是一个利用 Linux Crontab , GitHub Action 等方式实现哔哩哔哩（Bilibili）每日任务投币，点赞，分享视频，直播签到，银瓜子兑换硬币，漫画每日签到，简单配置即可每日轻松获取 65 经验值，快来和我一起成为
+Lv6 吧\~\~\~\~
 
 **如果觉得好用，顺手点个 Star 吧 ❤**
 
@@ -60,6 +61,7 @@ BILIBILI-HELPER
         - [Server酱Turbo版](#server酱turbo版)
         - [Telegram订阅执行结果](#telegram订阅执行结果)
         - [钉钉机器人](#钉钉机器人)
+        - [PushPlus(Push+)](#pushpluspush)
     - [更新和帮助](#更新和帮助)
         - [使用 Github Actions 自动同步源仓库代码](#使用-github-actions-自动同步源仓库代码)
         - [手动拉取最新代码](#手动拉取最新代码)
@@ -110,7 +112,8 @@ BILIBILI-HELPER
 }
 ```
 
-**由于[issues/313](https://github.com/JunzhouLiu/BILIBILI-HELPER/issues/313)中反馈接收到了B站的警告，所以跳过每日任务选项默认开启(也就是默认不执行每日任务)，如需关闭，请将`src/main/resources/config.json`中的`skipDailyTask`值改为`false`**
+**
+由于[issues/313](https://github.com/JunzhouLiu/BILIBILI-HELPER/issues/313)中反馈接收到了B站的警告，所以跳过每日任务选项默认开启(也就是默认不执行每日任务)，如需关闭，请将`src/main/resources/config.json`中的`skipDailyTask`值改为`false`**
 
 ```patch
 {
@@ -196,7 +199,6 @@ java -jar /home/BILIBILI-HELPER.jar DEDEUSERID SESSDATA BILI_JCT SCKEY >> /var/l
 # 注意将jar包路径替换为实际路径。将参数修改该你自己的参数，cookies中含有等特殊字符需要转义。
 ```
 
-
 **命令示例：**
 
 ```shell
@@ -228,7 +230,6 @@ java -jar /home/BILIBILI-HELPER.jar DEDEUSERID SESSDATA BILI_JCT SCKEY >> /var/l
 ```
 
 **Windows/Linux 用户使用jar包时，`release`包中会包含一份`config.json`配置文件，只需将其和`BILIBILI-HELP.jar`放在同一目录即可，执行时优先加载外部配置文件**
-
 
 配置文件参数示意
 
@@ -286,7 +287,8 @@ userAgent可选参数列表
 4. 推送效果展示
    ![图示](docs/IMG/wechatMsgPush.png)
 
-**旧版推送渠道[sc.ftqq.com](http://sc.ftqq.com/9.version]即将与4月底下线，请前往[sct.ftqq.com](https://sct.ftqq.com/sendkey)生成`Turbo`版本的`Key`，注意，申请Turbo版Key后请配置消息通道，如果想沿用以前的推送方式，选择方糖服务号即可**
+**
+旧版推送渠道[sc.ftqq.com](http://sc.ftqq.com/9.version]即将与4月底下线，请前往[sct.ftqq.com](https://sct.ftqq.com/sendkey)生成`Turbo`版本的`Key`，注意，申请Turbo版Key后请配置消息通道，如果想沿用以前的推送方式，选择方糖服务号即可**
 
 ### Telegram订阅执行结果
 
@@ -314,6 +316,14 @@ userAgent可选参数列表
 
 5.完成
 
+### PushPlus(Push+)
+
+1.[前往PushPlus获取Token](https://www.pushplus.plus/push1.html)
+
+2.在Github Secrets中的SERVERPUSHKEY中更新成获取到的Token
+
+3.完成
+
 ## 更新和帮助
 
 ### 使用 Github Actions 自动同步源仓库代码
@@ -339,7 +349,8 @@ userAgent可选参数列表
 3. 本工具执行过程中产生的日志，仅会在使用者自行配置推送渠道后进行推送。日志中不包含任何用户敏感信息。
 4. 如果有人修改了本项目（或者直接使用本项目）盈利恰饭，那和我肯定没关系，我开源的目的单纯是技术分享。
 5. 如果你使用了第三方修改的，打包的本工具代码，那你可得注意了，指不定人就把你的数据上传到他自己的服务器了，这可和我没关系。（**网络安全教育普及任重而道远**）
-6. 本工具源码仅在[JunzhouLiu/BILIBILI-HELPER](https://github.com/JunzhouLiu/BILIBILI-HELPER)开源，其余的地方的代码均不是我提交的，可能是抄我的，借鉴我的，但绝对不是我发布的，出问题和我也没关系。
+6.
+本工具源码仅在[JunzhouLiu/BILIBILI-HELPER](https://github.com/JunzhouLiu/BILIBILI-HELPER)开源，其余的地方的代码均不是我提交的，可能是抄我的，借鉴我的，但绝对不是我发布的，出问题和我也没关系。
 7. 我开源本工具的代码仅仅是技术分享，没有任何丝毫的盈利赚钱目的，如果你非要给我打赏/充电，那我就是网络乞丐，咱们不构成任何雇佣，购买关系的交易。
 8. 本项目不会增加类似于自动转发抽奖，秒杀，下载版权受限视频等侵犯UP主/B站权益的功能，开发这个应用的目的是单纯的技术分享。下游分支开发者/使用者也请不要滥用相关功能。
 9. 本项目欢迎其他开发者参与贡献，基于本工具的二次开发，使用其他语言重写都没有什么问题，能在技术上给你带来帮助和收获就很好.

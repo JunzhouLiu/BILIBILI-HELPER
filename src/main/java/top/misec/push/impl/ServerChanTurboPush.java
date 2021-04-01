@@ -2,6 +2,7 @@ package top.misec.push.impl;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import lombok.extern.log4j.Log4j2;
 import top.misec.apiquery.ApiList;
 import top.misec.push.AbstractPush;
 import top.misec.push.model.PushMetaInfo;
@@ -12,6 +13,7 @@ import top.misec.push.model.PushMetaInfo;
  * @author itning
  * @since 2021/3/22 17:14
  */
+@Log4j2
 public class ServerChanTurboPush extends AbstractPush {
 
     @Override
@@ -31,7 +33,16 @@ public class ServerChanTurboPush extends AbstractPush {
             return false;
         }
 
-        return code.getAsInt() == 0;
+        // FIX #380
+        switch (code.getAsInt()) {
+            case 0:
+                return true;
+            case 40001:
+                log.info("超过当天的发送次数限制[10]，请稍后再试");
+                return true;
+            default:
+                return code.getAsInt() == 0;
+        }
     }
 
     @Override

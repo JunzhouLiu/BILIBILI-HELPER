@@ -3,7 +3,7 @@ package top.misec.utils;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
+import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -28,15 +28,8 @@ import java.util.Optional;
  */
 
 @Log4j2
+@Data
 public class HttpUtil {
-
-    private static String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
-            "(KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36 Edg/85.0.564.70";
-
-    public static void setUserAgent(String userAgent) {
-        HttpUtil.userAgent = userAgent;
-    }
-
     /**
      * 设置配置请求参数
      * 设置连接主机服务超时时间
@@ -47,12 +40,14 @@ public class HttpUtil {
             .setConnectionRequestTimeout(5000)
             .setSocketTimeout(10000)
             .build();
-
     static Verify verify = Verify.getInstance();
+    private static String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) " +
+            "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36 Edg/89.0.774.54";
+    private static CloseableHttpClient httpClient = null;
+    private static CloseableHttpResponse httpResponse = null;
 
     public static JsonObject doPost(String url, JsonObject jsonObject) {
         return doPost(url, jsonObject.toString());
-
     }
 
     public static JsonObject doPost(String url, String requestBody) {
@@ -60,38 +55,24 @@ public class HttpUtil {
     }
 
     public static JsonObject doPost(String url, String requestBody, Map<String, String> headers) {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        CloseableHttpResponse httpPostResponse = null;
-
-
+        httpClient = HttpClients.createDefault();
         JsonObject resultJson = null;
         // 创建httpPost远程连接实例
         HttpPost httpPost = new HttpPost(url);
-
         // 设置请求头
         httpPost.setConfig(REQUEST_CONFIG);
-
         /*
           addHeader：添加一个新的请求头字段。（一个请求头中允许有重名字段。）
           setHeader：设置一个请求头字段，有则覆盖，无则添加。
           有什么好的方式判断key1=value和{"key1":"value"}
          */
-        boolean isJson = true;
-        try {
-            new JsonParser().parse(requestBody);
-        } catch (JsonSyntaxException e) {
-            // 非JSON
-            isJson = false;
-        }
-        if (isJson) {
+        if (requestBody.startsWith("{")) {
             //java的正则表达式咋写......
             httpPost.setHeader("Content-Type", "application/json");
         } else {
             httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
         }
-        // maybe bug ?
-        //httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
-        //httpPost.setHeader("Referer", "https://www.bilibili.com/");
+        httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
         httpPost.setHeader("Connection", "keep-alive");
         httpPost.setHeader("User-Agent", userAgent);
         httpPost.setHeader("Cookie", verify.getVerify());
@@ -100,7 +81,7 @@ public class HttpUtil {
             for (String key : headers.keySet()) {
                 httpPost.setHeader(key, headers.get(key));
             }
-        }else{
+        } else {
             httpPost.setHeader("Referer", "https://www.bilibili.com/");
         }
         // 封装post请求参数
@@ -111,24 +92,13 @@ public class HttpUtil {
 
         try {
             // httpClient对象执行post请求,并返回响应参数对象
-            httpPostResponse = httpClient.execute(httpPost);
-            if (httpPostResponse != null) {
-                int responseStatusCode = httpPostResponse.getStatusLine().getStatusCode();
-                if (responseStatusCode == 200) {
-                    // 从响应对象中获取响应内容
-                    HttpEntity entity = httpPostResponse.getEntity();
-                    String result = EntityUtils.toString(entity);
-                    resultJson = new JsonParser().parse(result).getAsJsonObject();
-                }
-            } else {
-                log.debug("httpPostResponse null");
-            }
+            httpResponse = httpClient.execute(httpPost);
+            resultJson = processResult(httpResponse);
         } catch (Exception e) {
             log.error(e);
             e.printStackTrace();
         } finally {
-            // 关闭资源
-            httpResource(httpClient, httpPostResponse);
+            httpResource(httpClient, httpResponse);
         }
         return resultJson;
     }
@@ -146,16 +116,13 @@ public class HttpUtil {
     }
 
     public static JsonObject doGet(String url, JsonObject pJson) {
-        CloseableHttpClient httpClient = null;
-        CloseableHttpResponse httpGetResponse = null;
+        // 通过址默认配置创建一个httpClient实例
+        httpClient = HttpClients.createDefault();
         JsonObject resultJson = null;
         try {
-            // 通过址默认配置创建一个httpClient实例
-            httpClient = HttpClients.createDefault();
             // 创建httpGet远程连接实例
             HttpGet httpGet = new HttpGet(url);
             // 设置请求头信息，鉴权
-            //httpGet.setHeader("Referer", "https://www.bilibili.com/");
             httpGet.setHeader("Connection", "keep-alive");
             httpGet.setHeader("User-Agent", userAgent);
             httpGet.setHeader("Cookie", verify.getVerify());
@@ -164,31 +131,39 @@ public class HttpUtil {
             }
             // 为httpGet实例设置配置
             httpGet.setConfig(REQUEST_CONFIG);
-
             // 执行get请求得到返回对象
-            httpGetResponse = httpClient.execute(httpGet);
-            int responseStatusCode = httpGetResponse.getStatusLine().getStatusCode();
-
-            if (responseStatusCode == 200) {
-                // 从响应对象中获取响应内容
-                // 通过返回对象获取返回数据
-                HttpEntity entity = httpGetResponse.getEntity();
-                // 通过EntityUtils中的toString方法将结果转换为字符串
-                String result = EntityUtils.toString(entity);
-                resultJson = new JsonParser().parse(result).getAsJsonObject();
-            } else if (responseStatusCode == 412) {
-                log.info("出了一些问题，可能是账号状态异常，如果是账号状态异常，建议先停止使用本工具");
-            } else {
-                log.debug(httpGetResponse.getStatusLine().toString());
-            }
+            httpResponse = httpClient.execute(httpGet);
+            resultJson = processResult(httpResponse);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             // 关闭资源
-            httpResource(httpClient, httpGetResponse);
+            httpResource(httpClient, httpResponse);
         }
         return resultJson;
 
+    }
+
+    public static JsonObject processResult(CloseableHttpResponse httpResponse) throws IOException {
+        JsonObject resultJson = null;
+        if (httpResponse != null) {
+            int responseStatusCode = httpResponse.getStatusLine().getStatusCode();
+            // 从响应对象中获取响应内容
+            // 通过返回对象获取返回数据
+            HttpEntity entity = httpResponse.getEntity();
+            // 通过EntityUtils中的toString方法将结果转换为字符串
+            String result = EntityUtils.toString(entity);
+            resultJson = new JsonParser().parse(result).getAsJsonObject();
+            switch (responseStatusCode) {
+                case 200:
+                    break;
+                case 412:
+                    log.debug(httpResponse.getStatusLine());
+                    break;
+                default:
+            }
+        }
+        return resultJson;
     }
 
 
@@ -207,5 +182,9 @@ public class HttpUtil {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void setUserAgent(String userAgent) {
+        HttpUtil.userAgent = userAgent;
     }
 }

@@ -8,8 +8,6 @@ import top.misec.pojo.userinfobean.Data;
 import top.misec.utils.HelpUtil;
 import top.misec.utils.HttpUtil;
 
-import java.util.Collections;
-
 import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
 import static top.misec.task.TaskInfoHolder.userInfo;
 

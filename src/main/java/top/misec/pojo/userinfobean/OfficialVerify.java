@@ -15,5 +15,4 @@ public class OfficialVerify {
     private String desc;
 
 
-
 }

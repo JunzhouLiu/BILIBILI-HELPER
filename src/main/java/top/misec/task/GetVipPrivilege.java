@@ -10,8 +10,8 @@ import top.misec.utils.HttpUtil;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import static top.misec.task.TaskInfoHolder.queryVipStatusType;
 import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
+import static top.misec.task.TaskInfoHolder.queryVipStatusType;
 
 /**
  * 漫画权益领取
