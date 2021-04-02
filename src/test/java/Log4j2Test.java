@@ -10,7 +10,7 @@ public class Log4j2Test {
     public static void main(String[] args) throws Exception {
         System.out.println();
         ServerPush serverPush = new ServerPush();
-      //  serverPush.setPushToken(args[0]);
+        //  serverPush.setPushToken(args[0]);
     }
 
     // 打印各种级别的日志用于测试

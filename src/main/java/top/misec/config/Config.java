@@ -16,37 +16,32 @@ import top.misec.utils.LoadFileResource;
 @Data
 public class Config {
 
+    private static Config CONFIG = new Config();
     /**
      * 每日设定的投币数 [0,5]
      */
     private int numberOfCoins;
-
     /**
      * 投币时是否点赞 [0,1]
      */
     private int selectLike;
-
     /**
      * 年度大会员自动充电[false,true]
      */
     private boolean monthEndAutoCharge;
-
     /**
      * 自动打赏快过期礼物[false,true]
      */
     private boolean giveGift;
-
     /**
      * 打赏快过期礼物对象，为http://live.bilibili.com/后的数字
      * 填0表示随机打赏。
      */
     private String upLive;
-
     /**
      * 执行客户端操作时的平台 [ios,android]
      */
     private String devicePlatform;
-
     /**
      * 投币优先级 [0,1]
      * 0：优先给热榜视频投币，1：优先给关注的up投币
@@ -56,9 +51,6 @@ public class Config {
     private boolean skipDailyTask;
     private String chargeForLove;
     private int reserveCoins;
-
-
-    private static Config CONFIG = new Config();
 
     private Config() {
     }

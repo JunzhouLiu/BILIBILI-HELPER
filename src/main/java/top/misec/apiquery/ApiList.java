@@ -6,6 +6,7 @@ package top.misec.apiquery;
  */
 public class ApiList {
 
+    public static String PushPlus = "http://www.pushplus.plus/send";
     public static String ServerPush = "https://sc.ftqq.com/";
     public static String ServerPushV2 = "https://sctapi.ftqq.com/";
     public static String ServerPushTelegram = "https://api.telegram.org/bot";
