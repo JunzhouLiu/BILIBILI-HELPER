@@ -20,6 +20,8 @@ public class Config {
 
     static Logger logger = (Logger) LogManager.getLogger(Config.class.getName());
 
+    static final Random RANDOM = new Random();
+
     /**
      * 每日设定的投币数 [0,5]
      */
@@ -91,7 +93,7 @@ public class Config {
 
         Config.CONFIG = new Gson().fromJson(configJson, Config.class);
         List<String> uas = Config.getInstance().getUserAgent();
-        String ua = uas.get(new Random().nextInt(uas.size()));
+        String ua = uas.get(RANDOM.nextInt(uas.size()));
         HttpUtil.setUserAgent(ua);
         logger.info(Config.getInstance().toString());
         logger.info("选择的UA: {}", ua);
