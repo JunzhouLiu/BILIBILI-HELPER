@@ -96,4 +96,10 @@ public class Config {
         logger.info(Config.getInstance().toString());
         logger.info("选择的UA: {}", ua);
     }
+    
+    public void resetUserAgent() {
+        List<String> uas = Config.getInstance().getUserAgent();
+        HttpUtil.setUserAgent(uas.get(RANDOM.nextInt(uas.size())));
+    }
+    
 }
