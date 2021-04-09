@@ -34,7 +34,12 @@ public class BiliMain {
         Config.getInstance().configInit();
         if (!Config.getInstance().isSkipDailyTask()) {
             DailyTask dailyTask = new DailyTask();
-            dailyTask.doDailyTask();
+            try {
+                dailyTask.doDailyTask();
+            } catch (Exception e1) {
+                Config.getInstance().resetUserAgent();
+                dailyTask.doDailyTask();
+            }
         } else {
             log.info("自定义配置中开启了跳过本日任务，本日任务跳过，如果需要取消跳过，请将skipDailyTask值改为0");
         }
