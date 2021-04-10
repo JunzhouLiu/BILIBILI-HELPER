@@ -35,7 +35,7 @@ public class BiliMain {
         if (!Config.getInstance().isSkipDailyTask()) {
             DailyTask dailyTask = new DailyTask();
             boolean done = false;
-            int count = 10;
+            int count = 50;
             while (!done && count > 0) {
                 try {
                     if (count < 10) {
