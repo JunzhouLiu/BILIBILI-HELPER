@@ -26,12 +26,12 @@ public class VersionInfo {
     }
 
     public static void printVersionInfo() {
-        initInfo();
-        log.info("-----版本信息-----");
-        log.info("当前版本: " + releaseVersion);
-        log.info("版本更新内容: " + releaseInfo);
-        log.info("最后更新日期: " + updateDate);
-        log.info("项目开源地址: " + projectRepo);
-        log.info("-----版本信息-----\n");
+       // initInfo();
+       // log.info("-----版本信息-----");
+       //  log.info("当前版本: " + releaseVersion);
+       //  log.info("版本更新内容: " + releaseInfo);
+       // log.info("最后更新日期: " + updateDate);
+       //  log.info("项目开源地址: " + projectRepo);
+       //  log.info("-----版本信息-----\n");
     }
 }
