@@ -7,7 +7,7 @@ package top.misec.task;
 public interface Task {
 
     /**
-     *任务实现
+     * 任务实现
      */
     void run();
 

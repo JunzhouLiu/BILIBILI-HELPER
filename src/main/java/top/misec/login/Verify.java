@@ -7,12 +7,10 @@ package top.misec.login;
  */
 public class Verify {
 
+    private final static Verify VERIFY = new Verify();
     private static String userId = "";
     private static String sessData = "";
     private static String biliJct = "";
-
-
-    private final static Verify VERIFY = new Verify();
 
     public Verify() {
 

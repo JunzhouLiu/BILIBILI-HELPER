@@ -19,7 +19,6 @@ public class HelpUtil {
 
     }
 
-
     public static long power(int a, int b) {
         long power = 1;
         for (int c = 0; c < b; c++) {

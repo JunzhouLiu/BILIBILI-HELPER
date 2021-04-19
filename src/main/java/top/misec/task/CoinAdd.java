@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import static top.misec.task.TaskInfoHolder.getVideoId;
 import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
+import static top.misec.task.TaskInfoHolder.getVideoId;
 
 /**
  * 投币任务
