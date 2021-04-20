@@ -30,6 +30,15 @@ Lv6 吧\~\~\~\~
 
 **请不要滥用相关API，让我们一起爱护B站 ❤**
 
+<div align="center">
+
+[也可点击此处一键加群](https://qm.qq.com/cgi-bin/qm/qr?k=m_M1Fydi3MvrVAEM0Sp6hDfZF4N2SpXU&jump_from=webapi)
+
+
+![qq群二维码](docs/IMG/qqgroup.png)
+
+</div>
+
 ## 功能列表
 
 * [x] 每天上午 9 点 10 分自动开始任务。*【运行时间可自定义】*
@@ -288,7 +297,7 @@ userAgent可选参数列表
    ![图示](docs/IMG/wechatMsgPush.png)
 
 **
-旧版推送渠道[sc.ftqq.com](http://sc.ftqq.com/9.version]即将与4月底下线，请前往[sct.ftqq.com](https://sct.ftqq.com/sendkey)生成`Turbo`版本的`Key`，注意，申请Turbo版Key后请配置消息通道，如果想沿用以前的推送方式，选择方糖服务号即可**
+旧版推送渠道[sc.ftqq.com](http://sc.ftqq.com/9.version0) 即将与4月底下线，请前往[sct.ftqq.com](https://sct.ftqq.com/sendkey)生成`Turbo`版本的`Key`，注意，申请Turbo版Key后请配置消息通道，如果想沿用以前的推送方式，选择方糖服务号即可**
 
 ### Telegram订阅执行结果
 
