@@ -34,7 +34,8 @@ Lv6 吧\~\~\~\~
 
 [也可点击此处一键加群](https://qm.qq.com/cgi-bin/qm/qr?k=m_M1Fydi3MvrVAEM0Sp6hDfZF4N2SpXU&jump_from=webapi)
 
-
+qq群二维码
+ 
 ![qq群二维码](docs/IMG/qqgroup.png)
 
 </div>
