@@ -12,7 +12,9 @@ import top.misec.utils.HttpUtil;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import static top.misec.task.TaskInfoHolder.*;
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
+import static top.misec.task.TaskInfoHolder.queryVipStatusType;
+import static top.misec.task.TaskInfoHolder.userInfo;
 
 /**
  * 给自己充电
@@ -45,7 +47,7 @@ public class ChargeMe implements Task {
             return;
         }
 
-        if (!Config.getInstance().isMonthEndAutoCharge()) {
+        if (!Boolean.TRUE.equals(Config.getInstance().getMonthEndAutoCharge())) {
             log.info("未开启月底给自己充电功能");
             return;
         }
@@ -74,7 +76,7 @@ public class ChargeMe implements Task {
           判断条件 是月底&&是年大会员&&b币券余额大于2&&配置项允许自动充电
          */
         if (day >= 28 && couponBalance >= 2 &&
-                Config.getInstance().isMonthEndAutoCharge()) {
+                Boolean.TRUE.equals(Config.getInstance().getMonthEndAutoCharge())) {
             String requestBody = "bp_num=" + couponBalance
                     + "&is_bp_remains_prior=true"
                     + "&up_mid=" + userId

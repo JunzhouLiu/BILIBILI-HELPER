@@ -29,10 +29,10 @@ public class BiliMain {
         boolean scfFlag = Boolean.getBoolean("scfFlag");
         StaticLoggerBinder.LOG_IMPL = scfFlag ? StaticLoggerBinder.LogImpl.JUL : StaticLoggerBinder.LogImpl.LOG4J2;
         log = LoggerFactory.getLogger(BiliMain.class);
-        final InputStream inputStream = BiliMain.class.getResourceAsStream("/logging.properties");
+        InputStream inputStream = BiliMain.class.getResourceAsStream("/logging.properties");
         try {
             LogManager.getLogManager().readConfiguration(inputStream);
-        } catch (final IOException e) {
+        } catch (IOException e) {
             java.util.logging.Logger.getAnonymousLogger().severe("Could not load default logging.properties file");
             java.util.logging.Logger.getAnonymousLogger().severe(e.getMessage());
         }
@@ -58,7 +58,7 @@ public class BiliMain {
         VersionInfo.printVersionInfo();
         //每日任务65经验
         Config.getInstance().configInit();
-        if (!Config.getInstance().isSkipDailyTask()) {
+        if (!Boolean.TRUE.equals(Config.getInstance().getSkipDailyTask())) {
             DailyTask dailyTask = new DailyTask();
             dailyTask.doDailyTask();
         } else {
@@ -93,7 +93,7 @@ public class BiliMain {
         VersionInfo.printVersionInfo();
         //每日任务65经验
         Config.getInstance().configInit(new Gson().toJson(kv));
-        if (!Config.getInstance().isSkipDailyTask()) {
+        if (!Boolean.TRUE.equals(Config.getInstance().getSkipDailyTask())) {
             DailyTask dailyTask = new DailyTask();
             dailyTask.doDailyTask();
         } else {

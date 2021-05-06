@@ -20,19 +20,19 @@ public class Config {
     /**
      * 每日设定的投币数 [0,5]
      */
-    private int numberOfCoins;
+    private Integer numberOfCoins;
     /**
      * 投币时是否点赞 [0,1]
      */
-    private int selectLike;
+    private Integer selectLike;
     /**
      * 年度大会员自动充电[false,true]
      */
-    private boolean monthEndAutoCharge;
+    private Boolean monthEndAutoCharge;
     /**
      * 自动打赏快过期礼物[false,true]
      */
-    private boolean giveGift;
+    private Boolean giveGift;
     /**
      * 打赏快过期礼物对象，为http://live.bilibili.com/后的数字
      * 填0表示随机打赏。
@@ -46,11 +46,11 @@ public class Config {
      * 投币优先级 [0,1]
      * 0：优先给热榜视频投币，1：优先给关注的up投币
      */
-    private int coinAddPriority;
+    private Integer coinAddPriority;
     private String userAgent;
-    private boolean skipDailyTask;
+    private Boolean skipDailyTask;
     private String chargeForLove;
-    private int reserveCoins;
+    private Integer reserveCoins;
 
     private Config() {
     }
@@ -58,7 +58,6 @@ public class Config {
     public static Config getInstance() {
         return CONFIG;
     }
-
 
     @Override
     public String toString() {
@@ -79,42 +78,86 @@ public class Config {
         log.info(Config.getInstance().toString());
     }
 
-
     /**
      * 优先从jar包同级目录读取
      * 读取配置文件 src/main/resources/config.json
      */
     public void configInit() {
-        String configJson;
-        String outConfig = LoadFileResource.loadConfigJsonFromFile();
-        if (outConfig != null) {
-            configJson = outConfig;
-            log.info("读取外部配置文件成功");
-        } else {
-            String temp = LoadFileResource.loadJsonFromAsset("config.json");
-            /**
-             *兼容旧配置文件
-             * "skipDailyTask": 0 -> "skipDailyTask": false
-             * "skipDailyTask": 1 -> "skipDailyTask": true
-             */
-            String target0 = "\"skipDailyTask\": 0";
-            String target1 = "\"skipDailyTask\": 1";
-            if (temp.contains(target0)) {
-                log.debug("兼容旧配置文件，skipDailyTask的值由0变更为false");
-                configJson = temp.replaceAll(target0, "\"skipDailyTask\": false");
-            } else if (temp.contains(target1)) {
-                log.debug("兼容旧配置文件，skipDailyTask的值由1变更为true");
-                configJson = temp.replaceAll(target1, "\"skipDailyTask\": true");
-            } else {
-                log.debug("使用的是最新格式的配置文件，无需执行兼容性转换");
-                configJson = temp;
-            }
-
-            log.info("读取配置文件成功");
+        String configJson = LoadFileResource.loadJsonFromAsset("config.json");
+        configJson = resolveOriginConfig(configJson);
+        if (configJson != null) {
+            log.info("读取初始化配置文件成功");
+            Config.CONFIG.merge(new Gson().fromJson(configJson, Config.class));
         }
 
-        Config.CONFIG = new Gson().fromJson(configJson, Config.class);
+        configJson = LoadFileResource.loadConfigJsonFromFile();
+        configJson = resolveOriginConfig(configJson);
+        if (configJson != null) {
+            log.info("读取外部配置文件成功");
+            Config.CONFIG.merge(new Gson().fromJson(configJson, Config.class));
+        }
+
         HttpUtil.setUserAgent(Config.getInstance().getUserAgent());
         log.info(Config.getInstance().toString());
+    }
+
+    private String resolveOriginConfig(String originConfig) {
+        if (originConfig == null) {
+            return null;
+        }
+        /**
+         *兼容旧配置文件
+         * "skipDailyTask": 0 -> "skipDailyTask": false
+         * "skipDailyTask": 1 -> "skipDailyTask": true
+         */
+        String target0 = "\"skipDailyTask\": 0";
+        String target1 = "\"skipDailyTask\": 1";
+        if (originConfig.contains(target0)) {
+            log.debug("兼容旧配置文件，skipDailyTask的值由0变更为false");
+            return originConfig.replaceAll(target0, "\"skipDailyTask\": false");
+        } else if (originConfig.contains(target1)) {
+            log.debug("兼容旧配置文件，skipDailyTask的值由1变更为true");
+            return originConfig.replaceAll(target1, "\"skipDailyTask\": true");
+        } else {
+            log.debug("使用的是最新格式的配置文件，无需执行兼容性转换");
+            return originConfig;
+        }
+
+    }
+
+    public void merge(Config config) {
+        if (config.getNumberOfCoins() != null) {
+            numberOfCoins = config.getNumberOfCoins();
+        }
+        if (config.getSelectLike() != null) {
+            selectLike = config.getSelectLike();
+        }
+        if (config.getMonthEndAutoCharge() != null) {
+            monthEndAutoCharge = config.getMonthEndAutoCharge();
+        }
+        if (config.getGiveGift() != null) {
+            giveGift = config.getGiveGift();
+        }
+        if (config.getUpLive() != null) {
+            upLive = config.getUpLive();
+        }
+        if (config.getDevicePlatform() != null) {
+            devicePlatform = config.getDevicePlatform();
+        }
+        if (config.getCoinAddPriority() != null) {
+            coinAddPriority = config.getCoinAddPriority();
+        }
+        if (config.getUserAgent() != null) {
+            userAgent = config.getUserAgent();
+        }
+        if (config.getSkipDailyTask() != null) {
+            skipDailyTask = config.getSkipDailyTask();
+        }
+        if (config.getChargeForLove() != null) {
+            chargeForLove = config.getChargeForLove();
+        }
+        if (config.getReserveCoins() != null) {
+            reserveCoins = config.getReserveCoins();
+        }
     }
 }
