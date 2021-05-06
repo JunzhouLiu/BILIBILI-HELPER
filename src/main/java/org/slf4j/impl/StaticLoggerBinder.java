@@ -16,9 +16,9 @@ public class StaticLoggerBinder implements LoggerFactoryBinder {
 
     private static final StaticLoggerBinder SINGLETON = new StaticLoggerBinder();
 
-    private static final String julLoggerFactoryClassStr = org.slf4j.impl.JDK14LoggerFactory.class.getName();
+    private static final String JUL_LOGGER_FACTORY_CLASS_STR = org.slf4j.impl.JDK14LoggerFactory.class.getName();
 
-    private static final String log4jLoggerFactoryClassStr = Log4jLoggerFactory.class.getName();
+    private static final String LOG_4_J_LOGGER_FACTORY_CLASS_STR = Log4jLoggerFactory.class.getName();
 
     public static final StaticLoggerBinder getSingleton() {
         return SINGLETON;
@@ -39,10 +39,10 @@ public class StaticLoggerBinder implements LoggerFactoryBinder {
     public String getLoggerFactoryClassStr() {
         switch (LOG_IMPL) {
             case JUL:
-                return julLoggerFactoryClassStr;
+                return JUL_LOGGER_FACTORY_CLASS_STR;
             case LOG4J2:
             default:
-                return log4jLoggerFactoryClassStr;
+                return LOG_4_J_LOGGER_FACTORY_CLASS_STR;
         }
     }
 
