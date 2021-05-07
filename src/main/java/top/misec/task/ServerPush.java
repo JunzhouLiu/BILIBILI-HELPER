@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import top.misec.login.ServerVerify;
 import top.misec.push.PushHelper;
 import top.misec.push.impl.PushPlusPush;
+import top.misec.push.impl.WeiXinPush;
 import top.misec.push.model.PushMetaInfo;
 import top.misec.utils.LoadFileResource;
 
@@ -34,6 +35,9 @@ public class ServerPush {
             } else if (ServerVerify.getFtkey().length() == PushPlusPush.PUSH_PLUS_CHANNEL_TOKEN_DEFAULT_LENGTH) {
                 target = PushHelper.Target.PUSH_PLUS;
                 log.info("本次执行推送日志到Push Plus");
+            }else if (ServerVerify.getFtkey().length() == WeiXinPush.WEIXIN_CHANNEL_TOKEN_DEFAULT_LENGTH) {
+                target = PushHelper.Target.WEIXING;
+                log.info("本次执行推送日志到企业微信");
             }
 
         } else if (ServerVerify.getFtkey() != null) {

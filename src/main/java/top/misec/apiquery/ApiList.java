@@ -17,6 +17,7 @@ public class ApiList {
     public static String isCoin = "https://api.bilibili.com/x/web-interface/archive/coins";
     public static String getRegionRanking = "https://api.bilibili.com/x/web-interface/ranking/region";
     public static String reward = "https://api.bilibili.com/x/member/web/exp/reward";
+    public static String weixingPush = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=";
 
     /**
      * 查询获取已获取的投币经验

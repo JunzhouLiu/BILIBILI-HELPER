@@ -37,6 +37,9 @@ public final class PushHelper {
             case PUSH_PLUS: {
                 return new PushPlusPush().doPush(metaInfo, content).isSuccess();
             }
+            case WEIXING: {
+                return new WeiXinPush().doPush(metaInfo, content).isSuccess();
+            }
             default:
                 return false;
         }
@@ -66,6 +69,10 @@ public final class PushHelper {
         /**
          * Push Plus
          */
-        PUSH_PLUS
+        PUSH_PLUS,
+        /**
+         * 企业微信
+         */
+        WEIXING
     }
 }
