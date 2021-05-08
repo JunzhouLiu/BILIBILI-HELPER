@@ -59,6 +59,20 @@ public class VideoWatch implements Task {
         }
     }
 
+    public void watchVideo(String bvid) {
+        int playedTime = new Random().nextInt(90) + 1;
+        String postBody = "bvid=" + bvid
+                + "&played_time=" + playedTime;
+        JsonObject resultJson = HttpUtil.doPost(ApiList.videoHeartbeat, postBody);
+        String videoTitle = oftenAPI.videoTitle(bvid);
+        int responseCode = resultJson.get(STATUS_CODE_STR).getAsInt();
+        if (responseCode == 0) {
+            log.info("视频: " + videoTitle + "播放成功,已观看到第" + playedTime + "秒");
+        } else {
+            log.debug("视频: " + videoTitle + "播放失败,原因: " + resultJson.get("message").getAsString());
+        }
+    }
+
     /**
      * @param bvid 要分享的视频bvid
      */
