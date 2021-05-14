@@ -1,6 +1,6 @@
 {
   "numberOfCoins": 5,
-  "reserveCoins": 0,
+  "reserveCoins": 1,
   "selectLike": 0,
   "monthEndAutoCharge": true,
   "giveGift": true,
