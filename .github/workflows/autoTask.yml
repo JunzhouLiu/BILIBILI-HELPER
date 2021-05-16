@@ -8,8 +8,9 @@ on:
     branches: main
   workflow_dispatch:
   schedule:
-    - cron: '10 1 * * *'
+    - cron: '10 14 * * *'
     # cron表达式，Actions时区是UTC时间，所以上午9点要往前推8个小时
+    # 10 14 * * *为每天北京时间22:10
 
 
 jobs:
