@@ -53,7 +53,7 @@
                                 </transformer>
                             </transformers>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <minimizeJar>true</minimizeJar>
+<!--                            <minimizeJar>true</minimizeJar>-->
                         </configuration>
                     </execution>
                 </executions>

@@ -23,7 +23,6 @@ public class DailyTask {
 
     public DailyTask() {
         dailyTasks = new ArrayList<>();
-        dailyTasks.add(1,new CoinLogs());
         dailyTasks.add(new VideoWatch());
         dailyTasks.add(new MangaSign());
         dailyTasks.add(new CoinAdd());
@@ -34,6 +33,7 @@ public class DailyTask {
         dailyTasks.add(new GetVipPrivilege());
         Collections.shuffle(dailyTasks);
         dailyTasks.add(0, new UserCheck());
+        dailyTasks.add(1,new CoinLogs());
     }
 
     /**
