@@ -22,8 +22,6 @@ import static top.misec.task.TaskInfoHolder.getVideoId;
 @Slf4j
 public class VideoWatch implements Task {
 
-    private final String taskName = "观看分享视频";
-
     @Override
     public void run() {
 
@@ -44,7 +42,7 @@ public class VideoWatch implements Task {
 
     @Override
     public String getName() {
-        return taskName;
+        return "观看分享视频";
     }
 
     public void watchVideo(String bvid) {

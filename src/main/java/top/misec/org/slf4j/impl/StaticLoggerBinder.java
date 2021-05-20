@@ -20,7 +20,7 @@ public class StaticLoggerBinder implements LoggerFactoryBinder {
 
     private static final String LOG_4_J_LOGGER_FACTORY_CLASS_STR = Log4jLoggerFactory.class.getName();
 
-    public static final StaticLoggerBinder getSingleton() {
+    public static StaticLoggerBinder getSingleton() {
         return SINGLETON;
     }
 

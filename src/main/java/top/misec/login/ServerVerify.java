@@ -9,28 +9,24 @@ import lombok.Getter;
 @Getter
 public class ServerVerify {
 
-    private final static ServerVerify SERVER_VERIFY = new ServerVerify();
-    private static String FTKEY = null;
-    private static String CHATID = null;
+    private static String FT_KEY = null;
+    private static String CHAT_ID = null;
 
     public static void verifyInit(String ftKey) {
-        ServerVerify.FTKEY = ftKey;
+        ServerVerify.FT_KEY = ftKey;
     }
 
     public static void verifyInit(String ftKey, String chatId) {
-        ServerVerify.FTKEY = ftKey;
-        ServerVerify.CHATID = chatId;
+        ServerVerify.FT_KEY = ftKey;
+        ServerVerify.CHAT_ID = chatId;
     }
 
-    public static String getFtkey() {
-        return FTKEY;
+    public static String getFtKey() {
+        return FT_KEY;
     }
 
     public static String getChatId() {
-        return CHATID;
+        return CHAT_ID;
     }
 
-    public static ServerVerify getInstance() {
-        return SERVER_VERIFY;
-    }
 }

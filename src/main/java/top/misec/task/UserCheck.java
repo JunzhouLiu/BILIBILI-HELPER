@@ -20,8 +20,6 @@ import static top.misec.task.TaskInfoHolder.userInfo;
 @Slf4j
 public class UserCheck implements Task {
 
-    private final String taskName = "登录检查";
-
     @Override
     public void run() {
         String requestPram = "";
@@ -49,6 +47,6 @@ public class UserCheck implements Task {
 
     @Override
     public String getName() {
-        return taskName;
+        return "登录检查";
     }
 }

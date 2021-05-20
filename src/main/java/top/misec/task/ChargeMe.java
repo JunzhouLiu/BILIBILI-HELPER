@@ -27,8 +27,6 @@ import static top.misec.task.TaskInfoHolder.userInfo;
 @Slf4j
 public class ChargeMe implements Task {
 
-    private final String taskName = "大会员月底B币券充电和月初大会员权益领取";
-
     @Override
     public void run() {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
@@ -130,6 +128,6 @@ public class ChargeMe implements Task {
 
     @Override
     public String getName() {
-        return taskName;
+        return "大会员月底B币券充电和月初大会员权益领取";
     }
 }

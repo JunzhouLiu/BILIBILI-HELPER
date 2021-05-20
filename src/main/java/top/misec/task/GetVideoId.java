@@ -141,7 +141,7 @@ public class GetVideoId {
             for (JsonElement videoInfo : jsonArray) {
                 String bvid=videoInfo.getAsJsonObject().get("bvid").getAsString();
                 int play=videoInfo.getAsJsonObject().get("play").getAsInt();
-                if(!CoinAdd.isCoin(bvid)&&play>1000){
+                if(!CoinAdd.isCoinAdded(bvid)&&play>1000){
                     this.rankVideoList.add(bvid);
                     this.followUpVideoList.add(bvid);
                 }

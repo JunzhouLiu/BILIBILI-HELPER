@@ -17,7 +17,6 @@ import top.misec.utils.HttpUtil;
 @Slf4j
 public class GiveGift implements Task {
 
-    private final String taskName = "B站直播送出即将过期的礼物";
     /**
      * 获取日志记录器对象
      */
@@ -205,6 +204,6 @@ public class GiveGift implements Task {
 
     @Override
     public String getName() {
-        return taskName;
+        return "B站直播送出即将过期的礼物";
     }
 }

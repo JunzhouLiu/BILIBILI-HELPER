@@ -17,8 +17,6 @@ import top.misec.utils.HttpUtil;
 public class MangaSign implements Task {
 
 
-    private final String taskName = "漫画签到";
-
     @Override
     public void run() {
 
@@ -35,6 +33,6 @@ public class MangaSign implements Task {
 
     @Override
     public String getName() {
-        return taskName;
+        return "漫画签到";
     }
 }
