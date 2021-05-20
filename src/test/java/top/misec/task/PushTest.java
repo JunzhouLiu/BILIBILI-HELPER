@@ -1,6 +1,7 @@
 package top.misec.task;
 
 import top.misec.push.PushHelper;
+import top.misec.push.impl.PushPlusPush;
 import top.misec.push.model.PushMetaInfo;
 
 /**
@@ -15,6 +16,6 @@ public class PushTest {
                 .token(args.length > 0 ? args[0] : null)
                 .chatId(args.length > 1 ? args[1] : null)
                 .build();
-        PushHelper.push(PushHelper.Target.PUSH_PLUS, metaInfo, "测试内容");
+        PushHelper.push(new PushPlusPush(), metaInfo, "测试内容");
     }
 }
