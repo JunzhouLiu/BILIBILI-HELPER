@@ -96,8 +96,8 @@
   "dedeuserid": "",
   "sessdata": "",
   "biliJct": "",
-  "telegrambottoken": null,
-  "telegramchatid": null,
+  "telegrambottoken": "0000000:aaaaaaaa",
+  "telegramchatid": 123456,
   "serverpushkey": "https://oapi.dingtalk.com/robot/send?access_token=XXX"
 }
 ```
