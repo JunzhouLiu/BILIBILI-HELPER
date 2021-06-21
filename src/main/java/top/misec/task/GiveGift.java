@@ -3,7 +3,6 @@ package top.misec.task;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import top.misec.config.Config;
 import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
@@ -138,9 +137,13 @@ public class GiveGift implements Task {
      * @Time 2020-10-13
      */
     public JsonArray xliveGiftBagList() {
-        return HttpUtil.doGet("https://api.live.bilibili.com/xlive/web-room/v1/gift/bag_list")
-                .get("data").getAsJsonObject()
-                .get("list").getAsJsonArray();
+        JsonObject obj = HttpUtil.doGet("https://api.live.bilibili.com/xlive/web-room/v1/gift/bag_list")
+                .get("data").getAsJsonObject();
+        if (obj.get("list").isJsonArray()) {
+            return obj.get("list").getAsJsonArray();
+        } else {
+            return new JsonArray();
+        }
     }
 
     /**
