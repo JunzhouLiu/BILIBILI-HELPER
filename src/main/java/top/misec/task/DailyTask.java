@@ -2,14 +2,15 @@ package top.misec.task;
 
 import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
-import top.misec.config.Config;
 import top.misec.utils.HttpUtil;
 import top.misec.utils.SleepTime;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
 import static top.misec.task.TaskInfoHolder.calculateUpgradeDays;
@@ -35,7 +36,7 @@ public class DailyTask {
         dailyTasks.add(new GetVipPrivilege());
         Collections.shuffle(dailyTasks);
         dailyTasks.add(0, new UserCheck());
-        dailyTasks.add(1,new CoinLogs());
+        dailyTasks.add(1, new CoinLogs());
     }
 
     /**
@@ -68,6 +69,8 @@ public class DailyTask {
             }
             log.info("本日任务已全部执行完毕");
             calculateUpgradeDays();
+        } catch (Exception e) {
+            log.debug(e);
         } finally {
             ServerPush.doServerPush();
         }

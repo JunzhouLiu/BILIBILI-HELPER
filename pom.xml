@@ -6,7 +6,7 @@
 
     <groupId>top.misec</groupId>
     <artifactId>BILIBILI-HELPER</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <properties>
         <skipTests>true</skipTests>
         <mainClass>top.misec.BiliMain</mainClass>

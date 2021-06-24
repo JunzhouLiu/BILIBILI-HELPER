@@ -29,12 +29,12 @@ public class ApiList {
     /**
      * 硬币换银瓜子
      */
-    public static String silver2coin = "https://api.live.bilibili.com/pay/v1/Exchange/silver2coin";
+    public static String silver2coin = "https://api.live.bilibili.com/xlive/revenue/v1/wallet/silver2coin";
 
     /**
      * 查询银瓜子兑换状态
      */
-    public static String getSilver2coinStatus = "https://api.live.bilibili.com/pay/v1/Exchange/getStatus";
+    public static String getSilver2coinStatus = "https://api.live.bilibili.com/xlive/revenue/v1/wallet/myWallet?need_bp=1&need_metal=1&platform=pc";
 
     /**
      * 上报观看进度
