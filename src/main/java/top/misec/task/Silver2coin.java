@@ -2,10 +2,11 @@ package top.misec.task;
 
 import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
 import top.misec.apiquery.oftenAPI;
 import top.misec.utils.HttpUtil;
+
+import java.util.Objects;
 
 import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
 import static top.misec.task.TaskInfoHolder.userInfo;
@@ -22,7 +23,12 @@ public class Silver2coin implements Task {
     @Override
     public void run() {
 
-        JsonObject queryStatus = HttpUtil.doGet(ApiList.getSilver2coinStatus).get("data").getAsJsonObject();
+        JsonObject queryStatus = HttpUtil.doGet(ApiList.getSilver2coinStatus);
+        if (queryStatus == null || Objects.isNull(queryStatus.get("data"))) {
+            log.error("获取银瓜子状态失败");
+            return;
+        }
+        queryStatus = queryStatus.get("data").getAsJsonObject();
         //银瓜子兑换硬币汇率
         final int exchangeRate = 700;
         int silverNum = queryStatus.get("silver").getAsInt();

@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
@@ -153,7 +152,11 @@ public class HttpUtil {
             HttpEntity entity = httpResponse.getEntity();
             // 通过EntityUtils中的toString方法将结果转换为字符串
             String result = EntityUtils.toString(entity);
-            resultJson = new JsonParser().parse(result).getAsJsonObject();
+            try {
+                resultJson = new JsonParser().parse(result).getAsJsonObject();
+            } catch (Exception e) {
+                log.debug("HttpUtil parse json error: {}", result.substring(0, 100));
+            }
             switch (responseStatusCode) {
                 case 200:
                     break;
