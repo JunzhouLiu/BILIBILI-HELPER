@@ -37,7 +37,7 @@ public class UserCheck implements Task {
                 log.info("Cookies有效，登录成功");
             } else {
                 log.debug(String.valueOf(userJson));
-                log.warn("Cookies可能失效了,请仔细检查Github Secrets中DEDEUSERID SESSDATA BILI_JCT三项的值是否正确、过期");
+                log.warn("Cookies可能失效了,请仔细检查配置中的DEDEUSERID SESSDATA BILI_JCT三项的值是否正确、过期");
             }
 
             log.info("用户名称: {}", HelpUtil.userNameEncode(userInfo.getUname()));
